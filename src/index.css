@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Fraunces", Georgia, serif;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* New High-Contrast Palette */
+  --color-background: #070912;
+  --color-foreground: #E2EBF3;
+  --color-card: #0C0F1D;
+  --color-card-foreground: #E2EBF3;
+  --color-popover: #0C0F1D;
+  --color-popover-foreground: #E2EBF3;
+  --color-primary: #21D5ED;
+  --color-primary-foreground: #070912;
+  --color-secondary: #141729;
+  --color-secondary-foreground: #E2EBF3;
+  --color-muted: #141729;
+  --color-muted-foreground: #8095B3;
+  --color-accent: #171B30;
+  --color-accent-foreground: #E2EBF3;
+  --color-destructive: #EF4444;
+  --color-destructive-foreground: #FAFAFA;
+  --color-border: #191D34;
+  --color-input: #191D34;
+  --color-ring: #21D5ED;
+
+  /* Keep legacy variable names as aliases to guarantee zero runtime layout breaks,
+     while updating their color definitions to point to the new palette. This replaces
+     every "bronze", "obsidian", and "silver" utility with the new electric cyan / obsidian blue theme. */
+  --color-obsidian: #070912;
+  --color-obsidian-surface: #0C0F1D;
+  --color-obsidian-light: #171B30;
+  --color-silver: #E2EBF3;
+  --color-silver-muted: #8095B3;
+  --color-silver-dim: #536783;
+  --color-bronze: #21D5ED;
+  --color-bronze-light: #5BE7FA;
+  --color-bronze-dim: rgba(33, 213, 237, 0.12);
+  --color-bronze-border: rgba(33, 213, 237, 0.25);
+  
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-bronze: pulse-primary 2s ease-in-out infinite;
+  --animate-pulse-primary: pulse-primary 2s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+  @keyframes pulse-primary {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #070912;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-foreground);
+  overflow-x: hidden;
+}
+
+/* Custom scrollbars matching the electric cyan and deep twilight blue colors */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #070912;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(33, 213, 237, 0.25);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(33, 213, 237, 0.45);
+}
+
+/* Base custom styles for rich text markdown reading */
+.markdown-body {
+  font-family: var(--font-body);
+  line-height: 1.8;
+  font-weight: 300;
+  color: var(--color-muted-foreground);
+}
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 {
+  font-family: var(--font-heading);
+  color: var(--color-foreground);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.markdown-body h1 { font-size: 2rem; }
+.markdown-body h2 { font-size: 1.5rem; border-bottom: 1px solid rgba(33, 213, 237, 0.15); padding-bottom: 0.4rem; }
+.markdown-body h3 { font-size: 1.25rem; }
+.markdown-body p { margin-bottom: 1.5rem; }
+.markdown-body ul, .markdown-body ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+.markdown-body ul { list-style-type: disc; }
+.markdown-body ol { list-style-type: decimal; }
+.markdown-body li { margin-bottom: 0.5rem; }
+.markdown-body blockquote {
+  border-left: 3px solid var(--color-primary);
+  background: rgba(33, 213, 237, 0.05);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  border-radius: 0 0.75rem 0.75rem 0;
+}
+.markdown-body code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  color: #21D5ED;
+}
+.markdown-body pre {
+  background: #0C0F1D;
+  border: 1px solid rgba(33, 213, 237, 0.15);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+.markdown-body pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+.markdown-body strong {
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+
+/* Custom subtle noise/grain overlay across the entire site */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.018;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Premium smooth glowing cards & buttons */
+.glowing-card {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+.glowing-card:hover {
+  transform: translateY(-4px) scale(1.005);
+  box-shadow: 0 12px 24px rgba(33, 213, 237, 0.09);
+  border-color: rgba(33, 213, 237, 0.35) !important;
+}
+
+/* Glass panels */
+.glass-panel {
+  background: rgba(12, 15, 29, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(33, 213, 237, 0.12);
+}
+

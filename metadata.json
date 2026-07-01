@@ -1,0 +1,6 @@
+{
+  "name": "The Collegium of Minds",
+  "description": "An intellectual space and decentralized laboratory of ideas for curious thinkers and lifelong learners to discuss science, philosophy, literature, technology, and arts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
