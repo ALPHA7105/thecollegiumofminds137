@@ -1,4 +1,4 @@
-##**The Collegium Of Minds**
+#The Collegium Of Minds
 
 
 #*Think. Explore. Discover.*
