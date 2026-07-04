@@ -12,6 +12,175 @@ export const categoryColors: Record<string, { text: string; bg: string; border: 
 
 export const articles = [
   {
+    slug: 'how-two-geniuses-invented-calculus',
+    substackUrl: 'https://thecollegiumofminds.substack.com/p/how-two-geniuses-invented-calculus',
+    title: 'How Two Geniuses Invented Calculus (and then tried to destroy each other)',
+    author: 'Mohamed Shahaan',
+    category: 'Mathematics',
+    coverImage: 'https://substackcdn.com/image/fetch/$s_!8ijr!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5520cde8-b325-4795-bde0-44c35e78a082_875x521.png',
+    date: 'Jul 04, 2026',
+    readTime: '16 min read',
+    featured: true,
+    excerpt: "This is the story of how ego, nationalism, and derivatives caused the biggest academic meltdown of the 17th century.",
+    content: `## 1 | Introduction
+Two men invented calculus. The other published it first, while the first did it quietly in his room. Then England declared mathematical war in his honor. This is the story of how ego, nationalism, and derivatives caused the biggest academic meltdown of the 17th century.
+
+## 2 | But first, what the heck even is calculus?
+Before we get to the exciting part, let’s respond to the question that is quite evident: what were Newton and Leibniz fighting over?
+
+Calculus is the mathematics of change. It’s the set of tools that allows you to ask and answer two basic questions: How fast is something changing right now? And if something keeps changing, what is the total effect?
+
+The first question is dealt with by derivatives — they quantify changes in instantaneous rates. For example, if you want to figure out how fast a falling apple is accelerating at the exact moment when it leaves the branch, that is a derivative. The second one goes to integrals, which obtain measures of quantities that have been accumulated. If you want to calculate the total distance that an apple has fallen, that is an integral.
+
+Before calculus, math could beautifully deal with static things — geometrical figures, angles, proportions. However, the universe is not static. Planets revolve, objects speed up, populations increase, temperatures change. To accurately describe reality, you need math that can handle motion and change.
+
+This is the reason why calculus was a breakthrough. It gave humans the language with which they could describe a changing world with accuracy. It turned into the basis for physics, engineering, economics, and almost every other discipline that deals with anything that moves, grows, or changes.
+
+So, when each of them claimed to be the sole inventor of this tool that changed the world, things got heated.
+
+## 3 | The Setup
+During the 1660s, Isaac Newton was deeply involved in advanced mathematics. The plague and the closing of Cambridge led him to Woolsthorpe Manor where, living almost in total isolation, he formulated the laws of motion, conducted his prism experiments, and — a very important point — invented a whole new branch of mathematics that became the basis of modern science. He referred to it as “the method of fluxions.” However, we know it as calculus.
+
+Nevertheless, Newton did everything in his head-mathematics in notebooks, verified it, came up with problems that no other mathematician would be able to solve, and then didn’t share it with anyone. He barely published, scarcely disputed, and regarded his findings as if they were hazardous antiques — harmful to criticism, and hence, he let them accumulate in his shelf.
+
+On the other hand, the world didn’t benefit from Newton’s brain as he kept most of his discoveries to himself, but the lucky ones who had the chance to peek through his work were left open-mouthed to the extreme; and when he does share it later on, his notation and explanations are incomprehensible, and at the same time, his demeanor is “I have figured out the universe, but you are not deserving of the secrets yet. “
+
+But the point that Newton raised was also considered by another person: in fact, across Europe, Gottfried Wilhelm Leibniz was very outgoing and willing to work with others- he was moving, debating, and interacting with the brilliant minds of that time. By the middle of the 1670s, Leibniz privately developed his calculus, approaching the topic from a geometric and philosophical perspective, and highlighting the differences between Newton’s fluxions and Leibniz’s infinitesimals and sums.
+
+After that, Leibniz thought of something that Newton didn’t: maybe I should publish.
+
+Leibniz publishes differential calculus in 1684 and integral calculus in 1686. His notation: dx, dy, and the integral ∫ are simple, efficient, and appropriate for continuation. He not only comes up with the idea of calculus but also makes it practical.
+
+The European math community being the implication act on it without delay: a tool that is simple and powerful is quickly put to use in physics, astronomy, and engineering. Newton, on the other hand, remains silent, unpublished, and sometimes insinuates that he has solved it a long time ago.
+
+What started as a purely literary, coincidental parallel was to turn into a scientific divide: two geniuses, one problem, and a gap in publication that would change the way we understand math historically
+
+## 4 | The Collision
+The two men wrote each other letters in the 1670s, and on the surface, they kept up a facade of mutual respect which was a mixture of genuine interest and strategic maneuvering. Newton, although he was somewhat paranoid about sharing his work, did exchange some correspondence with Leibniz via intermediaries and occasionally directly. In 1676, Newton sent a letter to Leibniz explaining some of his mathematical methods, but as usual, he hid his most important discoveries in coded anagrams and obscure references.
+
+In one of his letters, Newton explained his method but hid the key formula by mixing up his letters: “6accdoe13eff 7i319n4o4qrr4s8t12ux.” Thanks a lot, Isaac. Very clear.
+
+Leibniz, on the other hand, was very warm and positive in his communication and even shared his own thoughts. In a letter, he talked about his methods with absolute intellectual openness and even going so far as to say: “I have also found that a great part of the mysteries of geometry depends upon the consideration of these differences.” He was obviously thrilled to exchange ideas with another mathematician who was addressing similar problems.
+
+The mood was somewhat politeness. Both men were intelligent enough to acknowledge the other’s capabilities, and both were prudent enough not to unleash an outright antagonism. They were trying to “read” each other, trying to figure out what the other knew without giving away too much themselves. It was an intellectual chess game but unfortunately, the moves were 17th-century international mail, which took ages.
+
+For some time, this precarious dance went on smoothly. Leibniz went ahead and published his results. Newton kept doing his work in secret. To mathematicians, the world seemed big enough for both methods to live side by side.
+
+Friends of Newton, however, did not sit idly by. They got embroiled in the affair, and the whole thing went downhill from there.
+
+The trouble was slowly getting ready to blow far off in the late 1690s and did so in the beginning of the 1700s when British mathematicians — loyal to Newton and committed to protecting England’s scientific prestige — started suggesting that Leibniz did not come up with calculus on his own. The allegation was a bomb: that during his visits to London in the 1670s, Leibniz had access to Newton’s uncut ideas and merely wrapped them up in a nicer way to make them look like his own before publishing quickly.
+
+In 1699, a mathematician from Switzerland, Nicolas Fatio de Duillier, a close friend of Newton, published a pamphlet that was a step away from openly accusing Leibniz of plagiarism. He asserted that Newton was “the very first inventor beyond all doubt” and referred to “second inventors” who were taking credit without deserving it. The message was clear, and it went deep and insulting.
+
+Leibniz was very angry. This was not only an academic dispute — it was an attack on his honesty, his reputation, and his life’s work. He replied, denying the charges and affirming that his work was entirely his own. In one of his fiery replies, he wrote: “I have never borrowed from Mr. Newton… I found it all by my own meditations.”
+
+The main point is that word “never.” Leibniz was not only asserting his methods but also his integrity. In the highly status-conscious world of European intelligentsia, being labeled a thief meant professional death.
+
+However, the people supporting Newton did not give up. They brought up the letters as evidence, Leibniz’s trips to England, and timelines which if one looked very closely and with the intention of finding plagiarism, might be able to indicate that Leibniz got his ideas from Newton’s hints. It seemed that the fact that Newton had hidden those ideas in anagrams and that he didn’t want to publish them properly was of no consequence.
+
+Leibniz attempted to remain above the conflict, telling friends that he wished the issue to be resolvable “without bitterness.” In one of his letters, he was at a loss for words because of the accusations:
+
+I am not used to fighting for priority… but when I get attacked, I must defend myself.
+
+He was definitely not going to let this slip. Neither was Newton.
+
+It’s all quite messy from here on out because both of them were probably telling the truth. Independent discovery is a thing. It’s absolutely possible for two people to come to the same solution by different methods, especially if they are both geniuses of the same caliber and are tackling the hottest mathematical problem of that time. However, this was the 17th century, and giving credit to the collaboration was not exactly fashionable. Ego was. Nationalism was. And the idea that maybe, just maybe, two people could invent the same thing without one stealing from the other? Apparently, it was beyond comprehension.
+
+By the time it was the early 1710s, the case, which began with subtle accusations, had turned into a battle on the front lines. Letters that used to be carriers of respectful mathematical discourse were now full of accusations and bitter defenses. The clash between Newton and Leibniz was not only intellectual anymore — it was personal, political, and about to get a lot worse.
+
+The reason is that the Royal Society was going to get involved. And Isaac Newton? He was the one in charge at the Royal Society.
+
+## 5 | The Flame War
+By 1712, the dispute had gotten to such a point that the Royal Society of London, the most prestigious scientific institution in Britain, decided to intervene. What this fight needed most was clearly an official, impartial inquiry that would set the record straight on who had invented calculus first.
+
+Awesome idea. Excellent plan.
+
+Just one tiny problem: Isaac Newton was the president of the Royal Society.
+
+Take a moment to think about it. The man at the heart of the controversy, the one who would benefit the most from a favorable outcome, is the one who is in charge of the organization that has to solve the dispute in an unbiased manner. It’s like if a defendant in a trial was also the judge, the jury, and the one who writes the verdict. What could possibly go wrong?
+
+The Royal Society put together a committee to look over the evidence. They collected letters, looked at the manuscripts, interviewed the witnesses, and even checked out the records. Very official. Very thorough. Very legitimate-looking.
+
+And then Newton, in a move that would make even the most shameless reality TV villain blush, wrote the actual report himself. Not “influenced” the report. Not “guided” the committee’s findings. He actually, physically, wrote the paper that was supposed to be an independent investigation of his own priority claim.
+
+The final report, which was published in 1715 under the title Commercium Epistolicum, presented the facts, examined the arguments, and, surprise, surprise, it identified Newton as the genuine, first, and unquestionable inventor of calculus while describing Leibniz as a plagiarist who took ideas and presented them as his own. Really impartial work. Ten out of ten for objectivity. A masterclass in conflict of interest.
+
+The report not only declared Newton the winner; it also greatly insulted Leibniz. It took selective quotations from old letters, created timelines to make Leibniz look like he was up to something, and turned every ambiguous piece of evidence into the least positive interpretation possible. In fact, it was less “rigorous academic investigation” and more “250-page subtweet disguised as scholarship.”
+
+Newton even wrote an anonymous review of his own report for a scientific journal, praising the committee’s findings. As if writing the verdict wasn’t sufficient, he also needed to promote it in the press under a fake name. The man invented calculus and the burner account.
+
+Leibniz, from his place in Germany, was completely baffled by this. He responded with rebuttals, sent angry letters to colleagues, and published his own defenses. However, he was very much on the losing side. The endorsement of the Royal Society was of great importance, and Newton had total control over the narrative in England.
+
+This is when things went totally continental.
+
+England supported Newton with the kind of patriotic enthusiasm that is generally seen after military victories. British mathematicians went on the defensive, declaring Newton the undisputed champion of calculus and considering as treasonous those who suggested otherwise.
+
+Using Leibniz’s notation? Unpatriotic. Suggesting independent discovery? Suspiciously French-sympathizing behavior.
+
+The continent, on the other hand, was not convinced by this farce of a trial. They, on their part, supported Leibniz with the same kind of zeal. Swiss mathematicians, German scholars, French scientists, they all saw Leibniz’s work as innovative, brilliant, and that he was unfairly attacked by English propaganda.
+
+They continued with using his notation, writing papers that deliberately did not follow Newton’s methods, and treating the Royal Society’s report as what it really was: a hit piece.
+
+What started as a quarrel between two mathematicians turned into an international rivalry. British mathematicians used Newton’s clunky dot notation out of sheer national loyalty. European mathematicians used Leibniz’s elegant dx and dy out of equally stubborn spite.
+
+Academic conferences became tense. Publications took sides. You could almost see a mathematical Iron Curtain going down the English Channel.
+
+It was Math Eurovision, except that instead of giving points, everyone was giving grudges. And instead of catchy songs, there were bitter treatises about who understood infinite series better. England: douze points for Newton. Germany: null points for your fraudulent committee. Switzerland: submits an entry entirely in Leibniz notation just to make a point.
+
+The pettiness went through the roof.
+
+British students were taught calculus through Newton’s notation not because it was better, it objectively wasn’t, but because using Leibniz’s methods would be like admitting defeat. On the other hand, European mathematicians treated Newton’s work with cold politeness at best and with rejection at worst.
+
+Now here’s the twist: while England and Europe were embroiled in this mathematical Cold War, the rest of the world was simply doing calculus. Scientists from both sides were solving real problems, making new discoveries, and contributing to human knowledge. However, they were doing it separately, and quite often duplicating the work, because British and Continental mathematicians were not willing to learn from each other.
+
+Due to this stubbornness, British mathematics went into stagnation for almost a century. While European mathematicians like the Bernoullis, Euler, and Lagrange were creating mountains of new mathematics based on Leibniz’s work, British mathematicians were still debating if Newton got enough credit for the ground floor.
+
+It took until the 1820s, more than a hundred years after the controversy began, for British mathematicians to finally, albeit reluctantly, concede that perhaps Leibniz’s notation was worth using. You know, the notation that the whole rest of the mathematical world had been using for years.
+
+## 6 | The Aftermath
+Gottfried Wilhelm Leibniz died on November 14, 1716, in Hanover, Germany. He was seventy years old, and despite a lifetime of revolutionary contributions to mathematics, philosophy, logic, and science, his final years were marked by isolation and bitterness.
+
+His funeral was attended by his secretary. That’s it. One person.
+
+No dignitaries showed up. No scientific societies sent representatives. No grand eulogies were delivered. The man who’d invented calculus, proposed binary arithmetic, designed calculating machines, and laid groundwork for modern logic was buried in an unmarked grave like a forgotten clerk. It took weeks before anyone even bothered to mark the spot.
+
+Why? Because half of England — the most powerful scientific establishment in Europe — had spent the last decade broadcasting to anyone who’d listen that Leibniz was a fraud, a plagiarist, and a thief who’d stolen Isaac Newton’s genius and slapped his own name on it. The Royal Society’s official report had done its job. Leibniz’s reputation, at least in the English-speaking world, was utterly destroyed.
+
+He died knowing that in Britain, his name was mud. The country that prided itself on scientific advancement had written him out of the story, reduced his legacy to a footnote, branded him an intellectual criminal. Even people who’d never read a single mathematical paper had heard that Leibniz was the guy who tried to steal credit from the great Isaac Newton.
+
+It was character assassination of the highest order, and it worked.
+
+Newton, by contrast, lived another eleven years, dying in 1727 at the age of eighty-four. He was knighted, celebrated, mourned as a national hero. His funeral was a state affair. He was buried in Westminster Abbey with honors typically reserved for royalty. Poets wrote elegies. The nation mourned. Alexander Pope famously penned: “Nature and Nature’s laws lay hid in night: / God said, Let Newton be! and all was light.”
+
+Newton won the propaganda war so decisively that it took centuries for the full truth to emerge: both men had independently invented calculus, and Leibniz’s version was, in most practical ways, better.
+
+But here’s where British spite transformed from personal vendetta into institutional self-sabotage.
+
+British schools and universities, drunk on nationalist pride and unwilling to give Leibniz even a millimeter of credit, clung to Newton’s notation with the grip of someone holding onto a terrible opinion purely to avoid admitting they were wrong. And Newton’s notation? It was ugly.
+
+Newton used dots over variables to represent derivatives — like ẋ or ẍ — which worked fine for simple cases but became an unreadable mess when dealing with higher-order derivatives or partial differentiation. His approach was built for the specific problems he was solving in physics, not as a general-purpose mathematical language. It was functional if you were Newton, doing Newton-specific things, in Newton’s specific way. For everyone else? A nightmare.
+
+Meanwhile, Leibniz’s notation was a thing of beauty. His dx and dy made the concept of infinitesimal change immediately intuitive. His integral sign ∫ (literally an elongated S for “summation”) visually conveyed what integration did. His notation was flexible, generalizable, and designed for humans who weren’t Isaac Newton to actually use and build upon.
+
+The rest of Europe recognized this immediately and ran with it. Swiss mathematicians, French scholars, German professors — they all adopted Leibniz’s system because it worked. It was elegant. It scaled. It made teaching calculus possible without requiring students to be once-in-a-millennium geniuses.
+
+But Britain? Nope. British mathematics departments spent the entire 18th century teaching Newton’s clunky notation out of sheer, bloody-minded spite. It wasn’t about what worked best. It wasn’t about advancing mathematics. It was about refusing to admit that maybe, just maybe, the guy they’d spent decades dragging through the mud had actually come up with something superior.
+
+The cost was staggering. While Continental mathematicians were developing new branches of analysis, differential equations, and mathematical physics using Leibniz’s notation, British mathematics entered what historians politely call “a period of stagnation.” British students struggled with an inferior system. British researchers found themselves isolated from the cutting-edge work happening in France, Switzerland, and Germany. The nation that had produced Isaac Newton proceeded to waste his legacy by wrapping itself in nationalist pettiness.
+
+It wasn’t until the 1820s — more than a century after the controversy erupted — that British mathematicians finally, reluctantly, humiliatingly admitted defeat and started adopting Leibniz’s notation. By that point, they’d squandered generations of mathematical talent and ceded leadership in the field to Continental Europe.
+
+Today, if you open any calculus textbook anywhere in the world, you’ll see Leibniz’s notation. The dx, the dy, the ∫ sign — that’s all him. We use his language because it doesn’t look like a cursed manuscript written in the margins of a fever dream by someone who assumed everyone reading it would already know what he meant.
+
+Newton’s dot notation survives in a few specialized physics applications, mostly because physicists are stubborn and have their own traditions. But for the vast majority of mathematical work, Leibniz won the long game so decisively that most students don’t even know there was another notation system.
+
+So here’s the brutal irony: Newton got the glory, the knighthood, the Westminster Abbey burial, and the historical reputation as the lone genius who unlocked the universe’s secrets. Leibniz died alone, disgraced, and forgotten by half of Europe.
+
+But every single student who’s ever suffered through a calculus class has cursed derivatives and integrals using Leibniz’s symbols. His notation became the universal language of change itself. And Newton’s? A historical curiosity, abandoned by everyone except the stubborn British institutions that clung to it long past the point of reason.
+
+Leibniz lost the battle. But he absolutely won the war.`,
+  },
+  {
     slug: 'i-think-therefore-i-end',
     substackUrl: 'https://thecollegiumofminds.substack.com/p/i-think-therefore-i-end',
     title: 'I Think, Therefore I End',
@@ -71,173 +240,6 @@ These above tips, however, only work when you have a clear game idea. If you're 
 ## Conclusion
 
 Game designing can never be taught by anyone. It comes from years of experience. I hope the above game designing techniques gave you all a good starting point and maybe inspired you to create your own games. Good luck on your gamedev journey!!`,
-  },
-  {
-    slug: 'is-gravity-an-illusion',
-    title: 'Is Gravity An Illusion?',
-    author: 'Sarvesh Kore',
-    category: 'The Physical World',
-    coverImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80',
-    date: 'Oct 17, 2025',
-    readTime: '20 min read',
-    excerpt: "An explanatory article that explores the true nature of gravity by using Einstein's General Theory of Relativity.",
-    content: `## I. Introduction
-
-Gravity feels simple. You drop something, it falls. You jump, you come back down. The apple falls from the tree. Earth pulls you toward its center. That's what we all learned. But if you really think about it, there's something strange. Why does everything fall at the same rate, even though it has different masses? Why do astronauts float in space, even though Earth's pull is still strong up there?
-
-Einstein looked at these questions differently. Instead of asking, "What is pulling the apple?" he asked, "What if nothing is pulling at all?"
-
-## II. Einstein's Happiest Thought
-
-Einstein imagined the window cleaner of his patent office falling from the building's rooftop. Anything that man drops on his way — a bucket, his cleaning equipment, his cap — appear to float alongside him. Relative to him, nothing accelerates. He feels weightless.
-
-This man is, what physicists call, an inertial observer. He is under no acceleration, no forces are acting on him, and all the laws of physics apply in his frame of reference, called the inertial frame of reference.
-
-No up, no down. This scenario is just as if he were floating in empty space, far from any massive body.
-
-This thought led to something profound: These two cases — the free falling man, and the man in deep space — are not just similar, they are exactly the same thing. This is what's known as the Equivalence Principle.
-
-## III. The Equivalence Principle
-
-The principle is simple in words, but mind-blowing in meaning: the effects of gravity and acceleration are indistinguishable if you only consider the experience of the observer. In other words, if you're inside a closed room and can't see outside, you wouldn't be able to tell whether the force you feel is because the room is standing still on Earth or because the room is being accelerated in deep space.
-
-Imagine a person inside a rocket far from any planet. The rocket starts accelerating upward at 9.8 m/s² — the same acceleration experienced due to gravity on Earth. The person inside feels pressed against the floor of the rocket, just as we feel on Earth. It seems as though a force is pulling them toward the floor, but an observer in an inertial frame of reference sees the rocket accelerating toward the person. The "gravity" inside the rocket is therefore caused by the acceleration of the rocket, not by a mysterious force.
-
-Now, consider the falling person from a rooftop. They feel weightless, as if there is no gravity at all, even though they are within Earth's gravitational field. To them, it is exactly like floating in empty space. This demonstrates that experiencing weight or weightlessness depends not solely on gravity, but on whether one is following a natural path through spacetime or being forced off it by something, like the ground or a rocket floor.
-
-Whether you feel under the influence of gravity depends on your frame of reference. The astronaut in the rocket experiences a force toward the floor, while an external inertial observer sees the rocket accelerating toward the astronaut. Similarly, standing on Earth, we appear at rest relative to our surroundings, but we are not in an inertial frame, because, in simple terms, you are not weightless. To determine acceleration, we must compare ourselves with an inertial observer, such as a free-falling person. From this perspective, someone standing on Earth is accelerating upward at 9.8 m/s² relative to the free-falling observer.
-
-You might think, "I'm not accelerating!" — but acceleration is always measured relative to something. If you compare yourself only to things around you, they seem stationary, but that's because your whole local frame is accelerating together. To know your true acceleration, you need to compare it to an inertial observer, someone who is not accelerating. Only then can you see that you are actually accelerating.
-
-Einstein realized this equivalence between acceleration and gravity was the key to understanding the universe in a completely new way. Instead of thinking of gravity as a force that pulls objects, he thought about it as the curvature of spacetime itself. Objects aren't being pulled; they are moving along the straightest paths possible in curved spacetime, called geodesics.
-
-So, the Equivalence Principle tells us something amazing: your experience of "gravity" is actually about your frame of reference — whether you are accelerating or moving naturally through spacetime. And this insight completely changed the way scientists look at the universe, laying the groundwork for Einstein's general theory of relativity.
-
-## IV. The Rocket And The Planet
-
-Now, let's take the Equivalence Principle a step further with a different thought experiment — a rocket flying through space near a planet. Imagine an astronaut inside this rocket, and a planet far away. The rocket moves at a constant velocity, smooth and steady, so our astronaut feels weightless. Nothing is pushing or pulling on them — they're floating freely.
-
-From the perspective of someone far away, though, the story looks a little different. As the rocket drifts closer to a massive planet, its path appears to curve toward the planet. To the distant observer, it's almost like the planet is "pulling" the rocket in. But inside the rocket, the astronaut doesn't notice anything unusual. They keep floating, perfectly weightless, as if nothing has changed.
-
-As the rocket keeps approaching the planet, it keeps accelerating. With respect to an outside observer. But the astronaut still feels weightless, as if he's moving with constant velocity in a straight line.
-
-Einstein's idea is simple but powerful: the rocket's curved path near a planet isn't because a force is pulling it. It's because spacetime itself is curved by the planet's mass. The astronaut inside is actually moving in a straight line along a natural path in curved spacetime, called a geodesic. To an outside observer, the path looks curved, but for the astronaut, it's straight.
-
-A good way to imagine this is the rubber sheet analogy: roll a marble across a stretched sheet with a heavy ball in the middle. The marble curves around the ball, not because it's being pulled, but because the sheet is warped. In real life, spacetime is like that sheet, and the planet's mass bends it. Unlike this analogy, there's no actual downward pull. Objects don't fall because they are "pulled" — they just follow the natural paths in curved spacetime. Mass bends spacetime, and objects move along these curves, called geodesics, which are the straightest possible paths in that curved space. So objects appear to move toward heavier masses, not because of a force, but because they are following the curved spacetime created by that mass.
-
-Standing still on Earth isn't being at rest in an absolute sense; it's being pushed upward along a curve. That's why the floor pushes on your feet — it's forcing you off your natural, free-fall trajectory.
-
-This shows that gravity isn't a force pulling things together. It's the shape of spacetime guiding how objects move. The astronaut feels like they're moving straight, while someone far away sees a curved path. Gravity, in Einstein's view, is geometry in action, not a mysterious invisible pull.
-
-## V. Straight Lines on Curved Surfaces (Geodesics)
-
-Alright, now let's get into something called geodesics, which might sound like a fancy math word, but it's actually pretty simple — and super important for understanding gravity. A geodesic is basically the straightest path you can take in a curved space. Sounds weird? Let me explain.
-
-Think about the Earth. It's round, right? Now imagine two people standing on the equator, 100 km apart. They both start walking straight north toward the North Pole. If they keep walking "straight" according to the Earth's surface, they eventually meet at the Pole. To them, they're walking straight lines, but if you looked at a flat map, it might seem like they're curving toward each other.
-
-This is exactly how objects move in curved spacetime. Objects like rockets, planets, or even light beams are moving along geodesics — straight paths — but because spacetime is curved by massive objects like planets or stars, their paths appear curved to outside observers.
-
-Another way to think about it is like flying in an airplane. Pilots don't actually fly in perfectly straight lines over the globe. They follow what's called a great-circle route, which is the shortest distance between two points on a sphere. To us looking from above, the path looks curved, but for the plane, it's the most direct route — a straight line in curved space.
-
-So, when astronauts orbit the Earth, they aren't really "falling" in the way we usually think. They are following geodesics in spacetime. The Earth's mass curves spacetime around it, and the astronauts move along these curved paths naturally. To them, it feels like they're floating in a straight line, weightless, even though from the Earth it looks like they're circling the planet.
-
-In short, geodesics show us that what we call "gravity" is really about how spacetime is shaped and how objects naturally move in that shape. It's not a force pulling us down — it's the geometry of the universe guiding the path of everything in it.
-
-## VI. Astronauts and Weightlessness
-
-Let's dive into one of the coolest ways to understand Einstein's ideas: astronauts floating in space. When we see astronauts inside the International Space Station doing flips and floating pens around them, it looks like they're defying gravity. But what's really going on?
-
-Here's the surprising part: they aren't feeling any force pulling them down. Yes, Earth is nearby and its mass curves spacetime, but the astronauts don't experience a "pull." In Einstein's view, gravity isn't a force at all — it's the effect of curved spacetime guiding the paths of objects. The astronauts are moving along these natural, straight paths called geodesics.
-
-The ISS is moving sideways fast enough that, even though it's falling toward Earth, it keeps missing it — orbiting around it instead of crashing. Everything inside — the walls, the floor, and the astronauts themselves — is falling together at the same rate. This is why they feel weightless. Nothing is pushing or pulling on them in their frame of reference.
-
-From the perspective of someone on Earth, it looks like the astronauts are orbiting and "falling" around the planet. But for the astronauts, they are simply following the straightest path possible through curved spacetime. They're not resisting a force; they're just moving naturally, guided by the shape of spacetime.
-
-So, weightlessness isn't about escaping gravity. It's about moving along a geodesic in curved spacetime, where the illusion of gravity disappears. The astronauts' experience proves Einstein right: what we feel as gravity is not a force, but a natural consequence of spacetime's geometry.
-
-## VII. The Rubber Sheet Analogy — A Misconception
-
-You've probably seen that classic picture of a heavy ball placed on a stretched rubber sheet, with smaller balls rolling toward it. It's a neat image, right? That's how most people first try to imagine gravity in Einstein's theory: mass bends spacetime like a ball bending a sheet, and other objects "fall" toward the heavy mass. Simple enough — but here's the catch: this analogy can actually be misleading.
-
-First, think about it: in the rubber sheet, the smaller balls roll toward the heavy one because of gravity — the force pulling them down onto the sheet. But wait a minute — in Einstein's universe, gravity isn't a force at all. The motion of planets, rockets, or astronauts is not caused by a pull; it's caused by the shape of spacetime.
-
-Second, the rubber sheet is two-dimensional, but real spacetime is four-dimensional — three dimensions of space plus one of time. You can't really visualize that with a flat sheet stretched in your room. Objects in real spacetime aren't moving on a surface; they're moving along paths in a four-dimensional geometry. Thinking about a stretched sheet can make you imagine "falling down," but in reality, there is no "down" — there's just following a geodesic in curved spacetime.
-
-Finally, the sheet analogy can trick your intuition. You might think mass "dents" spacetime and pulls objects into the dent. But in General Relativity, there's no dent and no pull. Objects are just moving straight in spacetime, and the curvature makes it look like a curved path from another perspective. The "pull" is only an illusion we experience because we're standing on the Earth and not following a geodesic ourselves, and so we are not an inertial observer. So we can't exactly say that things are accelerating towards a heavier mass, because it's not in your frame of reference. Things in your frame of reference appear stationary, but if it's not, then it appears to accelerate. So it's like this: you are accelerating, while those things are in uniform motion, so they appear to be accelerating. Weird right? Why are we accelerating? I'll come to that question in the next section.
-
-As John Wheeler once put it: "Matter tells spacetime how to curve, and spacetime tells matter how to move."
-
-So, while the rubber sheet is a fun way to introduce the idea, it fails to explain the real beauty of Einstein's theory. The true story isn't about balls rolling into dents because of a force — it's about the geometry of spacetime itself guiding objects naturally along paths. Once you understand that, you start to see why gravity feels so strange: to move without feeling it, you just have to follow a straight path in a curved universe.
-
-## VIII. Acceleration vs Rest
-
-Now let's tackle something that seems super weird at first: standing still on Earth is actually like accelerating. Sounds crazy, right? We usually think of acceleration as speeding up in a car or a rocket, and standing still is like… well, just standing still. But in Einstein's world, things are different.
-
-Think about it this way: an astronaut in a rocket far from any planet, drifting in space, is following a straight-line path in spacetime. Nothing is pushing or pulling on them, and they feel weightless. That's what moving along a geodesic looks like.
-
-Now if the rocket starts accelerating at 9.8 m/s², it will be the rocket that's accelerating into the astronaut, not the other way around. This is what an inertial observer will experience, like the astronaut. Though the astronaut will feel as if he's falling towards the floor of the rocket, in reality, the rocket is accelerating upwards and would hit him.
-
-Now, imagine you're under free fall, which appears as if you're accelerating towards the ground at 9.8 m/s². But if you're under free fall, you will be called an inertial observer, which means you are not accelerating, and anything you see changing its position with respect to you is accelerating. So it would mean that it's actually the ground and things on that which are accelerating towards you, including any person standing still on the surface. In short, if an object appears stationary (with respect to you, as it's in your frame of reference), it's actually accelerating along with you. If an object is in free fall (appears to accelerate towards the surface of the earth), it's actually at rest because in that case it's following a geodesic, and is in an inertial frame of reference.
-
-So, because the ground is pushing up on you, you are technically accelerating upward, even though it feels like you're at rest. The floor is creating a deviation from your natural straight path, and that's exactly why you feel your weight. The reaction force from the ground is what gives you that sense of gravity. So, in General Relativity, standing still on Earth isn't rest — it's a kind of constant upward acceleration.
-
-Now, you might ask: "Wait, if everything on Earth is accelerating upward, shouldn't the whole planet be expanding or flying apart?" That's where the geodesic equation comes in. In curved spacetime, an object only "accelerates" when something prevents it from following a straight path. The Earth itself is made of matter that is already following its own natural geodesics. The geodesic equation shows that all of Earth's parts move in a way consistent with spacetime curvature, so the internal forces between atoms and molecules keep the planet stable. In other words, the Earth isn't expanding because the "acceleration" we feel is relative — it's our body reacting to the floor preventing our free fall, not some universal push on the entire planet. Also, the geodesic equation says that even though you're accelerating, it's possible for you not to change your spatial coordinates. Mathematically, we can describe this using the geodesic equation.
-
-Here's the surprising part: this equation can show a nonzero "acceleration" term even when an object's spatial position (its r, or radius) doesn't actually change. In other words, the math says you're accelerating, but from your perspective, you're just sitting still, following the straightest possible path in space-time.
-
-This flips our normal intuition on its head. On Earth, you think you're not moving, but really, your body is accelerating upward through spacetime at about 9.8 m/s² — the same rate a free-falling object would "naturally" accelerate toward the ground if nothing stopped it. Meanwhile, someone in free fall doesn't feel any force at all, even though their velocity relative to Earth is changing. They are actually an inertial observer, moving along a geodesic perfectly aligned with curved spacetime. So an inertial observer sees you accelerating upwards at 9.8 m/s², and so you are (remember that all laws of physics apply in the inertial frame of reference).
-
-So, the big idea is this: rest and acceleration aren't what we usually think they are. Feeling weight isn't about standing still — it's about being prevented from moving along a straight line in spacetime. Gravity, then, isn't a force; it's the way spacetime guides everything, and the "force" you feel is just the floor (or the rocket) keeping you from following your natural path.
-
-## IX. Why All Objects Fall at the Same Rate
-
-Now let's tackle one of the strangest things you probably learnt in school: all objects fall at the same rate, no matter how heavy or light they are. Drop a feather and a hammer on Earth — okay, air resistance makes the feather slow down, but in a vacuum, they hit at the same time. Why does that happen?
-
-In Newtonian physics, we usually explain it with two equations: the gravitational force equation (F=GMm/R²) and Newton's second law (F=ma). If you solve for acceleration (a=F/m), the mass of the falling object cancels out (a=GM/R²). That's why a heavy ball and a light ball accelerate equally — simple math. But this leaves a deeper mystery: why does the gravitational mass in the equation for gravitational force equal the inertial mass in Newton's second law?
-
-Einstein noticed something amazing: this equality isn't just a coincidence — it hints that gravity isn't a force at all. Think about it: if all objects fall at the same rate regardless of their mass, maybe there isn't really a "pull" happening. Instead, objects are just following the straightest possible paths in curved spacetime. Their acceleration only appears when something stops them from following that natural path, like the floor pushing up when you stand still.
-
-So in General Relativity, the reason all objects fall together isn't because a mysterious force acts equally on them — it's because they are all following geodesics, straight-line paths shaped by the curvature of spacetime. A feather, a hammer, or even a spaceship all move along these paths naturally. The only reason we notice "acceleration" is if something interferes with the geodesic, like the ground or a rocket floor.
-
-This is super counterintuitive. For centuries, we thought heavier objects fell faster because "gravity pulls harder." Then we thought all objects move at the same rate because their acceleration doesn't depend on the object's mass. But Einstein showed us the truth: falling is just free motion in curved spacetime, and all objects obey the same rules. Weight, mass, or size doesn't change the path — spacetime does.
-
-## X. The Proof
-
-Alright, now comes the part that makes Einstein's ideas really stick: proof that gravity is an illusion and spacetime really curves. This is where theory meets observation — and it's kind of amazing.
-
-Einstein predicted something wild: if a massive object like the Sun bends spacetime, then light passing near it should also bend. Remember, light always travels along geodesics — the straightest path in spacetime. But if spacetime is curved, then the "straight path" for light isn't straight in our usual sense; it looks curved to an outside observer. In other words, starlight passing near the Sun should appear slightly shifted from its normal position.
-
-This was tested during the famous 1919 solar eclipse. Normally, the Sun's bright light would make it impossible to see stars near it. But during the eclipse, the Sun was blocked, and astronomers could see stars very close to its edge. They measured the positions of these stars and compared them to where they should be if space were flat. Lo and behold, the stars appeared shifted exactly as Einstein predicted. Light had curved around the Sun because spacetime itself was curved!
-
-This observation was groundbreaking. It wasn't just a tiny experiment — it was proof that Newton's idea of gravity as a force pulling objects was incomplete. Instead, spacetime guides everything, and the "force" of gravity is really just a reaction we feel when something prevents us from following a natural path.
-
-Later experiments confirmed this again and again: orbiting satellites, the bending of light by distant galaxies, and even the way GPS satellites need relativistic corrections to work properly. Every time, the results matched Einstein's predictions, proving that general relativity isn't just math — it's how the universe actually works.
-
-So next time someone asks why astronauts float, or why planets move the way they do, you can say confidently: gravity isn't pulling them. They're just following the natural straight paths in a curved universe, exactly as Einstein predicted — and the proof is all around us, from starlight to satellites.
-
-## XI. Conclusion
-
-So, after all this, what can we really say about gravity? Well, it turns out that everything we thought we knew about gravity as a force is actually just an illusion. What we feel as weight, what we see as objects falling, even the orbit of planets — it's all spacetime doing its thing. Massive objects curve the universe around them, and everything naturally follows the paths dictated by that curvature.
-
-Standing on Earth, we feel a push from the ground, and we call it gravity. Astronauts floating in orbit feel weightless, yet Earth's mass is still shaping their path through spacetime. A rocket accelerating in deep space creates the same sensation we feel as weight on the planet's surface. It's all about frames of reference, geodesics, and curved spacetime — the invisible stage where the universe plays its grandest performance.
-
-Einstein's genius was in realizing that free fall is actually like being at rest, and what we experience as gravity is really just the universe guiding us along these natural paths. It's counterintuitive, mind-bending, and totally amazing. Suddenly, the universe isn't a bunch of invisible forces tugging on objects — it's a beautifully shaped stage where objects move along the paths spacetime gives them.
-
-In the end, this changes the way we think about the universe. Gravity isn't something that acts on us; it's a property of the way spacetime interacts with matter. Every time you jump, every time a satellite orbits, every time light bends around a star, you're seeing Einstein's universe in action. And if that doesn't make you look at the world — and the cosmos — a little differently, I don't know what will.
-
-So next time someone says "gravity pulls us down," you can smile and think: nope, we're just following the natural curves of spacetime — and that, my friends, is the real magic of Einstein's universe.
-
-## XII. Bibliography
-
-- [General Relativity — Wikipedia](https://en.wikipedia.org/wiki/General_relativity): Overview of Einstein's theory, spacetime curvature, and how gravity emerges from geometry.
-- [Equivalence Principle — Wikipedia](https://en.wikipedia.org/wiki/Equivalence_principle): Explains why gravitational mass equals inertial mass, and how floating in deep space is the same as accelerated motion.
-- [Geodesics in General Relativity — Wikipedia](https://en.wikipedia.org/wiki/Geodesics_in_general_relativity): How objects move on the straightest paths possible in curved spacetime.
-- [Geodesic — Wikipedia](https://en.wikipedia.org/wiki/Geodesic): Mathematical and physical meaning of geodesics, beyond just relativity.
-- [Mathematics of General Relativity — Wikipedia](https://en.wikipedia.org/wiki/Mathematics_of_general_relativity): More formal and detailed treatment of the equations used in GR.
-- [General Relativity! Einstein's Equivalence Principle — YouTube](https://www.youtube.com/watch?v=zVIS_01GttQ): Visual introduction to the equivalence principle and its meaning.
-- [What everyone gets wrong about gravity — Veritasium (YouTube)](https://www.youtube.com/watch?v=XRr1kaXKBsU): Best available explanation on this topic on YouTube so far.
-
-*Authored by: Sarvesh Kore*`,
   },
   {
     slug: 'is-our-universe-a-hologram',

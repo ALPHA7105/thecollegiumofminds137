@@ -26,7 +26,8 @@ import {
   X,
   MessageSquare,
   Award,
-  Trash2
+  Trash2,
+  ExternalLink
 } from 'lucide-react';
 
 import { 
@@ -456,6 +457,9 @@ function LibraryPage() {
 // ============================================================================
 // Article Detail Page (Reading View)
 // ============================================================================
+// ============================================================================
+// Article Detail Page (Reading View)
+// ============================================================================
 function ArticleDetailPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -639,9 +643,9 @@ function ArticleDetailPage() {
 
   // Pre-mapped high-rigor quote snippets based on slug
   const sampleQuotes: Record<string, string> = {
-    "secrets-of-game-design-part-1": "Rules are not fences to restrict play; they are gravity. Symmetries that permit free, elegant movement.",
-    "traveling-faster-than-light": "If information can outrun its own causal footprint, then history is not a record, but an open negotiation.",
-    "is-gravity-an-illusion": "Spacetime does not bend under weight; weight emerges from the collective entanglement of transfinite information.",
+    "secrets-of-game-design-part-1": "Game designing can never be taught by anyone. It comes from years of experience.",
+    "i-think-therefore-i-end": "Am I thinking because I am destined to die?",
+    "how-two-geniuses-invented-calculus": "Leibniz lost the battle. But he absolutely won the war.",
     "is-our-universe-a-hologram": "The horizon of a black hole holds the master record. We are the projections, drifting across the center.",
     "the-law-that-builds-the-universe-entropy": "Entropy is not a decay towards chaos, but the slow, inevitable expansion of possible universes.",
     "is-our-universe-really-an-isolated-system": "If energy cannot cross the system boundary, then the boundary is either a perfect mirror or the entirety of reality."
@@ -695,6 +699,22 @@ function ArticleDetailPage() {
             </div>
 
             <div className="flex items-center gap-2">
+              {/* Read on Substack Action */}
+              {article.substackUrl && (
+                <a
+                  href={article.substackUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg
+                            bg-sky-500/10 border border-sky-400/30
+                            text-sky-300 hover:text-sky-200 hover:border-sky-300
+                            transition-all text-xs"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Read on Substack</span>
+                </a>
+              )}
+
               {/* Share Quote Card Action */}
               <button
                 onClick={() => setShowQuoteCard(true)}
@@ -730,9 +750,20 @@ function ArticleDetailPage() {
         )}
 
         {/* Read Body */}
-        <ScrollReveal className="markdown-body text-base sm:text-lg mb-14 leading-relaxed">
+        <div className="markdown-body text-silver text-base sm:text-lg mb-14 leading-relaxed">
           <ReactMarkdown>{article.content}</ReactMarkdown>
-        </ScrollReveal>
+        </div>
+        {/* Author Signature Block */}
+        <div className="mt-10 pt-6 border-t border-sky-400/10 flex items-center justify-end">
+          <div className="text-right">
+            <p className="text-xs text-sky-400 uppercase tracking-widest">
+              Authored by
+            </p>
+            <p className="text-xl font-semibold text-sky-300">
+              {article.author}
+            </p>
+          </div>
+        </div>
 
         {/* Curated Newsletter Form At Bottom */}
         <ScrollReveal className="glass-panel border-bronze-border/15 rounded-2xl p-6 sm:p-10 text-center mt-12 mb-16 relative overflow-hidden glowing-card">
@@ -741,7 +772,7 @@ function ArticleDetailPage() {
             Pondered enough? Secure the notebook.
           </h3>
           <p className="text-silver-muted text-xs font-light max-w-md mx-auto mb-6 leading-relaxed">
-            Enroll in the CoM Notebook to secure early access drafts, high-concept digests, and physical facsimiles directly.
+            The CoM Notebook is a curated archive of CoM articles and community writing—kept in one place for reading, reference, and reflection.
           </p>
 
           {!newsletterSubmitted ? (
@@ -810,6 +841,19 @@ function ArticleDetailPage() {
 
             {/* Modal Actions */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              {/* Substack Link Action */}
+              <a
+                href="https://thecollegiumofminds.substack.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg
+                          bg-sky-500/10 border border-sky-400/30
+                          text-sky-300 hover:text-sky-200 hover:border-sky-300
+                          transition-all text-xs"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Substack</span>
+              </a>
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(`"${quoteText}" — ${article.author}, Collegium of Minds`);

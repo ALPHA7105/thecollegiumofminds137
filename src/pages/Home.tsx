@@ -106,7 +106,7 @@ export function AmbientBackground() {
     const initMathSymbols = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const symbolPool = ['∑', '∫', 'π', '∞', 'φ', 'Δ', 'Ω', 'λ', 'ψ', 'θ', 'E=mc²', 'i²=-1', 'Ĥ|Ψ⟩ = E|Ψ⟩', 'F=ma', 'V=IR', '∇', '𝜒', 'Ψ', 'Φ', 'ħ', '𝛿', '𝜕'];
+      const symbolPool = ['∑', '∫', 'π', '∞', 'φ', 'Δ', 'Ω', 'λ', 'ψ', 'θ', 'E=mc²', 'i²=-1', 'Ĥ|Ψ⟩ = E|Ψ⟩', 'F=ma', 'V=IR', 'E-hv', 'a² + b² = c²','∇', '𝜒', 'Ψ', 'Φ', 'ħ', '𝛿', '𝜕', 'Ω ', 'ω'];
       // Limit count on mobile vs desktop
       const count = Math.max(Math.min(Math.floor((w * h) / 50000), 15), 5);
       mathSymbols = Array.from({ length: count }, () => ({
