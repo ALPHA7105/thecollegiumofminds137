@@ -26,8 +26,7 @@ import {
   X,
   MessageSquare,
   Award,
-  Trash2,
-  ExternalLink
+  Trash2
 } from 'lucide-react';
 
 import { 
@@ -61,11 +60,10 @@ import Home, {
   ScrollReveal,
   LogoIcon
 } from './pages/Home';
-
-import {articles as initialArticles, categoryColors} from './data/articles';
+import { articles as initialArticles, categoryColors } from './data/articles';
+import QuestionsPage from './pages/Questions';
 
 const queryClient = new QueryClient();
-
 
 // ============================================================================
 // ScrollToTop Helper
@@ -242,7 +240,7 @@ function LibraryPage() {
             Library of Minds
           </h1>
           <p className="text-silver-muted text-base sm:text-lg font-light leading-relaxed max-w-xl mx-auto">
-            A repository of essays, thoughts, and research papers published by the members of the Collegium of Minds.
+            A repository of essays, thoughts, and research papers published by founding members of the Collegium.
           </p>
         </ScrollReveal>
 
@@ -294,7 +292,7 @@ function LibraryPage() {
                 className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-bronze/10 border border-bronze text-bronze px-6 py-3 font-heading text-xs font-semibold tracking-widest uppercase rounded hover:bg-bronze/20 transition-all flex-shrink-0"
               >
                 <PenTool className="w-3.5 h-3.5" />
-                Submit an Article
+                Submit an Essay
               </a>
             </ScrollReveal>
 
@@ -385,19 +383,19 @@ function LibraryPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">      
-              {/* Issue #2: June 2026 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Issue #1: April 2026 */}
               <div className="glowing-card border border-bronze-border/15 bg-obsidian-surface/50 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-80">
-                <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-bronze/40">ISSUE #02</div>
+                <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-bronze/40">ISSUE #01</div>
                 <div className="space-y-3">
-                  <span className="text-[10px] font-mono text-indigo-400">June 2026</span>
-                  <h3 className="font-heading text-lg font-bold text-silver">"Emergence"</h3>
+                  <span className="text-[10px] font-mono text-purple-400">April 2026</span>
+                  <h3 className="font-heading text-lg font-bold text-silver">"Simulacra"</h3>
                   <p className="text-silver-dim text-xs font-light leading-relaxed">
-                    Bridging physics, literature, and cutting-edge material science to spark collaborative thinking and curiosity.
+                    Speculative research on intelligence thresholds, synthetic phenomenologies, and simulated physics systems.
                   </p>
                 </div>
                 <a 
-                  href="https://thecollegiumofminds.substack.com/p/the-com-notebook-june-2026-edition"
+                  href="https://thecollegiumofminds.substack.com/p/simulacra"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-fit inline-flex items-center gap-2 text-xs font-heading font-semibold tracking-wider text-bronze hover:text-bronze-light uppercase mt-4"
@@ -406,18 +404,38 @@ function LibraryPage() {
                 </a>
               </div>
 
-              {/* Issue #1: January 2026 */}
+              {/* Issue #2: May 2026 */}
               <div className="glowing-card border border-bronze-border/15 bg-obsidian-surface/50 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-80">
-                <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-bronze/40">ISSUE #01</div>
+                <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-bronze/40">ISSUE #02</div>
                 <div className="space-y-3">
-                  <span className="text-[10px] font-mono text-purple-400">January 2026</span>
-                  <h3 className="font-heading text-lg font-bold text-silver">"Genesis"</h3>
+                  <span className="text-[10px] font-mono text-indigo-400">May 2026</span>
+                  <h3 className="font-heading text-lg font-bold text-silver">"Transfinite"</h3>
                   <p className="text-silver-dim text-xs font-light leading-relaxed">
-                    A debut collection blending law, physics, time, and math history to spark deep community discussion and curiosity.
+                    Explorations in non-Euclidean geometries, transfinite card hierarchies, and nested boundaries of computable logic.
                   </p>
                 </div>
                 <a 
-                  href="https://thecollegiumofminds.substack.com/p/the-com-notebook-january-2026-edition"
+                  href="https://thecollegiumofminds.substack.com/p/transfinite"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-fit inline-flex items-center gap-2 text-xs font-heading font-semibold tracking-wider text-bronze hover:text-bronze-light uppercase mt-4"
+                >
+                  Read on Substack →
+                </a>
+              </div>
+
+              {/* Issue #3: June 2026 */}
+              <div className="glowing-card border border-bronze-border/15 bg-obsidian-surface/50 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-80">
+                <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-bronze/40">ISSUE #03</div>
+                <div className="space-y-3">
+                  <span className="text-[10px] font-mono text-cyan-400">June 2026</span>
+                  <h3 className="font-heading text-lg font-bold text-silver">"Emergence"</h3>
+                  <p className="text-silver-dim text-xs font-light leading-relaxed">
+                    Deep excursions into self-assembling biological lattices, cellular automata, and the physical metrics of emergent state fields.
+                  </p>
+                </div>
+                <a 
+                  href="https://thecollegiumofminds.substack.com/p/emergence"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-fit inline-flex items-center gap-2 text-xs font-heading font-semibold tracking-wider text-bronze hover:text-bronze-light uppercase mt-4"
@@ -621,8 +639,8 @@ function ArticleDetailPage() {
 
   // Pre-mapped high-rigor quote snippets based on slug
   const sampleQuotes: Record<string, string> = {
-    "secrets-of-game-design-part-1": "Game designing can never be taught by anyone. It comes from years of experience.",
-    "i-think-therefore-i-end": "Am I thinking because I am destined to die?",
+    "secrets-of-game-design-part-1": "Rules are not fences to restrict play; they are gravity. Symmetries that permit free, elegant movement.",
+    "traveling-faster-than-light": "If information can outrun its own causal footprint, then history is not a record, but an open negotiation.",
     "is-gravity-an-illusion": "Spacetime does not bend under weight; weight emerges from the collective entanglement of transfinite information.",
     "is-our-universe-a-hologram": "The horizon of a black hole holds the master record. We are the projections, drifting across the center.",
     "the-law-that-builds-the-universe-entropy": "Entropy is not a decay towards chaos, but the slow, inevitable expansion of possible universes.",
@@ -677,22 +695,6 @@ function ArticleDetailPage() {
             </div>
 
             <div className="flex items-center gap-2">
-              {/* Read on Substack Action */}
-              {article.substackUrl && (
-                <a
-                  href={article.substackUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg
-                            bg-sky-500/10 border border-sky-400/30
-                            text-sky-300 hover:text-sky-200 hover:border-sky-300
-                            transition-all text-xs"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Read on Substack</span>
-                </a>
-              )}
-
               {/* Share Quote Card Action */}
               <button
                 onClick={() => setShowQuoteCard(true)}
@@ -731,17 +733,6 @@ function ArticleDetailPage() {
         <ScrollReveal className="markdown-body text-base sm:text-lg mb-14 leading-relaxed">
           <ReactMarkdown>{article.content}</ReactMarkdown>
         </ScrollReveal>
-        {/* Author Signature Block */}
-        <div className="mt-10 pt-6 border-t border-sky-400/10 flex items-center justify-end">
-          <div className="text-right">
-            <p className="text-xs text-sky-400 uppercase tracking-widest">
-              Authored by
-            </p>
-            <p className="text-xl font-semibold text-sky-300">
-              {article.author}
-            </p>
-          </div>
-        </div>
 
         {/* Curated Newsletter Form At Bottom */}
         <ScrollReveal className="glass-panel border-bronze-border/15 rounded-2xl p-6 sm:p-10 text-center mt-12 mb-16 relative overflow-hidden glowing-card">
@@ -750,7 +741,7 @@ function ArticleDetailPage() {
             Pondered enough? Secure the notebook.
           </h3>
           <p className="text-silver-muted text-xs font-light max-w-md mx-auto mb-6 leading-relaxed">
-            The CoM Notebook is a curated archive of CoM articles and community writing—kept in one place for reading, reference, and reflection.
+            Enroll in the CoM Notebook to secure early access drafts, high-concept digests, and physical facsimiles directly.
           </p>
 
           {!newsletterSubmitted ? (
@@ -819,19 +810,6 @@ function ArticleDetailPage() {
 
             {/* Modal Actions */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              {/* Substack Link Action */}
-              <a
-                href="https://thecollegiumofminds.substack.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg
-                          bg-sky-500/10 border border-sky-400/30
-                          text-sky-300 hover:text-sky-200 hover:border-sky-300
-                          transition-all text-xs"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Substack</span>
-              </a>
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(`"${quoteText}" — ${article.author}, Collegium of Minds`);
@@ -1319,6 +1297,16 @@ export default function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             
+            {/* Guarded/Private Questions Poll Route */}
+            <Route
+              path="/questions"
+              element={
+                <AuthenticatedRoute>
+                  <QuestionsPage />
+                </AuthenticatedRoute>
+              }
+            />
+
             {/* Guarded/Private Library Routes */}
             <Route
               path="/library"

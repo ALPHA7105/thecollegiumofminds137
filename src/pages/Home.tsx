@@ -106,7 +106,7 @@ export function AmbientBackground() {
     const initMathSymbols = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const symbolPool = ['∑', '∫', 'π', '∞', 'φ', 'Δ', 'Ω', 'λ', 'ψ', 'θ', 'e=mc²', 'i²=-1', 'Ĥ|Ψ⟩ = E|Ψ⟩', '∇', '𝜒', 'Ψ', 'Φ', 'ħ', '𝛿', '𝜕'];
+      const symbolPool = ['∑', '∫', 'π', '∞', 'φ', 'Δ', 'Ω', 'λ', 'ψ', 'θ', 'E=mc²', 'i²=-1', 'Ĥ|Ψ⟩ = E|Ψ⟩', 'F=ma', 'V=IR', '∇', '𝜒', 'Ψ', 'Φ', 'ħ', '𝛿', '𝜕'];
       // Limit count on mobile vs desktop
       const count = Math.max(Math.min(Math.floor((w * h) / 50000), 15), 5);
       mathSymbols = Array.from({ length: count }, () => ({
@@ -1117,7 +1117,7 @@ function QuestionsSection() {
         ))}
       </div>
 
-      {/* REAL VOTING POLL */}
+      {/* QUESTION OF THE WEEK LINK (REPLACED POLL) */}
       <ScrollReveal delay={100} className="mb-8 w-full">
         <div className="border border-bronze-border/30 rounded-2xl p-8 sm:p-10 bg-gradient-to-br from-bronze-dim/30 via-obsidian-surface/40 to-transparent">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10 border-b border-bronze-border/10 pb-8 mb-8">
@@ -1130,80 +1130,17 @@ function QuestionsSection() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Voting Options */}
-            <div className="flex flex-col gap-3">
-              <h3 className="text-xs font-heading font-semibold tracking-wider text-silver-muted uppercase mb-2">
-                {votedOption !== null ? "Thank you for voting" : "Cast your vote"}
-              </h3>
-
-              {activePoll?.options.map((opt, idx) => {
-                const isSelected = votedOption === idx;
-                const letter = optionLetters[idx] || String.fromCharCode(65 + idx);
-                return (
-                  <button
-                    key={idx}
-                    disabled={votedOption !== null}
-                    onClick={() => handleVote(idx)}
-                    className={`text-left text-sm font-light py-3.5 px-5 rounded-xl border transition-all flex items-center justify-between ${
-                      votedOption !== null 
-                        ? isSelected 
-                          ? "bg-bronze/15 border-bronze text-bronze font-medium" 
-                          : "bg-obsidian-light/10 border-bronze-border/5 text-silver-dim/70"
-                        : "bg-obsidian-surface/60 border-bronze-border/10 text-silver hover:border-bronze/40 hover:bg-bronze-dim/10 hover:translate-x-1"
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <span className="font-mono text-bronze font-bold text-xs mt-0.5">{letter}.</span>
-                      <span>{opt}</span>
-                    </div>
-                    {isSelected && <Check className="w-4 h-4 text-bronze" />}
-                  </button>
-                );
-              })}
-
-              {votedOption !== null && (
-                <button
-                  onClick={handleRetractVote}
-                  className="mt-4 text-xs font-heading font-medium tracking-wider text-bronze hover:text-bronze-light transition-colors underline underline-offset-4 flex items-center gap-1.5 self-start cursor-pointer group"
-                >
-                  <RotateCcw className="w-3 h-3 group-hover:-rotate-45 transition-transform duration-300" />
-                  Remove Vote
-                </button>
-              )}
-            </div>
-
-            {/* Live Results */}
-            <div className="flex flex-col justify-center bg-obsidian-light/10 rounded-2xl p-6 border border-bronze-border/10">
-              <h3 className="text-xs font-heading font-semibold tracking-wider text-silver-muted uppercase mb-4 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-bronze animate-pulse" />
-                Live Results
-              </h3>
-              <div className="flex flex-col gap-4">
-                {activePoll?.options.map((opt, idx) => {
-                  const voteCount = votes[idx] || 0;
-                  const pct = totalVotes > 0 ? Math.round((voteCount / totalVotes) * 100) : 0;
-                  const letter = optionLetters[idx] || String.fromCharCode(65 + idx);
-
-                  return (
-                    <div key={idx} className="flex flex-col gap-1.5">
-                      <div className="flex justify-between text-xs font-light text-silver-muted">
-                        <span>{letter}. {opt}</span>
-                        <span className="font-mono">{pct}% ({voteCount})</span>
-                      </div>
-                      <div className="w-full bg-obsidian/60 h-2.5 rounded-full overflow-hidden border border-bronze-border/5">
-                        <motion.div 
-                          initial={{ width: 0 }}
-                          animate={{ width: `${pct}%` }}
-                          transition={{ duration: 1, ease: "easeOut" }}
-                          className="h-full bg-gradient-to-r from-bronze to-cyan-400 rounded-full"
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+          <div className="text-center py-4">
+            <p className="text-silver-muted text-sm font-light mb-6">
+              Our members are actively debating and voting on this question. Share your perspective and see live statistics on our interactive polling page.
+            </p>
+            <Link
+              to="/questions"
+              className="group inline-flex items-center justify-center gap-2 bg-bronze text-obsidian px-8 py-3.5 font-heading text-xs font-semibold tracking-widest uppercase rounded hover:bg-bronze-light hover:shadow-lg hover:shadow-bronze/20 transition-all hover:-translate-y-0.5"
+            >
+              Cast Your Vote
+              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
         </div>
       </ScrollReveal>
