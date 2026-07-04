@@ -1302,7 +1302,7 @@ export default function App() {
               path="/questions"
               element={
                 <AuthenticatedRoute>
-                  <QuestionsPage />
+                  <Questions />
                 </AuthenticatedRoute>
               }
             />
