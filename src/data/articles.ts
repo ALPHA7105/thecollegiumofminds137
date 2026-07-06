@@ -1,17 +1,349 @@
-export const categoryColors: Record<string, { text: string; bg: string; border: string; dot: string }> = {
-  "The Physical World": { text: 'text-sky-400', bg: 'bg-sky-400/10', border: 'border-sky-400/30', dot: 'bg-sky-400' },
-  "Matter & Molecules": { text: 'text-purple-400', bg: 'bg-purple-400/10', border: 'border-purple-400/30', dot: 'bg-purple-400' },
-  "Life & Nature": { text: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/30', dot: 'bg-emerald-400' },
-  "Mathematics": { text: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/30', dot: 'bg-amber-400' },
-  "Philosophy": { text: 'text-yellow-400', bg: 'bg-yellow-400/10', border: 'border-yellow-400/30', dot: 'bg-yellow-400' },
-  "Innovation & Technology": { text: 'text-cyan-400', bg: 'bg-cyan-400/10', border: 'border-cyan-400/30', dot: 'bg-cyan-400' },
-  "Space & Cosmology": { text: 'text-indigo-400', bg: 'bg-indigo-400/10', border: 'border-indigo-400/30', dot: 'bg-indigo-400' },
-  "Humanity & Society": { text: 'text-rose-400', bg: 'bg-rose-400/10', border: 'border-rose-400/30', dot: 'bg-rose-400' },
-  "Arts & Expression": { text: 'text-fuchsia-400', bg: 'bg-fuchsia-400/10', border: 'border-fuchsia-400/30', dot: 'bg-fuchsia-400' },
+export const categoryColors: Record<
+  string,
+  {
+    text: string;
+    bg: string;
+    border: string;
+    dot: string;
+    glow: string;
+  }
+> = {
+  "The Physical World": {
+    text: "text-sky-400",
+    bg: "bg-sky-400/10",
+    border: "border-sky-400/30",
+    dot: "bg-sky-400",
+    glow: "rgba(56,189,248,0.12)",
+  },
+
+  "Matter & Molecules": {
+    text: "text-emerald-400",
+    bg: "bg-emerald-400/10",
+    border: "border-emerald-400/30",
+    dot: "bg-emerald-400",
+    glow: "rgba(52,211,153,0.12)",
+  },
+
+  "Life & Nature": {
+    text: "text-lime-400",
+    bg: "bg-lime-400/10",
+    border: "border-lime-400/30",
+    dot: "bg-lime-400",
+    glow: "rgba(163,230,53,0.12)",
+  },
+
+  "Mathematics": {
+    text: "text-amber-400",
+    bg: "bg-amber-400/10",
+    border: "border-amber-400/30",
+    dot: "bg-amber-400",
+    glow: "rgba(251,191,36,0.12)",
+  },
+
+  "Philosophy": {
+    text: "text-violet-400",
+    bg: "bg-violet-400/10",
+    border: "border-violet-400/30",
+    dot: "bg-violet-400",
+    glow: "rgba(167,139,250,0.12)",
+  },
+
+  "Innovation & Technology": {
+    text: "text-cyan-400",
+    bg: "bg-cyan-400/10",
+    border: "border-cyan-400/30",
+    dot: "bg-cyan-400",
+    glow: "rgba(34,211,238,0.12)",
+  },
+
+  "Space & Cosmology": {
+    text: "text-indigo-400",
+    bg: "bg-indigo-400/10",
+    border: "border-indigo-400/30",
+    dot: "bg-indigo-400",
+    glow: "rgba(99,102,241,0.12)",
+  },
+
+  "Humanity & Society": {
+    text: "text-rose-400",
+    bg: "bg-rose-400/10",
+    border: "border-rose-400/30",
+    dot: "bg-rose-400",
+    glow: "rgba(251,113,133,0.12)",
+  },
+
+  "Arts & Expression": {
+    text: "text-orange-400",
+    bg: "bg-orange-400/10",
+    border: "border-orange-400/30",
+    dot: "bg-orange-400",
+    glow: "rgba(251,146,60,0.12)",
+  },
 };
 
 export const articles = [
+    {
+    id: 5,
+    slug: 'is-our-universe-a-hologram',
+    substackUrl: 'https://thecollegiumofminds.substack.com/p/is-our-universe-a-hologram',
+    title: 'Is Our Universe A Hologram?',
+    author: 'Sarvesh Kore',
+    category: 'The Physical World',
+    coverImage: 'https://substackcdn.com/image/fetch/$s_!r3bg!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5ae9c1a8-7285-46db-8702-bd354246102f_875x492.jpeg',
+    date: 'Jul 06, 2025',
+    readTime: '4 min read',
+    featured: true,
+    excerpt: 'A concise exploration of how modern physics hints that the universe might be encoded on a cosmic 2D surface.',
+    content: `What if everything we see — the stars in the sky, the galaxies spinning through space, even the ground beneath our feet — isn’t actually three-dimensional, but just a kind of projection? It sounds like science fiction, but some of the world’s greatest physicists believe it might be true.
+
+This strange idea is called the holographic principle. It says that our universe, which feels 3D, could really be like a hologram — a 2D surface containing all the information needed to “create” what we experience as depth.
+
+The concept first appeared not in movies or imagination, but in physics itself. When scientists studied black holes, they noticed something unbelievable: the amount of information inside a black hole didn’t depend on how much space it filled, but on the area of its surface. That one discovery changed how we think about reality — and raised a haunting question:
+
+Could the entire universe work the same way?
+
+## The Idea
+
+The story of the holographic principle starts with black holes — those strange cosmic objects that don’t even let light escape. In the 1970s, physicists Jacob Bekenstein and Stephen Hawking noticed something really surprising: a black hole’s information, or “entropy,” doesn’t grow with how much space it takes up, but with the surface area of its boundary.
+
+They even came up with a simple equation for it:
+
+$S = \\frac{kA}{4L_p^2}$
+
+Here, S is the entropy (basically the amount of information), A is the black hole’s surface area, and k and Lₚ​ are constants from physics. The key idea is easy to understand: all the information inside a black hole can be described by what’s happening on its surface, not inside it — like a 3D movie stored on a flat 2D screen.
+
+Later, two scientists, Gerard ’t Hooft and Leonard Susskind, wondered: maybe this isn’t just true for black holes. Maybe the whole universe works this way. Everything we see in three dimensions — stars, planets, even space itself — might really be information written on a distant cosmic boundary.
+
+In 1997, Juan Maldacena took this strange idea a step further with something called the AdS/CFT correspondence. Imagine a universe that curves inward like a saddle — this is called Anti-de Sitter (AdS) space. Maldacena discovered that everything happening inside this 3D saddle, including gravity, could be fully described by a 2D theory without gravity written on the saddle’s edge.
+
+That 2D theory is called a Conformal Field Theory (CFT) — it’s basically a type of quantum physics that deals with particles and fields, but with special “scale” symmetry, meaning the rules stay the same no matter how much you zoom in or out. So, the “AdS/CFT correspondence” says that a universe with gravity inside can be exactly equivalent to a gravity-free theory on the outside.
+
+In other words, a complete three-dimensional world with planets, light, and even black holes could be described by information on a flat surface around it — like a hologram projected from its border.
+
+But there’s a catch: our real universe doesn’t curve inward. It’s expanding outward, like an inflating balloon. Physicists call that de Sitter (dS) space. So while the AdS/CFT model works beautifully on paper, it doesn’t yet match our actual cosmos. Still, it gives scientists a powerful way to explore how a holographic universe could work — a kind of testing ground for one of the most mind-bending ideas in physics.
+
+## The Implications
+
+If the holographic principle is true, it could completely change the way we think about reality. Suddenly, space and time might not be “solid” or fundamental — they could be something that emerges from information encoded on a distant boundary. In other words, the universe we experience in three dimensions might just be a kind of projection, like a hologram, coming from a hidden cosmic surface.
+
+This idea also suggests that information is the most basic building block of reality. Everything we see — matter, energy, even gravity itself — could be just different ways that information is organized. It’s as if the universe is not made of things, but of relationships and patterns.
+
+It doesn’t mean we’re living in a computer simulation or a sci-fi world. Holography is about physics, not programming. But it does force us to rethink what “real” really means. Maybe the depth, distance, and space we take for granted are all part of an illusion created by information stretching across the universe.
+
+In short, the holographic principle makes the universe feel much stranger, more mysterious, and even more beautiful. It’s a reminder that what we see might be just the surface of something far deeper — a cosmic puzzle waiting to be decoded.
+
+## Conclusion
+
+The holographic principle doesn’t just change physics — it changes the way we see reality itself. If the universe really is a kind of hologram, then everything we experience — the stars, the planets, even ourselves — might just be a projection of information written on a distant cosmic surface.
+
+Even though scientists haven’t proven that our universe works this way, exploring the idea helps us imagine a universe far stranger and more mysterious than it seems. It makes us wonder: what is truly “real,” and what is just the surface of a deeper, hidden reality?
+
+Whether or not the universe is actually a hologram, the concept reminds us that the cosmos is full of surprises, mysteries, and beauty. It shows that physics isn’t just about numbers or experiments — it’s about curiosity, imagination, and the endless quest to understand the world we live in.`,
+  },
   {
+    id: 4,
+    slug: 'when-math-isnt-mathing',
+    substackUrl: 'https://thecollegiumofminds.substack.com/p/when-math-isnt-mathing',
+    title: 'When Math Isn\'t Mathing',
+    author: 'Mohamed Shahaan',
+    category: 'Mathematics',
+    coverImage: 'https://substackcdn.com/image/fetch/$s_!weDA!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fda034072-81a2-466f-bdcf-a13c912b7f8a_875x583.jpeg',
+    date: 'Jul 05, 2025',
+    readTime: '9 min read',
+    featured: true,
+    excerpt: 'How adding up every positive number somehow gives you a tiny negative fraction — and why this isn’t as insane as it sounds',
+    content: `Let me show you something that will make you question everything you thought you knew about math: 1 + 2 + 3 + 4 + … = -1/12
+
+Go ahead. Read it again. Take your time.
+
+If you think that this is wrong, congratulations: your brain is working correctly. Adding positive numbers together should give you a bigger positive number. Adding infinitely many positive numbers should give you infinity. Not negative one-twelfth. Not a fraction. Certainly not a negative fraction.
+
+And yet.
+
+This equation appears in peer-reviewed physics papers. It shows up in string theory. It lurks in quantum field theory calculations. Srinivasa Ramanujan, one of history’s greatest mathematical geniuses, wrote it in a letter to G.H. Hardy in 1913. The equation has been called “one of the most remarkable formulae in science” by University of Alberta mathematician Terry Gannon.
+
+So what’s going on here? Is mathematics broken? Did physicists collectively lose their minds? Or is there something deeper happening — something that reveals just how weird infinity can get when you stop treating it like a polite houseguest and start poking it with a stick?
+
+Let’s find out.
+
+## Let’s Acknowledge The Obvious
+
+Before we go any further, let me be absolutely clear: if you add 1 + 2 + 3 + 4 and keep going forever in the normal sense, you get infinity.
+
+This isn’t controversial. It’s not up for debate. If you put one orange in a pit, then two more oranges, then three more, and keep going forever, you will not end up with negative one-twelfth of an orange. You will end up with a pit containing infinitely many oranges.
+
+The partial sums of this series — meaning what you get when you stop at various points — follow a simple formula:
+
+$\\sum_{k=1}^{n} k = \\frac{n(n+1)}{2}$
+
+The formula for the sum of the first n integers
+
+Stop at 4, and you get 10. Stop at 100, and you get 5,050. Stop at a million, and you get 500,000,500,000. These numbers get bigger and bigger without limit. The series diverges. In the classical, rigorous, “this is what they taught you in calculus” sense, this series has no sum.
+
+So when mathematicians and physicists write that equals sign, they’re not saying what you think they’re saying.
+
+They’re playing a different game entirely.
+
+## Welcome to the World of Divergent Series
+
+Here’s where things get interesting.
+
+Mathematicians have known for centuries that some infinite series behave nicely and some don’t. The nice ones converge — their partial sums settle down toward a specific number. For example:
+
+$$1 + \\frac{1}{2} + \\frac{1}{4} + \\frac{1}{8} + \\dots = 2$$
+
+An example of a convergent series
+
+This makes intuitive sense. Each term is half the previous one, so you’re adding smaller and smaller amounts. The sum approaches 2 and never exceeds it.
+
+But then there are the badly-behaved series. The ones that blow up to infinity, or oscillate forever without settling down, or generally refuse to cooperate with polite mathematical society. These are called divergent series, and for a long time, mathematicians basically threw up their hands and said “these don’t have sums, end of story.”
+
+But here’s the thing about mathematicians: they hate being told something doesn’t have an answer.
+
+## The Art of Assigning Values to Nonsense
+
+Starting in the 19th century, mathematicians began developing clever techniques to assign finite values to divergent series. Not by changing the definition of addition, but by asking a different question:
+
+If this series DID have a sum, and that sum behaved consistently with the rest of mathematics, what would it have to be?
+
+Think of it like this. Imagine you have a function that works beautifully for most inputs, but goes haywire at one specific point. Instead of giving up, you ask: “What value would make the function smooth and continuous at that point?” You’re not claiming the function actually equals that value there in the traditional sense. You’re finding the natural extension — the value that “should” be there based on the pattern.
+
+This is called analytic continuation, and it’s one of the most powerful ideas in mathematics.
+
+The most famous example involves something called the Riemann zeta function:
+
+$$\\zeta(s) = \\sum_{n=1}^{\\infty} \\frac{1}{n^s}$$
+
+For values of s greater than 1, this series converges nicely. When s = 2, for instance, you get π²/6 (which is its own delightful surprise). But what happens when s = -1?
+
+Well, plug it in:
+
+$$\\zeta(-1) = \\sum_{n=1}^{\\infty} \\frac{1}{n^{-1}} = \\sum_{n=1}^{\\infty} n = 1 + 2 + 3 + 4 + \\dots$$
+
+The series obviously diverges. But the zeta function itself can be analytically continued to s = -1, and when you evaluate that continuation, you get:
+
+$$\\zeta(-1) = -\\frac{1}{12}$$
+
+This is what mathematicians mean when they write that infamous equation. They’re not saying the series sums to -1/12 in the elementary school sense. They’re saying that -1/12 is the value you get when you apply a consistent, well-defined mathematical operation (analytic continuation of the zeta function) to the series.
+
+Ramanujan’s Wild Ride
+
+Now let’s talk about Ramanujan, because no discussion of this equation is complete without him.
+
+In 1913, a self-taught Indian mathematician named Srinivasa Ramanujan sent a letter to the famous British mathematician G.H. Hardy. The letter contained page after page of extraordinary mathematical claims, many without proof. Among them was the assertion that 1 + 2 + 3 + 4 + … = -1/12.
+
+Hardy was initially suspicious — the letter looked like it might be the work of a crank. But as he studied the results, he realized that Ramanujan was operating on a completely different level. Some of the claims were already known theorems. Others were new and could be verified. And some were so strange that Hardy had no idea what to make of them.
+
+Ramanujan had developed his own method for assigning values to divergent series, now called Ramanujan summation. He wasn’t working with the rigorous framework of analytic continuation — he was essentially intuiting the same results through pattern recognition and mathematical instinct.
+
+The man was, in Hardy’s later assessment, a mathematician of the highest caliber. He saw connections that others couldn’t perceive. And he saw that 1 + 2 + 3 + 4 + … had a meaningful value, even when the series itself refused to cooperate.
+
+The “Proof” That Broke the Internet
+
+In 2014, a YouTube video from the channel Numberphile went massively viral. It presented a seemingly simple proof that 1 + 2 + 3 + 4 + … = -1/12, using only basic algebra and a few clever manipulations.
+
+The proof goes something like this:
+
+Step 1: Consider Grandi’s series
+
+$$S_1 = 1 - 1 + 1 - 1 + 1 - 1 + \\dots$$
+
+If you stop at an odd term, the sum is 1. If you stop at an even term, the sum is 0. So maybe the “average” value is 1/2? Let’s say S₁ = 1/2.
+
+Step 2: Consider the alternating series
+
+$$S_2 = 1 - 2 + 3 - 4 + 5 - 6 + \\dots$$
+
+Through a clever trick of adding S₂ to a shifted version of itself, you can show that 2S₂ = S₁ = 1/2, which means S₂ = 1/4.
+
+Step 3: The subtraction
+
+Now take the original series S = 1 + 2 + 3 + 4 + … and subtract S₂ from it:
+
+$$S - S_2 = (1 + 2 + 3 + 4 + \\dots) - (1 - 2 + 3 - 4 + \\dots)$$
+
+$$S - S_2 = 0 + 4 + 0 + 8 + 0 + 12 + \\dots$$
+
+$$S - S_2 = 4(1 + 2 + 3 + \\dots) = 4S$$
+
+So S — S₂ = 4S. Rearranging, we get -S₂ = 3S, and therefore:
+
+$$S = -\\frac{S_2}{3} = -\\frac{1/4}{3} = -\\frac{1}{12}$$
+
+Mind blown.
+
+## Why That “Proof” Is Both Brilliant and Terrible
+
+Here’s the thing: that proof is pedagogically wonderful and mathematically horrifying.
+
+It’s wonderful because it gives you a sense that something interesting is happening. The manipulations feel almost plausible. You can follow each step. And it gets the right answer!
+
+It’s horrifying because you cannot just rearrange and add divergent series like they’re ordinary numbers. The normal rules of addition: commutativity, associativity, the ability to shift terms around, only work reliably for series that converge. With divergent series, you can prove almost anything by shuffling terms cleverly enough. This “proof” happens to land on the right value, but it does so by breaking the rules of rigorous mathematics.
+
+It’s like arriving at the right answer on a math test by making two errors that happen to cancel out. You got lucky, but you didn’t actually understand the problem.
+
+The rigorous approaches — zeta function regularization, Ramanujan summation, other methods from complex analysis — all give the same answer, but they do so through carefully defined procedures that don’t rely on algebraically manipulating divergent series as if they behave normally.
+
+Okay, but do physicists actually use this?
+
+Yes. Constantly. And this is where the story gets really wild.
+
+In quantum field theory, physicists frequently encounter calculations that produce infinite results. These infinities aren’t just mathematical curiosities — they threaten to make the entire theory meaningless. How do you make predictions if every calculation gives you infinity?
+
+The solution is a collection of techniques called regularization and renormalization. Without getting too deep into the physics, the basic idea is:
+
+1. Notice that your calculation has blown up to infinity
+
+2. Find a way to assign a finite value to that infinity using techniques like zeta function regularization
+
+3. Verify that the finite value gives predictions that match experiments
+
+And it works. Spectacularly well, in fact. Quantum electrodynamics (QED), which uses these techniques, makes predictions that agree with experiments to more than 10 decimal places. It’s one of the most precisely confirmed theories in all of science.
+
+The value -1/12 specifically shows up in string theory, where it helps determine the number of dimensions the theory requires. It appears in calculations of the Casimir effect, a real, measurable phenomenon where two metal plates attract each other due to quantum vacuum fluctuations. The mathematics of infinite sums, tamed through regularization, connects to actual experimental results.
+
+## What Does This All Mean?
+
+So what are we supposed to make of this equation? Is it true? False? Meaningless? Profound?
+
+I think the best way to understand it is this:
+
+The equation 1 + 2 + 3 + 4 + … = -1/12 is a statement about the deep structure of mathematics, not a statement about counting.
+
+It tells us that infinity isn’t just “big.” Infinity has texture. It has personality. When you look at the series of natural numbers through the lens of complex analysis and analytic continuation, you find that -1/12 is lurking there — a kind of mathematical fingerprint that the series carries with it, even though it diverges.
+
+It’s like discovering that a wildly chaotic, unpredictable system has a hidden pattern — a strange attractor, if you will. The series doesn’t SUM to -1/12 in the sense of partial sums piling up to that value. But -1/12 is the number that makes the rest of mathematics work when this series shows up in calculations.
+
+## The Deep Mystery
+
+Here’s what keeps me up at night about this equation: Why does it work?
+
+I don’t mean “how can you derive it” — we’ve covered that. I mean: Why should a technique for assigning values to divergent series have any connection to physical reality?
+
+When physicists use zeta function regularization to get finite answers from infinite calculations, and those answers match experiments, something profound is happening. The universe seems to “know” about analytic continuation. It cares about the value that makes the math consistent, not the naive sum that blows up to infinity.
+
+This suggests that our mathematical tools aren’t just convenient fictions. They’re tapping into something real about how the universe is structured. The infinite sum doesn’t converge, but the processes of nature somehow respect the regularized value anyway.
+
+Nobody fully understands why.
+
+## The Takeaway
+
+The next time someone tells you about how 1 + 2 + 3 + 4 + … = -1/12, you can now respond with appropriate nuance:
+
+“Well, actually, the series diverges and has no sum in the classical sense. But the value -1/12 can be assigned to it through zeta function regularization and Ramanujan summation, and this value has remarkable applications in physics, suggesting deep connections between analytic continuation and the structure of physical reality.”
+
+Or you can just say “math is weird” and move on with your day.
+
+Both are valid responses.
+
+The beautiful thing about mathematics is that it keeps surprising us. Just when we think we understand the rules, we discover that there are deeper rules beneath — and that infinity, far from being a simple concept meaning “big beyond measure,” is a landscape full of unexpected structure, hidden patterns, and connections to the physical world that we’re only beginning to understand.
+
+1 + 2 + 3 + 4 + … may not equal -1/12 in the way you first learned to add. But in the grand tapestry of mathematics, that fraction is there, waiting to be found, carrying information about the series that the naive sum can never reveal.
+
+And that’s not a bug. That’s a feature.`,
+  },
+  {
+    id: 3,
     slug: 'how-two-geniuses-invented-calculus',
     substackUrl: 'https://thecollegiumofminds.substack.com/p/how-two-geniuses-invented-calculus',
     title: 'How Two Geniuses Invented Calculus (and then tried to destroy each other)',
@@ -181,6 +513,7 @@ But every single student who’s ever suffered through a calculus class has curs
 Leibniz lost the battle. But he absolutely won the war.`,
   },
   {
+    id: 2,
     slug: 'i-think-therefore-i-end',
     substackUrl: 'https://thecollegiumofminds.substack.com/p/i-think-therefore-i-end',
     title: 'I Think, Therefore I End',
@@ -213,6 +546,7 @@ Maybe reality is not about what exists, but about what can be experienced. And i
 Am I thinking because I am destined to die?`,
   },
   {
+    id: 1,
     slug: 'secrets-of-game-design-part-1',
     substackUrl: 'https://thecollegiumofminds.substack.com/p/the-secrets-of-game-design-part-1',
     title: 'The Secrets of Game Design (Part 1)',
@@ -250,11 +584,13 @@ Game designing can never be taught by anyone. It comes from years of experience.
     date: 'Nov 13, 2025',
     readTime: '5 min read',
     excerpt: 'A concise exploration of how modern physics hints that the universe might be encoded on a cosmic 2D surface.',
-    content: `The holographic principle suggests the universe could be encoded like a hologram — a 3D reality from 2D information.
+    content: `This is inline math: $x^2 + y^2 = z^2$
 
-This article is coming soon. Stay tuned for the full deep dive into the holographic principle and what it means for our understanding of reality.
+Block math:
 
-*Authored by: CoM Members*`,
+$$
+\zeta(-1) = -\frac{1}{12}
+$$`,
   },
   {
     slug: 'the-law-that-builds-the-universe-entropy',

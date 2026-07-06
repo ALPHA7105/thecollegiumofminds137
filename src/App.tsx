@@ -1,7 +1,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
+// @ts-ignore: side-effect import of CSS file
+import "katex/dist/katex.min.css";
 import { BrowserRouter as Router, Route, Routes, useLocation, Link, useParams, useNavigate } from 'react-router-dom';
 import { QueryClientProvider, QueryClient, useQuery } from '@tanstack/react-query';
 import ReactMarkdown from 'react-markdown';
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import { notebooks } from "./data/notebooks";
 import {
   ArrowRight,
   ArrowLeft,
@@ -63,6 +68,7 @@ import Home, {
 } from './pages/Home';
 import { articles as initialArticles, categoryColors } from './data/articles';
 import QuestionsPage from './pages/Questions';
+import Events from './pages/Events';
 
 const queryClient = new QueryClient();
 
@@ -385,65 +391,21 @@ function LibraryPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Issue #1: April 2026 */}
-              <div className="glowing-card border border-bronze-border/15 bg-obsidian-surface/50 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-80">
-                <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-bronze/40">ISSUE #01</div>
-                <div className="space-y-3">
-                  <span className="text-[10px] font-mono text-purple-400">April 2026</span>
-                  <h3 className="font-heading text-lg font-bold text-silver">"Simulacra"</h3>
+              {notebooks.map((n) => (
+                <div key={n.issue} className="glowing-card border border-bronze-border/15 bg-obsidian-surface/50 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-80">
+                  <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-bronze/40">ISSUE #{n.issue}</div>
+                  <div className="space-y-3">
+                  <span className={`text-[10px] font-mono text-${n.color}`}>{n.month}</span>
+                  <h3 className="font-heading text-lg font-bold text-silver">{n.title}</h3>
                   <p className="text-silver-dim text-xs font-light leading-relaxed">
-                    Speculative research on intelligence thresholds, synthetic phenomenologies, and simulated physics systems.
+                    {n.description}
                   </p>
+                  </div>
+                  <a href={n.link} target="_blank" className="w-fit inline-flex items-center gap-2 text-xs font-heading font-semibold tracking-wider text-bronze hover:text-bronze-light uppercase mt-4">
+                    Read on Substack →
+                  </a>
                 </div>
-                <a 
-                  href="https://thecollegiumofminds.substack.com/p/simulacra"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-fit inline-flex items-center gap-2 text-xs font-heading font-semibold tracking-wider text-bronze hover:text-bronze-light uppercase mt-4"
-                >
-                  Read on Substack →
-                </a>
-              </div>
-
-              {/* Issue #2: May 2026 */}
-              <div className="glowing-card border border-bronze-border/15 bg-obsidian-surface/50 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-80">
-                <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-bronze/40">ISSUE #02</div>
-                <div className="space-y-3">
-                  <span className="text-[10px] font-mono text-indigo-400">May 2026</span>
-                  <h3 className="font-heading text-lg font-bold text-silver">"Transfinite"</h3>
-                  <p className="text-silver-dim text-xs font-light leading-relaxed">
-                    Explorations in non-Euclidean geometries, transfinite card hierarchies, and nested boundaries of computable logic.
-                  </p>
-                </div>
-                <a 
-                  href="https://thecollegiumofminds.substack.com/p/transfinite"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-fit inline-flex items-center gap-2 text-xs font-heading font-semibold tracking-wider text-bronze hover:text-bronze-light uppercase mt-4"
-                >
-                  Read on Substack →
-                </a>
-              </div>
-
-              {/* Issue #3: June 2026 */}
-              <div className="glowing-card border border-bronze-border/15 bg-obsidian-surface/50 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-80">
-                <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-bronze/40">ISSUE #03</div>
-                <div className="space-y-3">
-                  <span className="text-[10px] font-mono text-cyan-400">June 2026</span>
-                  <h3 className="font-heading text-lg font-bold text-silver">"Emergence"</h3>
-                  <p className="text-silver-dim text-xs font-light leading-relaxed">
-                    Deep excursions into self-assembling biological lattices, cellular automata, and the physical metrics of emergent state fields.
-                  </p>
-                </div>
-                <a 
-                  href="https://thecollegiumofminds.substack.com/p/emergence"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-fit inline-flex items-center gap-2 text-xs font-heading font-semibold tracking-wider text-bronze hover:text-bronze-light uppercase mt-4"
-                >
-                  Read on Substack →
-                </a>
-              </div>
+              ))}
             </div>
           </ScrollReveal>
         )}
@@ -457,40 +419,62 @@ function LibraryPage() {
 // ============================================================================
 // Article Detail Page (Reading View)
 // ============================================================================
-// ============================================================================
-// Article Detail Page (Reading View)
-// ============================================================================
+
+interface Article {
+  slug: string;
+  title: string;
+  excerpt: string;
+  author: string;
+  category: string;
+  date: string;
+  readTime: string;
+  content: string;
+  id: string | number;
+  substackUrl?: string;
+  coverImage?: string;
+}
+
+function shortId(slug: string): string {
+  let hash = 0;
+  for (let i = 0; i < slug.length; i++) {
+    hash = (hash << 5) - hash + slug.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash).toString(36).slice(0, 6);
+}
+
 function ArticleDetailPage() {
-  const { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const [likes, setLikes] = useState(0);
-  const [liked, setLiked] = useState(() => {
+  const [likes, setLikes] = useState<number>(0);
+  const [liked, setLiked] = useState<boolean>(() => {
     return localStorage.getItem(`com_liked_${slug}`) === 'true';
   });
 
   // Reading progress tracker state
-  const [scrollPercent, setScrollPercent] = useState(0);
+  const [scrollPercent, setScrollPercent] = useState<number>(0);
 
   // Quote Card Modal state
-  const [showQuoteCard, setShowQuoteCard] = useState(false);
+  const [showQuoteCard, setShowQuoteCard] = useState<boolean>(false);
 
   // Comments/Discussions states
-  const [comments, setComments] = useState<Array<ArticleComment>>([]);
-  const [newCommentName, setNewCommentName] = useState("");
-  const [newCommentText, setNewCommentText] = useState("");
+  const [comments, setComments] = useState<ArticleComment[]>([]);
+  const [newCommentName, setNewCommentName] = useState<string>("");
+  const [newCommentText, setNewCommentText] = useState<string>("");
 
   // Newsletter states
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+  const [newsletterEmail, setNewsletterEmail] = useState<string>("");
+  const [newsletterSubmitted, setNewsletterSubmitted] = useState<boolean>(false);
 
   // Load dynamically, allowing for custom added articles
-  const articlesList = useMemo(() => {
+  const articlesList = useMemo<Article[]>(() => {
     const saved = localStorage.getItem('com_articles_custom');
-    if (!saved) return initialArticles;
+    const defaultArticles = initialArticles as Article[];
+    if (!saved) return defaultArticles;
     try {
-      const parsed = JSON.parse(saved);
+      const parsed = JSON.parse(saved) as Article[];
       // Migrate old categories to new ones for custom or old cache items
-      const migrated = parsed.map((a: any) => {
+      const migrated = parsed.map((a: Article) => {
         if (a.slug === 'secrets-of-game-design-part-1') {
           return { ...a, category: 'Innovation & Technology' };
         }
@@ -525,7 +509,7 @@ function ArticleDetailPage() {
         }
         return a;
       });
-      const isTestArticle = (a: any) => {
+      const isTestArticle = (a: Article): boolean => {
         const title = (a.title || "").toLowerCase().trim();
         const slug = (a.slug || "").toLowerCase().trim();
         if (title === "hi" || title === "title" || title === "test" || title === "hello" || title === "hello world" || title.includes("test article")) return true;
@@ -533,14 +517,14 @@ function ArticleDetailPage() {
         if (title.length < 4 || slug.length < 4) return true;
         return false;
       };
-      return migrated.filter((a: any) => !isTestArticle(a));
+      return migrated.filter((a: Article) => !isTestArticle(a));
     } catch (e) {
-      return initialArticles;
+      return defaultArticles;
     }
   }, []);
 
-  const article = useMemo(() => {
-    return articlesList.find((a: any) => a.slug === slug);
+  const article = useMemo<Article | undefined>(() => {
+    return articlesList.find((a: Article) => a.slug === slug);
   }, [articlesList, slug]);
 
   // Read Progress scroll listener
@@ -646,9 +630,8 @@ function ArticleDetailPage() {
     "secrets-of-game-design-part-1": "Game designing can never be taught by anyone. It comes from years of experience.",
     "i-think-therefore-i-end": "Am I thinking because I am destined to die?",
     "how-two-geniuses-invented-calculus": "Leibniz lost the battle. But he absolutely won the war.",
-    "is-our-universe-a-hologram": "The horizon of a black hole holds the master record. We are the projections, drifting across the center.",
-    "the-law-that-builds-the-universe-entropy": "Entropy is not a decay towards chaos, but the slow, inevitable expansion of possible universes.",
-    "is-our-universe-really-an-isolated-system": "If energy cannot cross the system boundary, then the boundary is either a perfect mirror or the entirety of reality."
+    "when-math-isnt-mathing": "The beautiful thing about mathematics is that it keeps surprising us. Just when we think we understand the rules, we discover that there are deeper rules beneath — and that infinity, far from being a simple concept meaning “big beyond measure,” is a landscape full of unexpected structure, hidden patterns, and connections to the physical world that we’re only beginning to understand.",
+    "is-our-universe-a-hologram": "If the universe is a hologram, then we are all living in a projection of something much larger and more complex than we can comprehend.",
   };
 
   const quoteText = sampleQuotes[article.slug] || "In a universe of transfinite variables, rigorous curiosity is our only reliable constant.";
@@ -656,8 +639,10 @@ function ArticleDetailPage() {
   return (
     <div className="min-h-screen bg-obsidian text-silver pt-24 sm:pt-28 pb-0 overflow-x-hidden">
       {/* Viewport Fixed Reading Progress Indicator */}
-      <div 
-        className="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-bronze via-cyan-500 to-bronze z-50 transition-all duration-75"
+      <div
+        className="fixed left-0 top-16 sm:top-20 h-[3px]
+                  bg-gradient-to-r from-bronze via-cyan-500 to-bronze
+                  z-[9999]"
         style={{ width: `${scrollPercent}%` }}
       />
 
@@ -750,8 +735,26 @@ function ArticleDetailPage() {
         )}
 
         {/* Read Body */}
+        <div
+        className="absolute inset-0 pointer-events-none -z-10"
+        style={{
+          background: `
+            radial-gradient(
+              circle at 50% 15%,
+              ${colors.glow},
+              transparent 70%
+            )
+          `,
+          filter: "blur(90px)",
+        }}
+      />
         <div className="markdown-body text-silver text-base sm:text-lg mb-14 leading-relaxed">
-          <ReactMarkdown>{article.content}</ReactMarkdown>
+          <ReactMarkdown
+            remarkPlugins={[remarkMath]}
+            rehypePlugins={[rehypeKatex]}
+          >
+            {article.content}
+          </ReactMarkdown>
         </div>
         {/* Author Signature Block */}
         <div className="mt-10 pt-6 border-t border-sky-400/10 flex items-center justify-end">
@@ -833,9 +836,9 @@ function ArticleDetailPage() {
               <div className="flex items-center justify-between border-t border-bronze-border/5 pt-4 pl-4">
                 <div>
                   <p className="text-silver text-xs font-semibold">{article.author}</p>
-                  <p className="text-silver-dim text-[10px] font-mono mt-0.5">Collegium of Minds • Curator Pick</p>
+                  <p className="text-silver-dim text-[10px] font-mono mt-0.5">The Collegium of Minds • Featured</p>
                 </div>
-                <span className="font-heading text-[9px] tracking-widest uppercase text-bronze/30 font-semibold">CoM-Doc #{slug.substring(0,4)}</span>
+                <span className="font-heading text-[9px] tracking-widest uppercase text-bronze/30 font-semibold">ARTICLE#{article.id}</span>
               </div>
             </div>
 
@@ -843,7 +846,7 @@ function ArticleDetailPage() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               {/* Substack Link Action */}
               <a
-                href="https://thecollegiumofminds.substack.com"
+                href={`https://thecollegiumofminds.substack.com/p/${article.slug}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg
@@ -856,7 +859,7 @@ function ArticleDetailPage() {
               </a>
               <button
                 onClick={() => {
-                  navigator.clipboard.writeText(`"${quoteText}" — ${article.author}, Collegium of Minds`);
+                  navigator.clipboard.writeText(`"${quoteText}" — ${article.author}, The Collegium of Minds | Article#${article.id} | ${window.location.href}`);
                   toast({
                     title: "Citation Copied!",
                     description: "The formatted quote has been saved to your clipboard."
@@ -1360,6 +1363,16 @@ export default function App() {
                 </AuthenticatedRoute>
               }
             />
+            {/* Guarded/Private Library Routes */}
+            <Route
+              path="/events"
+              element={
+                <AuthenticatedRoute>
+                  <Events />
+                </AuthenticatedRoute>
+              }
+            />
+
             <Route
               path="/library/:slug"
               element={

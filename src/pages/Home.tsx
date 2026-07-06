@@ -1,20 +1,18 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Menu, X, ChevronDown, ArrowRight, Check, ArrowLeft, Sparkles, ExternalLink, 
-  Play, Pause, ChevronLeft, ChevronRight, Send, MessageSquare, Award, Clock, HelpCircle, BookOpen, RotateCcw 
+  Menu, X, ChevronDown, ArrowRight, ArrowUpRight, MapPin, Calendar, User, Check, ArrowLeft, Sparkles, ExternalLink, 
+  Play, Pause, ChevronLeft, ChevronRight, Send, MessageSquare, Award, Clock, HelpCircle, BookOpen, RotateCcw, Users 
 } from "lucide-react";
 import { authClient } from "@/api/authClient";
 import { useToast } from "@/components/ui";
 import { useAuth } from "@/lib/AuthContext";
 import { getPageViews, incrementPageViews, getPollVotes, submitVote, retractVote } from "../lib/db";
 import { articles, categoryColors } from "../data/articles";
-
-// ============================================================================
-// Articles data (was data/articles.js)
-// ============================================================================
-
+import { weeklyQuestions } from "./Questions";
+import { eventsData, Event } from "../data/events";
+import { resolveSpeakers, Speaker } from "../data/speakers";
 
 // ============================================================================
 // ScrollReveal
@@ -322,6 +320,8 @@ const navLinks = [
   { label: "About", to: "/#about" },
   { label: "Questions", to: "/#questions" },
   { label: "Library", to: "/#library" },
+  { label: "Events", to: "/#events" },
+  { label: "Team", to: "/#team" },
   { label: "Join CoM", to: "/#join", cta: true },
 ];
 
@@ -877,68 +877,7 @@ const questions = [
   "Could spacetime itself emerge from information? What would that mean?",
 ];
 
-const weeklyQuestions = [
-  {
-    id: "q_progress",
-    question: "Which has contributed more to humanity's progress?",
-    options: [
-      "Curiosity",
-      "Necessity",
-      "Competition",
-      "Cooperation"
-    ]
-  },
-  {
-    id: "q_discovery",
-    question: "Are the greatest discoveries made by asking better questions or finding better answers?",
-    options: [
-      "Better questions",
-      "Better answers",
-      "Both are equally important",
-      "Neither — timing matters most"
-    ]
-  },
-  {
-    id: "q_truth",
-    question: "If everyone believed something that wasn't true, would it still be wrong?",
-    options: [
-      "Yes",
-      "No",
-      "It depends on the situation",
-      "I'm not sure"
-    ]
-  },
-  {
-    id: "q_future",
-    question: "What will shape humanity's future the most?",
-    options: [
-      "Artificial Intelligence",
-      "Scientific discoveries",
-      "Education",
-      "Human cooperation"
-    ]
-  },
-  {
-    id: "q_unknown",
-    question: "What's more exciting?",
-    options: [
-      "Discovering something new",
-      "Solving an old mystery",
-      "Creating something original",
-      "Teaching others what you know"
-    ]
-  },
-  {
-    id: "q_limit",
-    question: "Which is humanity's greatest limitation?",
-    options: [
-      "Knowledge",
-      "Time",
-      "Imagination",
-      "Cooperation"
-    ]
-  }
-];
+
 /*
 function QuestionsSection() {
   const { toast } = useToast();
@@ -1621,273 +1560,853 @@ function NewsletterSection() {
 }
 
 // ============================================================================
+// Events Section
+// ============================================================================
+export function EventsSection() {
+  const recentEvents = eventsData.slice(0, 7);
+  const [selectedEvent, setSelectedEvent] = useState<Event>(recentEvents[0]);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  // Active Speaker Detail Modal State
+  const [selectedSpeaker, setSelectedSpeaker] = useState<Speaker | null>(null);
+
+  // Resolved speakers for the selected event
+  const resolvedSpeakers = useMemo(() => {
+    return resolveSpeakers(selectedEvent?.speaker);
+  }, [selectedEvent]);
+
+  const handleActionClick = (eventTitle: string, status: 'upcoming' | 'completed') => {
+    if (status === 'upcoming') {
+      toast({
+        title: "Registration Recorded",
+        description: `You have successfully registered for "${eventTitle}". Joining details have been dispatched to your terminal/email.`,
+        variant: "default",
+      });
+    } else {
+      toast({
+        title: "Retrieving Archive",
+        description: `Opening the transcript and recording archives for "${eventTitle}"...`,
+        variant: "default",
+      });
+    }
+  };
+
+  return (
+    <section id="events" className="relative z-10 py-20 sm:py-28 px-5 sm:px-8 max-w-7xl mx-auto border-t border-bronze-border/10">
+      <ScrollReveal className="text-center mb-16">
+        <div className="inline-flex items-center gap-2 border border-bronze-border bg-bronze-dim px-4 py-1.5 rounded-full mb-8">
+          <Calendar className="w-3.5 h-3.5 text-bronze" />
+          <span className="font-heading text-[10px] font-semibold tracking-[3px] uppercase text-bronze">
+            Intellectual Events
+          </span>
+        </div>
+        <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-silver tracking-tight leading-tight">
+          Where Minds Collide.
+        </h2>
+        <p className="text-silver-muted text-sm sm:text-base font-light max-w-xl mx-auto mt-4 leading-relaxed">
+          From high-intensity debates to informative sessions, explore our schedule of recent and upcoming events.
+        </p>
+      </ScrollReveal>
+
+      {/* Main Grid: Left List, Right Detail */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto items-stretch">
+        
+        {/* Left Column: List of Events */}
+        <div className="lg:col-span-5 flex flex-col gap-3 h-[580px] overflow-y-auto pr-2 custom-scrollbar">
+          <span className="text-[10px] font-heading font-semibold tracking-wider text-bronze/60 uppercase px-2 mb-1">
+            Most Recent Events
+          </span>
+          {recentEvents.map((event) => {
+            const isSelected = selectedEvent.id === event.id;
+            const isUpcoming = event.status === "upcoming";
+
+            return (
+              <button
+                key={event.id}
+                onClick={() => setSelectedEvent(event)}
+                className={`w-full text-left p-4 rounded-xl border transition-all duration-300 flex items-start gap-4 cursor-pointer relative overflow-hidden group ${
+                  isSelected
+                    ? "bg-bronze-dim/10 border-bronze/45 shadow-lg shadow-bronze/5"
+                    : "bg-obsidian-surface/20 border-bronze-border/10 hover:bg-obsidian-surface/45 hover:border-bronze-border/25"
+                }`}
+              >
+                {/* Selected Indicator Light */}
+                {isSelected && (
+                  <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-bronze" />
+                )}
+
+                <div className="text-xl sm:text-2xl select-none p-1.5 bg-obsidian-surface/60 rounded-lg border border-bronze-border/5">
+                  {event.emoji}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="text-[10px] font-mono tracking-wider text-bronze uppercase">
+                      {event.type}
+                    </span>
+                    <span
+                      className={`text-[9px] font-heading font-medium tracking-wider uppercase px-2 py-0.5 rounded-full ${
+                        isUpcoming
+                          ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/15"
+                          : "bg-silver-dim/10 text-silver-muted border border-silver-dim/5"
+                      }`}
+                    >
+                      {event.status}
+                    </span>
+                  </div>
+
+                  <h4 className={`font-heading text-sm font-semibold tracking-tight transition-colors line-clamp-1 ${
+                    isSelected ? "text-silver" : "text-silver-dim group-hover:text-silver"
+                  }`}>
+                    {event.title}
+                  </h4>
+
+                  <p className="text-silver-muted text-[11px] font-light mt-1.5 flex items-center gap-1.5">
+                    <Clock size={11} className="text-silver-muted/60" />
+                    <span>{event.date}</span>
+                  </p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Right Column: Active Event Detail Pane */}
+        <div className="lg:col-span-7 flex">
+          <div className="bg-obsidian-surface/30 border border-bronze-border/15 rounded-2xl p-6 sm:p-8 flex flex-col justify-between w-full relative overflow-hidden backdrop-blur-sm">
+            {/* Top decorative gradient line */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-bronze/30 to-transparent" />
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedEvent.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25 }}
+                className="space-y-6 flex-1 flex flex-col justify-between"
+              >
+                <div>
+                  {/* Event Type & Status */}
+                  <div className="flex items-center justify-between gap-4 mb-4">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-bronze-dim border border-bronze-border text-[10px] font-heading font-bold uppercase tracking-widest text-bronze">
+                      <span className="select-none">{selectedEvent.emoji}</span>
+                      <span>{selectedEvent.type}</span>
+                    </span>
+
+                    <span
+                      className={`text-[10px] font-heading font-bold tracking-wider uppercase px-2.5 py-1 rounded border ${
+                        selectedEvent.status === "upcoming"
+                          ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                          : "bg-silver-dim/10 text-silver-muted border-silver-dim/10"
+                      }`}
+                    >
+                      {selectedEvent.status}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-silver tracking-tight leading-tight">
+                    {selectedEvent.title}
+                  </h3>
+
+                  {/* Speaker */}
+                  {selectedEvent.speaker && (
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mt-3 text-xs text-bronze/85 font-heading tracking-wide">
+                      <User size={13} className="text-bronze/60" />
+                      <span>Presenter:</span>
+                      <div className="flex flex-wrap gap-1.5 items-center">
+                        {resolvedSpeakers.map((sp, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => setSelectedSpeaker(sp)}
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-bronze-dim border border-bronze-border/30 text-[10px] font-semibold text-bronze hover:text-bronze-light hover:border-bronze/55 transition-all cursor-pointer shadow-sm active:scale-95"
+                          >
+                            <span>{sp.emoji}</span>
+                            <span>{sp.name}</span>
+                            <span className="text-[8px] opacity-60 font-mono">↗</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Divider */}
+                  <div className="h-px bg-bronze-border/10 my-5" />
+
+                  {/* Description */}
+                  <div className="space-y-4">
+                    <p className="text-xs sm:text-sm text-silver/95 font-light leading-relaxed">
+                      {selectedEvent.description}
+                    </p>
+                    <p className="text-xs text-silver-muted font-light italic leading-relaxed pl-4 border-l border-bronze-border/30">
+                      {selectedEvent.summary}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Meta details & Action */}
+                <div className="pt-6 mt-6 border-t border-bronze-border/10 space-y-5">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-heading font-semibold tracking-wider text-silver-muted uppercase block">
+                        Schedule
+                      </span>
+                      <div className="flex items-center gap-1.5 text-xs text-silver font-light">
+                        <Calendar size={12} className="text-bronze/70" />
+                        <span>{selectedEvent.date}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[11px] text-silver-muted font-light pl-4.5">
+                        <Clock size={11} className="text-silver-muted/50" />
+                        <span>{selectedEvent.time}</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-heading font-semibold tracking-wider text-silver-muted uppercase block">
+                        Venue & Capacity
+                      </span>
+                      <div className="flex items-center gap-1.5 text-xs text-silver font-light">
+                        <MapPin size={12} className="text-bronze/70" />
+                        {selectedEvent.location.includes("http") ? (
+                              <a
+                                href={selectedEvent.location.split(" - ")[1]}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="truncate text-bronze hover:underline"
+                              >
+                                {selectedEvent.location}
+                              </a>
+                            ) : (
+                              <span className="truncate">{selectedEvent.location}</span>
+                            )}
+                      </div>
+                      {selectedEvent.capacity && (
+                        <div className="flex items-center gap-1.5 text-[11px] text-silver-muted font-light pl-4.5">
+                          <Users size={11} className="text-silver-muted/50" />
+                          <span>Limit: {selectedEvent.capacity}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* CTA button */}
+                  <button
+                    onClick={() => {
+                      if (selectedEvent.status === "upcoming") {
+                        navigate("/#join");
+                      } else {
+                        handleActionClick(selectedEvent.title, selectedEvent.status);
+                      }
+                    }}
+                    className={`w-full py-4 px-4 font-heading text-xs font-semibold tracking-widest uppercase rounded transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+                      selectedEvent.status === "upcoming"
+                        ? "bg-bronze hover:bg-bronze-light text-obsidian shadow-lg shadow-bronze/10 hover:-translate-y-0.5"
+                        : "bg-obsidian-surface border border-bronze-border/20 hover:bg-bronze-dim/10 hover:border-bronze/30 text-silver-dim hover:text-silver"
+                    }`}
+                  >
+                    <span>
+                      {selectedEvent.status === "upcoming"
+                        ? "Register Seat"
+                        : "Open Recording/Transcript"}
+                    </span>
+                    <ArrowUpRight size={14} />
+                  </button>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Under-section Link to Separate Page */}
+      <ScrollReveal className="flex justify-center mt-14" delay={200}>
+        <div className="flex justify-center mt-12">
+          <Link
+            to="/events"
+            className="group inline-flex items-center gap-2 bg-bronze/10 border border-bronze text-bronze px-8 py-3.5 font-heading text-xs font-semibold tracking-widest uppercase rounded hover:bg-bronze/20 transition-all hover:-translate-y-0.5"
+          >
+            Explore All Events
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
+      </ScrollReveal>
+      {/* Speaker Detail Modal */}
+      <AnimatePresence>
+        {selectedSpeaker && (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ type: "spring", duration: 0.4 }}
+              className="bg-obsidian border border-bronze-border/20 max-w-md w-full rounded-2xl overflow-hidden relative shadow-2xl p-6 sm:p-8"
+            >
+              <button
+                onClick={() => setSelectedSpeaker(null)}
+                className="absolute top-4 right-4 text-silver-dim hover:text-silver text-xs font-mono uppercase bg-obsidian-surface px-2.5 py-1 rounded border border-bronze-border/10 cursor-pointer z-10"
+              >
+                Close
+              </button>
+
+              <div className="flex items-center gap-4 mb-6 relative z-0">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-bronze-dim via-obsidian-surface to-bronze/20 border border-bronze/25 flex items-center justify-center text-3xl shadow-inner select-none flex-shrink-0">
+                  {selectedSpeaker.emoji}
+                </div>
+                <div>
+                  <span className="text-[10px] font-heading font-semibold tracking-wider text-bronze uppercase block mb-0.5">
+                    {selectedSpeaker.role}
+                  </span>
+                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-silver leading-tight">
+                    {selectedSpeaker.name}
+                  </h3>
+                </div>
+              </div>
+
+              <div className="mb-6 space-y-4">
+                {selectedSpeaker.quote && (
+                  <div className="border-l-2 border-bronze pl-4 italic text-silver-muted text-sm my-4 font-light leading-relaxed">
+                    "{selectedSpeaker.quote}"
+                  </div>
+                )}
+
+                <div className="space-y-1.5">
+                  <h4 className="text-[10px] font-heading font-semibold tracking-wider text-silver-dim uppercase">
+                    Biography
+                  </h4>
+                  <p className="text-xs text-silver-muted leading-relaxed font-light">
+                    {selectedSpeaker.bio}
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-bronze-border/10 flex items-center justify-between">
+                <span className="text-[10px] font-heading font-semibold tracking-wider text-silver-dim uppercase">
+                  Event Host
+                </span>
+                <span className="font-heading text-xs font-semibold text-bronze tracking-wider uppercase">
+                  Collegium of Minds
+                </span>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
+
+// ============================================================================
 // JoinSection
 // ============================================================================
 const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfBE1mrrINeO_e-ZWEUQMgKJ0_H092IQ1NuFiA3A05PTUJg6A/viewform";
-const GUIDELINES_URL = "https://docs.google.com/document/d/1XoxcR-ZKuqt6kvdyBPiHqpQ1Y7T_tWgGbE90ewQCzKY/edit?usp=sharing";
-
-const educationalLevels = [
-  "Student (Grade 5 or below)",
-  "Student (Grade 6-8)",
-  "Student (Grade 9-12)",
-  "Student (College/University)",
-  "Professional",
-  "Rather not tell",
-];
+const GUIDELINES_URL = "https://docs.google.com/document/d/1adrt8r6YjnJZtuwIJ3d55rQnJPfRKGN6tC5oipbRzhQ/edit";
 
 const perks = [
-  { icon: "🔍", text: "Explore Ideas" },
-  { icon: "🤝", text: "Meet curious thinkers" },
-  { icon: "💡", text: "Ask Better Questions" },
-  { icon: "🧠", text: "Intellectual Discussions" },
-  { icon: "🗣️", text: "Debate & Discourse" },
-  { icon: "🌍", text: "Diverse Perspectives" },
+  { icon: "🔍", title: "Explore Ideas", desc: "Delve into deep scientific, philosophical, and technological inquiries." },
+  { icon: "🤝", title: "Meet Curious Thinkers", desc: "Connect with a global community of peers driven by intense curiosity." },
+  { icon: "💡", title: "Ask Better Questions", desc: "Develop rigorous mental models for critical thinking and analysis." },
+  { icon: "🧠", title: "Intellectual Assemblies", desc: "Participate in structured, high-signal debates and group discussions." },
 ];
 
-const steps = [
-  { key: "name", label: "What's your name?", placeholder: "Full name" },
-  { key: "social", label: "Discord username or WhatsApp number?", placeholder: "e.g. username#1234 or +1...", hint: "Helps us connect with you directly on social channels." },
-  { key: "education", label: "What's your educational level?", options: educationalLevels },
-  { key: "description", label: "Describe yourself.", placeholder: "Tell us about yourself...", textarea: true },
-  { key: "guidelines", label: "Agreement to Community Guidelines", checkbox: true },
+const marginaliaQuotes = [
+  { quote: "I'd rather have questions that can't be answered than answers that can't be questioned.", author: "Richard Feynman" },
+  { quote: "Somewhere, something incredible is waiting to be known.", author: "Carl Sagan" },
+  { quote: "The only true wisdom is in knowing you know nothing.", author: "Socrates" },
+  { quote: "The whole problem with the world is that fools and fanatics are always so certain of themselves...", author: "Bertrand Russell" },
+  { quote: "The saddest aspect of life right now is that science gathers knowledge faster than society gathers wisdom.", author: "Isaac Asimov" },
+  { quote: "Nothing in life is to be feared, it is only to be understood.", author: "Marie Curie" },
+  { quote: "Knowledge is power.", author: "Francis Bacon" },
+  { quote: "Judge a man by his questions rather than his answers.", author: "Voltaire" },
+  { quote: "The good thing about science is that it's true whether or not you believe in it.", author: "Neil deGrasse Tyson" },
+  { quote: "Extraordinary claims require extraordinary evidence.", author: "Carl Sagan" },
 ];
+
 
 function JoinSection() {
-  const { toast: toastFn } = useToast();
-  const [step, setStep] = useState(0);
-  const [form, setForm] = useState<{ name: string; social: string; education: string; description: string; guidelines: boolean }>({ name: "", social: "", education: "", description: "", guidelines: false });
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [agreed, setAgreed] = useState(false);
+  const [quoteIndex, setQuoteIndex] = useState(0);
 
-  const current = steps[step];
-  const progress = ((step + 1) / steps.length) * 100;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setQuoteIndex((prev) => (prev + 1) % marginaliaQuotes.length);
+    }, 10000);
 
-  const canProceed = () => {
-    if (current.key === "name") return form.name.trim().length > 0;
-    if (current.key === "social") return form.social.trim().length > 0;
-    if (current.key === "education") return form.education.length > 0;
-    if (current.key === "guidelines") return form.guidelines === true;
-    return true;
-  };
-
-  const handleSubmit = async () => {
-    setSubmitting(true);
-    try {
-      await authClient.entities.MemberApplication.create({
-        full_name: form.name,
-        phone_number: form.social,
-        educational_level: form.education,
-        self_description: form.description,
-        agreed_to_guidelines: form.guidelines,
-      });
-      setSubmitted(true);
-      toastFn({ title: "Almost there!", description: "Click below to complete your application." });
-    } catch {
-      toastFn({ title: "Something went wrong", description: "Please try again.", variant: "destructive" });
-    }
-    setSubmitting(false);
-  };
-
-  const next = () => {
-    if (step < steps.length - 1) setStep(step + 1);
-    else handleSubmit();
-  };
-
-  if (submitted) {
-    return (
-      <section id="join" className="relative z-10 py-20 sm:py-28 px-5 sm:px-8 max-w-4xl mx-auto text-center">
-        <ScrollReveal>
-          <div className="bg-obsidian-surface/60 border border-bronze/30 rounded-3xl p-10 sm:p-16">
-            <div className="w-20 h-20 mx-auto rounded-full bg-bronze/20 border-2 border-bronze flex items-center justify-center mb-8">
-              <Check size={32} className="text-bronze" />
-            </div>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-silver mb-4">
-              Welcome to the Collegium.
-            </h2>
-            <p className="text-silver-muted font-light text-base max-w-md mx-auto mb-6">
-              Your responses have been noted. To complete your application,
-              please submit the official form below.
-            </p>
-            <a
-              href={GOOGLE_FORM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-bronze/10 border border-bronze text-bronze px-7 py-3 font-heading text-xs font-semibold tracking-widest uppercase rounded hover:bg-bronze/20 transition-all"
-            >
-              Open Google Form
-              <ArrowRight size={14} />
-            </a>
-          </div>
-        </ScrollReveal>
-      </section>
-    );
-  }
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section id="join" className="relative z-10 py-20 sm:py-28 px-5 sm:px-8 max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-        <div className="lg:col-span-5">
-          <ScrollReveal>
-            <div className="inline-flex items-center gap-2 border border-bronze-border bg-bronze-dim px-4 py-1.5 rounded-full mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-stretch">
+        
+        {/* Left Column: Why Join */}
+        <div className="lg:col-span-6 flex flex-col justify-between">
+          <ScrollReveal className="space-y-6">
+            <div className="inline-flex items-center gap-2 border border-bronze-border bg-bronze-dim px-4 py-1.5 rounded-full">
               <span className="font-heading text-[10px] font-semibold tracking-[3px] uppercase text-bronze">
-                Join
+                Membership
               </span>
             </div>
 
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-silver tracking-tight mb-6 leading-tight">
-              Become a founding member.
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-silver tracking-tight leading-tight">
+              Begin your intellectual voyage.
             </h2>
 
-            <p className="text-silver-muted text-sm sm:text-base font-light leading-relaxed max-w-md mb-10">
-              CoM is still in its earliest stage. Every member who joins now helps
-              define its culture, projects, and future direction.
+            <p className="text-silver-muted text-sm sm:text-base font-light leading-relaxed max-w-xl">
+              The Collegium of Minds is a decentralized sanctuary for deep thought, creative scholarship, and rigorous debate. We invite thinkers, builders, and scholars to co-create the future of collaborative inquiry.
             </p>
+          </ScrollReveal>
 
-            <div className="rounded-2xl overflow-hidden border border-bronze-border/20 mb-10">
+          <div className="rounded-2xl overflow-hidden border border-bronze-border/20 mb-10">
               <img
                 src="https://media.base44.com/images/public/6a3979ed4c8f30bd3eb32ea0/f332e5f29_generated_f0498456.png"
                 alt="Ancient open book with golden edges"
                 className="w-full h-40 sm:h-48 object-cover opacity-50"
               />
-            </div>
+          </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              {perks.map((p, i) => (
-                <div key={i} className="flex items-center gap-3 py-2">
-                  <span className="text-base">{p.icon}</span>
-                  <span className="text-silver-muted text-xs sm:text-sm font-light">{p.text}</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+            {perks.map((p, i) => (
+              <ScrollReveal key={i} delay={i * 50}>
+                <div className="bg-obsidian-surface/30 border border-bronze-border/5 p-5 rounded-2xl hover:border-bronze-border/20 transition-all duration-300 h-full">
+                  <span className="text-2xl mb-3 block select-none">{p.icon}</span>
+                  <h4 className="font-heading text-sm font-semibold text-silver mb-1.5">{p.title}</h4>
+                  <p className="text-silver-muted text-xs font-light leading-relaxed">{p.desc}</p>
                 </div>
-              ))}
-            </div>
-          </ScrollReveal>
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
 
-        <div className="lg:col-span-7">
-          <ScrollReveal delay={150}>
-            <div className="bg-obsidian-surface/60 border border-bronze-border/20 rounded-3xl p-6 sm:p-10">
-              <div className="mb-8">
-                <div className="flex justify-between items-center mb-3">
-                  <span className="font-heading text-[10px] font-semibold tracking-[3px] uppercase text-bronze">
-                    Apply to CoM
-                  </span>
-                  <span className="text-silver-dim text-[11px] font-light">
-                    Step {step + 1} of {steps.length}
-                  </span>
+        {/* Right Column: Guidelines & Application */}
+        <div className="lg:col-span-6 flex">
+          <ScrollReveal delay={150} className="w-full flex">
+            <div className="bg-obsidian-surface/50 border border-bronze-border/20 rounded-3xl p-6 sm:p-10 relative overflow-hidden flex flex-col justify-between w-full">
+              {/* Subtle top light effect */}
+              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-bronze/20 to-transparent" />
+
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-heading text-xl sm:text-2xl font-semibold text-silver mb-2">
+                    What We Value
+                  </h3>
+                  <p className="text-silver-muted text-xs sm:text-sm font-light leading-relaxed">
+                    CoM thrives when conversations are thoughtful, respectful, and driven by curiosity. These are the principles we ask every member to share.
+                  </p>
                 </div>
-                <div className="w-full h-0.5 bg-obsidian-light rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-bronze to-bronze-light rounded-full transition-all duration-500"
-                    style={{ width: `${progress}%` }}
-                  />
+
+                {/* Brief bulleted guidelines preview */}
+                <div className="bg-obsidian/40 border border-bronze-border/10 rounded-xl p-5 space-y-3.5">
+                  <div className="flex items-start gap-3">
+                    <span className="text-bronze text-xs mt-0.5 select-none">Ⅰ.</span>
+                    <p className="text-xs text-silver-muted font-light leading-relaxed">
+                      <strong className="text-silver font-medium">Stay Curious:</strong> Ask questions, challenge ideas thoughtfully, and be open to changing your mind.
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-bronze text-xs mt-0.5 select-none">Ⅱ.</span>
+                    <p className="text-xs text-silver-muted font-light leading-relaxed">
+                      <strong className="text-silver font-medium">Think Critically:</strong> Support your ideas with reasoning and evidence whenever you can.
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-bronze text-xs mt-0.5 select-none">Ⅲ.</span>
+                    <p className="text-xs text-silver-muted font-light leading-relaxed">
+                      <strong className="text-silver font-medium">Respect Others:</strong> Debate ideas, not individuals. Everyone is here to learn.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <a
+                    href={GUIDELINES_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs text-bronze hover:text-bronze-light font-heading font-semibold uppercase tracking-wider transition-colors"
+                  >
+                    <span>See Our Community Guidelines</span>
+                    <ExternalLink size={12} />
+                  </a>
                 </div>
               </div>
 
-              <div className="min-h-[280px] sm:min-h-[320px] flex flex-col">
-                <h3 className="font-heading text-xl sm:text-2xl font-semibold text-silver mb-8">
-                  {current.label}
-                </h3>
+              <div className="my-8 rounded-2xl border border-bronze-border/10 bg-obsidian/30 p-6 relative overflow-hidden">
 
-                <div className="flex-1">
-                  {current.options ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {current.options.map((opt) => (
-                        <button
-                          key={opt}
-                          onClick={() => setForm({ ...form, education: opt })}
-                          className={`text-left px-4 py-3 rounded-xl border text-sm font-light transition-all ${
-                            form.education === opt
-                              ? "border-bronze bg-bronze/15 text-bronze"
-                              : "border-bronze-border/15 text-silver-muted hover:border-bronze/30 hover:bg-bronze-dim/20"
-                          }`}
-                        >
-                          {opt}
-                        </button>
-                      ))}
-                    </div>
-                  ) : current.checkbox ? (
-                    <div className="flex items-start gap-3">
-                      <button
-                        onClick={() => setForm({ ...form, guidelines: !form.guidelines })}
-                        className={`mt-1 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all flex-shrink-0 ${
-                          form.guidelines
-                            ? "border-bronze bg-bronze/20"
-                            : "border-bronze-border/30 hover:border-bronze/50"
-                        }`}
-                      >
-                        {form.guidelines && <Check size={16} className="text-bronze" />}
-                      </button>
-                      <div className="text-silver-muted text-sm font-light leading-relaxed">
-                        I confirm that I have read, understand, and agree to follow the{" "}
-                        <a
-                          href={GUIDELINES_URL}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-bronze hover:underline inline-flex items-center gap-1"
-                        >
-                          Community Guidelines
-                          <ExternalLink size={12} />
-                        </a>.
-                      </div>
-                    </div>
-                  ) : current.textarea ? (
-                    <textarea
-                      value={form.description}
-                      onChange={(e) => setForm({ ...form, description: e.target.value })}
-                      placeholder={current.placeholder}
-                      className="w-full h-32 bg-obsidian-light/50 border border-bronze-border/15 rounded-xl px-5 py-4 text-silver text-sm font-light placeholder:text-silver-dim/40 focus:border-bronze/40 focus:outline-none transition-colors resize-none"
+                {/* Giant quotation mark */}
+                <span className="absolute -top-5 left-3 text-7xl font-serif text-bronze/5 select-none">
+                  “
+                </span>
+
+                <p className="text-[10px] uppercase tracking-[3px] text-bronze font-heading font-semibold mb-5">
+                  Thoughts
+                </p>
+
+                <AnimatePresence mode="wait">
+                  <motion.blockquote
+                    key={quoteIndex}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.35 }}
+                    className="min-h-[70px]"
+                  >
+                    <p className="text-silver italic font-serif leading-relaxed text-sm">
+                      "{marginaliaQuotes[quoteIndex].quote}"
+                    </p>
+
+                    <p className="mt-4 text-[10px] uppercase tracking-[2px] text-silver-dim font-heading">
+                      {marginaliaQuotes[quoteIndex].author}
+                    </p>
+                  </motion.blockquote>
+                </AnimatePresence>
+
+                {/* Progress dots */}
+                <div className="flex gap-1 mt-5">
+                  {marginaliaQuotes.map((_, i) => (
+                    <div
+                      key={i}
+                      className={`h-1 rounded-full transition-all duration-500 ${
+                        i === quoteIndex
+                          ? "w-6 bg-bronze"
+                          : "w-1 bg-bronze/20"
+                      }`}
                     />
-                  ) : (
-                    <div>
-                      <input
-                        type="text"
-                        value={form[current.key as keyof typeof form] as string}
-                        onChange={(e) => setForm({ ...form, [current.key]: e.target.value })}
-                        placeholder={current.placeholder}
-                        onKeyDown={(e) => e.key === "Enter" && canProceed() && next()}
-                        className="w-full bg-obsidian-light/50 border border-bronze-border/15 rounded-xl px-5 py-4 text-silver text-sm font-light placeholder:text-silver-dim/40 focus:border-bronze/40 focus:outline-none transition-colors"
-                      />
-                      {current.hint && (
-                        <p className="text-silver-dim text-xs font-light mt-3">{current.hint}</p>
-                      )}
+                  ))}
+                </div>
+
+              </div>
+
+              <div className="pt-6 mt-6 border-t border-bronze-border/10 space-y-4">
+                {/* Guideline acknowledgement checkbox */}
+                <label className="flex items-start gap-3.5 cursor-pointer group select-none">
+                  <div className="relative flex items-center mt-0.5">
+                    <input
+                      type="checkbox"
+                      checked={agreed}
+                      onChange={(e) => setAgreed(e.target.checked)}
+                      className="sr-only"
+                    />
+                    <div className={`w-5 h-5 rounded border transition-all flex items-center justify-center ${
+                      agreed 
+                        ? "bg-bronze border-bronze text-obsidian" 
+                        : "border-bronze-border/30 group-hover:border-bronze/40"
+                    }`}>
+                      {agreed && <Check size={12} className="stroke-[3]" />}
                     </div>
-                  )}
-                </div>
+                  </div>
+                  <span className="text-xs text-silver-muted font-light leading-normal">
+                    I have reviewed and agree to abide by the guidelines.
+                  </span>
+                </label>
 
-                <div className="flex items-center justify-between mt-8 pt-6 border-t border-bronze-border/10">
-                  <button
-                    onClick={() => setStep(Math.max(0, step - 1))}
-                    disabled={step === 0}
-                    className="flex items-center gap-2 text-silver-muted text-sm font-light hover:text-silver transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                  >
-                    <ArrowLeft size={14} />
-                    Back
-                  </button>
-
-                  <button
-                    onClick={next}
-                    disabled={!canProceed() || submitting}
-                    className="flex items-center gap-2 bg-bronze/10 border border-bronze text-bronze px-6 py-2.5 font-heading text-xs font-semibold tracking-widest uppercase rounded hover:bg-bronze/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                  >
-                    {submitting ? (
-                      <div className="w-4 h-4 border-2 border-bronze/30 border-t-bronze rounded-full animate-spin" />
-                    ) : step === steps.length - 1 ? (
-                      <>
-                        <Sparkles size={14} />
-                        Continue to Form
-                      </>
-                    ) : (
-                      <>
-                        Continue
-                        <ArrowRight size={14} />
-                      </>
-                    )}
-                  </button>
-                </div>
+                {/* Apply CTA Button */}
+                <a
+                  href={agreed ? GOOGLE_FORM_URL : undefined}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    if (!agreed) {
+                      e.preventDefault();
+                    }
+                  }}
+                  className={`w-full py-4 px-4 font-heading text-xs font-semibold tracking-widest uppercase rounded flex items-center justify-center gap-2 transition-all duration-300 ${
+                    agreed
+                      ? "bg-bronze hover:bg-bronze-light text-obsidian shadow-lg shadow-bronze/10 hover:-translate-y-0.5 cursor-pointer"
+                      : "bg-obsidian-surface border border-bronze-border/10 text-silver-dim/40 cursor-not-allowed"
+                  }`}
+                >
+                  <span>Apply to the Collegium of Minds</span>
+                  <ArrowRight size={14} />
+                </a>
+                {!agreed && (
+                  <p className="text-[10px] text-center text-silver-dim/50 font-mono">
+                    Please check the box above to enable the application link.
+                  </p>
+                )}
               </div>
             </div>
           </ScrollReveal>
         </div>
+
       </div>
+    </section>
+  );
+}
+
+// ============================================================================
+// Team Section
+// ============================================================================
+interface TeamMember {
+  role: string;
+  emoji: string;
+  name: string;
+  roleDesc: string;
+  bio: string;
+  quote: string;
+}
+
+interface TeamDepartment {
+  name: string;
+  id: string;
+  icon: string;
+  description: string;
+  members: TeamMember[];
+}
+
+const teams: TeamDepartment[] = [
+  {
+    name: "Operations Team",
+    id: "operations",
+    icon: "⚙️",
+    description: "The Operations Team helps keep CoM running smoothly by handling the day-to-day work that supports our content, communication, and organization.",
+    members: [
+      {
+        role: "Publications Coordinator",
+        emoji: "📰",
+        name: "Ankur Chakraborty",
+        roleDesc: "Review articles, proofread submissions, organize publications, and help maintain the quality of CoM's written content.",
+        bio: "I am an average guy with dreams bigger than space. Physics enthusiast and Quantum Mechanics nerd 🤓.",
+        quote: "\"Life is unfair, so try to be fair. - Ankur Chakraborty\""
+      },
+      {
+        role: "Media Coordinator",
+        emoji: "🎨",
+        name: "Need Volunteers",
+        roleDesc: "Design posters, banners, graphics, videos, and other visual content while helping maintain CoM's visual identity.",
+        bio: "Marcus blends geometric minimalism with cosmic motifs to craft CoM's unique visual identity. He sees graphic design not as mere decoration, but as visual philosophy. Marcus handles all social media assets, posters, and web illustrations.",
+        quote: "Form is empty, empty is form; let the design be the vessel."
+      },
+      {
+        role: "Communications Coordinator",
+        emoji: "📣",
+        name: "Need Volunteers",
+        roleDesc: "Prepare announcements, newsletters, public updates, and manage CoM's communication across platforms.",
+        bio: "An expert in digital storytelling and community bridging. Serena keeps the channels open and the signal clear. She drafts our newsletters, coordinates public announcements, and ensures our community spaces remain welcoming and aligned.",
+        quote: "True connection is forged where authentic ideas meet receptive ears."
+      },
+      {
+        role: "Documentation Coordinator",
+        emoji: "📚",
+        name: "Need Volunteers",
+        roleDesc: "Maintain important documents, guidelines, archives, and records to keep CoM organized as it grows.",
+        bio: "A passionate archivist who thrives on structure and logic. Julian organizes CoM’s expanding database of guidelines, archives, and past records. He ensures our history is preserved and easily accessible for future generations of thinkers.",
+        quote: "Without an archive, we are travelers in a dark forest without a map."
+      },
+      {
+        role: "Website Coordinator",
+        emoji: "🌐",
+        name: "Joel Mendonca",
+        roleDesc: "Maintain and improve the CoM website, publish content, and suggest new features and enhancements.",
+        bio: "A 13 year old programmer who specializes in video game programming. I have 2 years of C++ experience. I enjoy building games, designing websites, and working on big, long-term projects. I'm passionate about turning creative ideas into interactive experiences and continuously improving my programming skills.",
+        quote: "\"Yesterday is history, tommorrow is a mystery. Today is a gift, that's why we call it present.\""
+      },
+      {
+        role: "Outreach Coordinator",
+        emoji: "🌱",
+        name: "M.Bavyadharshini",
+        roleDesc: "Help grow CoM by welcoming new members, exploring collaborations, gathering feedback, and suggesting ways to expand the community.",
+        bio: "Physics undergraduate passionate about space science, science communication, and education. Bavyadharshini enjoys learning, connecting with people, and inspiring curiosity about the universe.",
+        quote: "\"Somewhere, something incredible is waiting to be known.\" — Carl Sagan"
+      },
+    ]
+  },
+  {
+    name: "Development Team",
+    id: "development",
+    icon: "🧭",
+    description: "The Development Team helps CoM grow by shaping long-term direction, creating new ideas, and planning future projects and initiatives.",
+    members: [
+      {
+        role: "Strategy Lead",
+        emoji: "🧭",
+        name: "Need Volunteers",
+        roleDesc: "Help shape CoM's long-term direction by discussing goals, evaluating ideas, and planning future initiatives.",
+        bio: "--- looks at the horizon. He guides CoM's long-term strategic compass, evaluating new concepts, structuring growth milestones, and planning future initiatives to keep the collective focused yet adaptable to new philosophical frontiers.",
+        quote: "Strategy is the art of choosing which questions are worth asking next."
+      },
+      {
+        role: "Research Lead",
+        emoji: "🔬",
+        name: "Shatakshita Shekhar",
+        roleDesc: "Research tools, platforms, opportunities, and ideas to support informed decisions and future projects.",
+        bio: "Aerospace Engineering student exploring space science through research, writing, and scientific curiosity.Also the founder of The Redshift Asterism, a space science publication.",
+        quote: "\"Research is what I'm doing when I don't know what I'm doing.\" — Wernher von Braun"
+      },
+      {
+        role: "Initiatives Lead",
+        emoji: "💡",
+        name: "Shalmali",
+        roleDesc: "Design and coordinate new projects, competitions, discussion series, and other community initiatives.",
+        bio: "A quiet observer with a mind full of questions no one thinks to ask. She designs and coordinates new initiatives, competitions, and discussion series that challenge the community to think beyond the obvious and explore the edges of knowledge.",
+        quote: "\"Knowledge knows no age.\" — Socrates"
+      },
+      {
+        role: "Events Lead",
+        emoji: "🎤",
+        name: "Shahaan",
+        roleDesc: "Plan and organize debates, talks, workshops, competitions, and other CoM events.",
+        bio: "A high school sophomore who tries to be 1% better everyday. He is a passionate debater and a curious learner, who loves to explore new ideas and share them with others. He plans and organizes debates, talks, workshops, competitions, and other CoM events.",
+        quote: "\"An investment in knowledge always pays the best return.\" — Benjamin Franklin"
+      },
+    ]
+  }
+];
+
+export function TeamSection() {
+  const [activeTab, setActiveTab] = useState<"operations" | "development">("operations");
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+
+  const activeTeam = teams.find((t) => t.id === activeTab);
+
+  return (
+    <section id="team" className="relative z-10 py-20 sm:py-28 px-5 sm:px-8 max-w-7xl mx-auto border-t border-bronze-border/10">
+      <ScrollReveal className="text-center mb-12">
+        <div className="inline-flex items-center gap-2 border border-bronze-border bg-bronze-dim px-4 py-1.5 rounded-full mb-8">
+          <Users className="w-3.5 h-3.5 text-bronze animate-pulse" />
+          <span className="font-heading text-[10px] font-semibold tracking-[3px] uppercase text-bronze">
+            The Team
+          </span>
+        </div>
+        <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-silver tracking-tight leading-tight">
+          The Minds Behind CoM.
+        </h2>
+        <p className="text-silver-muted text-sm sm:text-base font-light max-w-xl mx-auto mt-4 leading-relaxed">
+          Meet the coordinators, leads, and strategists steering our decentralized laboratory of ideas.
+        </p>
+      </ScrollReveal>
+
+      {/* Tab Switcher */}
+      <ScrollReveal className="flex justify-center gap-3 mb-10" delay={100}>
+        <div className="flex bg-obsidian-surface/60 border border-bronze-border/15 p-1.5 rounded-xl gap-1">
+          {teams.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setActiveTab(t.id as any)}
+              className={`relative px-5 py-2.5 rounded-lg font-heading text-xs font-semibold tracking-widest uppercase transition-all duration-300 cursor-pointer ${
+                activeTab === t.id
+                  ? "text-bronze bg-bronze/10 border border-bronze/20"
+                  : "text-silver-dim hover:text-silver border border-transparent"
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <span>{t.icon}</span>
+                <span>{t.name}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal className="mb-14" delay={150}>
+        <p className="text-silver-muted text-sm sm:text-base font-light leading-relaxed max-w-2xl mx-auto text-center">
+          {activeTeam?.description}
+        </p>
+      </ScrollReveal>
+
+      {/* Grid of Team Members */}
+      <div className={`grid grid-cols-1 sm:grid-cols-2 ${activeTab === 'operations' ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-6 max-w-6xl mx-auto`}>
+        {activeTeam?.members.map((member, idx) => (
+          <ScrollReveal key={member.role} delay={idx * 50}>
+            <div
+              onClick={() => setSelectedMember(member)}
+              className="group bg-obsidian-surface/40 border border-bronze-border/15 rounded-2xl p-6 sm:p-7 hover:bg-bronze-dim/10 hover:border-bronze/35 transition-all duration-300 cursor-pointer flex flex-col justify-between h-full relative overflow-hidden"
+            >
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-2xl">{member.emoji}</span>
+                </div>
+                <div>
+                  <h4 className="text-bronze text-xs font-heading font-semibold tracking-wider uppercase mb-1">
+                    {member.role}
+                  </h4>
+                  <h3 className="font-heading text-lg font-bold text-silver group-hover:text-bronze transition-colors">
+                    {member.name}
+                  </h3>
+                  <p className="text-silver-muted text-xs font-light leading-relaxed mt-3 line-clamp-3">
+                    {member.roleDesc}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-bronze-border/5 flex items-center gap-1.5 text-xs text-bronze font-heading tracking-wider uppercase opacity-80 group-hover:opacity-100 transition-opacity">
+                <span>View Profile</span>
+                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </ScrollReveal>
+        ))}
+      </div>
+
+      {/* Member Profile Modal */}
+      <AnimatePresence>
+        {selectedMember && (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ type: "spring", duration: 0.4 }}
+              className="bg-obsidian border border-bronze-border/20 max-w-md w-full rounded-2xl overflow-hidden relative shadow-2xl p-6 sm:p-8"
+            >
+              <button
+                onClick={() => setSelectedMember(null)}
+                className="absolute top-4 right-4 text-silver-dim hover:text-silver text-xs font-mono uppercase bg-obsidian-surface px-2.5 py-1 rounded border border-bronze-border/10 cursor-pointer z-10"
+              >
+                Close
+              </button>
+
+              <div className="flex items-center gap-4 mb-6 relative z-0">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-bronze-dim via-obsidian-surface to-bronze/20 border border-bronze/25 flex items-center justify-center text-3xl shadow-inner select-none flex-shrink-0">
+                  {selectedMember.emoji}
+                </div>
+                <div>
+                  <span className="text-[10px] font-heading font-semibold tracking-wider text-bronze uppercase block mb-0.5">
+                    {selectedMember.role}
+                  </span>
+                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-silver leading-tight">
+                    {selectedMember.name}
+                  </h3>
+                </div>
+              </div>
+
+              <div className="mb-6 space-y-4">
+                <div className="border-l-2 border-bronze pl-4 italic text-silver-muted text-sm my-4 font-light leading-relaxed">
+                  {selectedMember.quote}
+                </div>
+
+                <div className="space-y-1.5">
+                  <h4 className="text-[10px] font-heading font-semibold tracking-wider text-silver-dim uppercase">
+                    Core Responsibility
+                  </h4>
+                  <p className="text-xs text-silver-muted leading-relaxed font-light">
+                    {selectedMember.roleDesc}
+                  </p>
+                </div>
+
+                <div className="space-y-1.5 pt-2">
+                  <h4 className="text-[10px] font-heading font-semibold tracking-wider text-silver-dim uppercase">
+                    About
+                  </h4>
+                  <p className="text-xs text-silver-muted leading-relaxed font-light">
+                    {selectedMember.bio}
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-bronze-border/10 flex items-center justify-between">
+                <span className="text-[10px] font-heading font-semibold tracking-wider text-silver-dim uppercase">
+                  {activeTeam?.name}
+                </span>
+                <span className="font-heading text-xs font-semibold text-bronze tracking-wider uppercase">
+                  The Collegium of Minds
+                </span>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
@@ -1907,15 +2426,17 @@ const randomQuestions = [
 ];
 
 const exploreLinks = [
-  { label: "About CoM", href: "#about" },
-  { label: "Questions We Ask", href: "#questions" },
-  { label: "Library", to: "/library" },
+  { label: "About", href: "#about" },
+  { label: "Questions", href: "#questions" },
+  { label: "Library", to: "#library" },
+  { label: "Events", to: "#events" },
+  { label: "Team", to: "#team" },
   { label: "Join CoM", href: "#join" },
 ];
 
 const connectLinks = [
   { label: "Instagram", href: "https://instagram.com", note: "coming soon" },
-  { label: "LinkedIn", href: "https://linkedin.com", note: "coming soon" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/the-collegium-of-minds/" },
   { label: "Discord", href: "https://discord.gg/bEMYvJ7eU3" },
   { label: "Email the Club", href: "mailto:collegiumofminds@gmail.com" },
 ];
@@ -2034,8 +2555,13 @@ export default function Home() {
       <SectionDivider />
       <NewsletterSection />
       <SectionDivider />
-      <JoinSection />
+      <EventsSection />
+      <SectionDivider />
+      <TeamSection />
+      <SectionDivider />
+      <JoinSection />      
       <Footer />
     </div>
   );
 }
+
