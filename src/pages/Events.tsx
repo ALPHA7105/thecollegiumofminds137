@@ -446,13 +446,13 @@ export default function EventsPage() {
       {/* Speaker Detail Modal */}
       <AnimatePresence>
         {selectedSpeaker && (
-          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               transition={{ type: "spring", duration: 0.4 }}
-              className="bg-obsidian border border-bronze-border/20 max-w-md w-full rounded-2xl overflow-hidden relative shadow-2xl p-6 sm:p-8"
+              className="bg-obsidian border border-bronze-border/20 max-w-md w-full rounded-2xl relative shadow-2xl p-6 sm:p-8 max-h-[85vh] overflow-y-auto"
             >
               <button
                 onClick={() => setSelectedSpeaker(null)}

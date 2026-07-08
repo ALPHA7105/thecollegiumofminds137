@@ -3,7 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Menu, X, ChevronDown, ArrowRight, ArrowUpRight, MapPin, Calendar, User, Check, ArrowLeft, Sparkles, ExternalLink, 
-  Play, Pause, ChevronLeft, ChevronRight, Send, MessageSquare, Award, Clock, HelpCircle, BookOpen, RotateCcw, Users 
+  Play, Pause, ChevronLeft, ChevronRight, Send, MessageSquare, Award, Clock, HelpCircle, BookOpen, RotateCcw, Users, 
+  Linkedin, Github, Globe, BriefcaseBusiness, GraduationCap, Microscope, BadgeCheck, Twitter, Mail,
 } from "lucide-react";
 import { authClient } from "@/api/authClient";
 import { useToast } from "@/components/ui";
@@ -13,6 +14,7 @@ import { articles, categoryColors } from "../data/articles";
 import { weeklyQuestions } from "./Questions";
 import { eventsData, Event } from "../data/events";
 import { resolveSpeakers, Speaker } from "../data/speakers";
+import TeamAvatar from '../components/TeamAvatar';
 
 // ============================================================================
 // ScrollReveal
@@ -735,7 +737,7 @@ function AboutSection() {
   const [selectedSociety, setSelectedSociety] = useState<typeof societies[0] | null>(null);
 
   return (
-    <section id="about" className="relative z-10 py-20 sm:py-28 px-5 sm:px-8 max-w-7xl mx-auto">
+    <section id="about" className={`relative py-20 sm:py-28 px-5 sm:px-8 max-w-7xl mx-auto ${selectedSociety ? "z-[100]" : "z-10"}`}>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
         <div className="lg:col-span-7">
           <ScrollReveal>
@@ -822,45 +824,53 @@ function AboutSection() {
       </ScrollReveal>
 
       {/* Society Details Modal */}
-      {selectedSociety && (
-        <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-obsidian border border-bronze-border/20 max-w-md w-full rounded-2xl overflow-hidden relative shadow-2xl p-6 sm:p-8">
-            <button
-              onClick={() => setSelectedSociety(null)}
-              className="absolute top-4 right-4 text-silver-dim hover:text-silver text-xs font-mono uppercase bg-obsidian-surface px-2.5 py-1 rounded border border-bronze-border/10 cursor-pointer"
+      <AnimatePresence>
+        {selectedSociety && (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ type: "spring", duration: 0.4 }}
+              className="bg-obsidian border border-bronze-border/20 max-w-md w-full rounded-2xl relative shadow-2xl p-6 sm:p-8 max-h-[85vh] overflow-y-auto"
             >
-              Close
-            </button>
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl">{selectedSociety.icon}</span>
-              <h3 className="font-heading text-xl font-bold text-silver">
-                {selectedSociety.name} Society
-              </h3>
-            </div>
-            <div className="mb-6 space-y-3">
-              <h4 className="text-[10px] font-heading font-semibold tracking-wider text-bronze uppercase">
-                Questions We Discuss
-              </h4>
-              <ul className="space-y-3">
-                {selectedSociety.questions.map((q, idx) => (
-                  <li key={idx} className="flex gap-2.5 items-start text-xs text-silver-muted font-light leading-relaxed">
-                    <span className="text-bronze font-bold mt-0.5">•</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="pt-4 border-t border-bronze-border/10 flex items-center justify-between">
-              <span className="text-[10px] font-heading font-semibold tracking-wider text-silver-dim uppercase">
-                Society Size
-              </span>
-              <span className="font-heading text-sm font-bold text-silver">
-                <span className="text-bronze font-mono mr-1">{selectedSociety.members}</span> Inquirers
-              </span>
-            </div>
+              <button
+                onClick={() => setSelectedSociety(null)}
+                className="absolute top-4 right-4 text-silver-dim hover:text-silver text-xs font-mono uppercase bg-obsidian-surface px-2.5 py-1 rounded border border-bronze-border/10 cursor-pointer z-10"
+              >
+                Close
+              </button>
+              <div className="flex items-center gap-3 mb-6 relative z-0">
+                <span className="text-3xl select-none">{selectedSociety.icon}</span>
+                <h3 className="font-heading text-xl font-bold text-silver">
+                  {selectedSociety.name} Society
+                </h3>
+              </div>
+              <div className="mb-6 space-y-3">
+                <h4 className="text-[10px] font-heading font-semibold tracking-wider text-bronze uppercase">
+                  Questions We Discuss
+                </h4>
+                <ul className="space-y-3">
+                  {selectedSociety.questions.map((q, idx) => (
+                    <li key={idx} className="flex gap-2.5 items-start text-xs text-silver-muted font-light leading-relaxed">
+                      <span className="text-bronze font-bold mt-0.5">•</span>
+                      {q}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="pt-4 border-t border-bronze-border/10 flex items-center justify-between">
+                <span className="text-[10px] font-heading font-semibold tracking-wider text-silver-dim uppercase">
+                  Society Size
+                </span>
+                <span className="font-heading text-sm font-bold text-silver">
+                  <span className="text-bronze font-mono mr-1">{selectedSociety.members}</span> Inquirers
+                </span>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </section>
   );
 }
@@ -1593,7 +1603,7 @@ export function EventsSection() {
   };
 
   return (
-    <section id="events" className="relative z-10 py-20 sm:py-28 px-5 sm:px-8 max-w-7xl mx-auto border-t border-bronze-border/10">
+    <section id="events" className={`relative py-20 sm:py-28 px-5 sm:px-8 max-w-7xl mx-auto border-t border-bronze-border/10 ${selectedSpeaker ? "z-[100]" : "z-10"}`}>
       <ScrollReveal className="text-center mb-16">
         <div className="inline-flex items-center gap-2 border border-bronze-border bg-bronze-dim px-4 py-1.5 rounded-full mb-8">
           <Calendar className="w-3.5 h-3.5 text-bronze" />
@@ -1833,16 +1843,17 @@ export function EventsSection() {
           </Link>
         </div>
       </ScrollReveal>
+
       {/* Speaker Detail Modal */}
       <AnimatePresence>
         {selectedSpeaker && (
-          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               transition={{ type: "spring", duration: 0.4 }}
-              className="bg-obsidian border border-bronze-border/20 max-w-md w-full rounded-2xl overflow-hidden relative shadow-2xl p-6 sm:p-8"
+              className="bg-obsidian border border-bronze-border/20 max-w-md w-full rounded-2xl relative shadow-2xl p-6 sm:p-8 max-h-[85vh] overflow-y-auto"
             >
               <button
                 onClick={() => setSelectedSpeaker(null)}
@@ -1884,7 +1895,7 @@ export function EventsSection() {
 
               <div className="pt-4 border-t border-bronze-border/10 flex items-center justify-between">
                 <span className="text-[10px] font-heading font-semibold tracking-wider text-silver-dim uppercase">
-                  Event Host
+                  Assembly Host
                 </span>
                 <span className="font-heading text-xs font-semibold text-bronze tracking-wider uppercase">
                   Collegium of Minds
@@ -1957,7 +1968,7 @@ function JoinSection() {
             <p className="text-silver-muted text-sm sm:text-base font-light leading-relaxed max-w-xl">
               The Collegium of Minds is a decentralized sanctuary for deep thought, creative scholarship, and rigorous debate. We invite thinkers, builders, and scholars to co-create the future of collaborative inquiry.
             </p>
-          </ScrollReveal>
+          
 
           <div className="rounded-2xl overflow-hidden border border-bronze-border/20 mb-10">
               <img
@@ -1966,6 +1977,7 @@ function JoinSection() {
                 className="w-full h-40 sm:h-48 object-cover opacity-50"
               />
           </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
             {perks.map((p, i) => (
@@ -2138,13 +2150,31 @@ function JoinSection() {
 // ============================================================================
 // Team Section
 // ============================================================================
+type TeamLink = {
+  type:
+    | "linkedin"
+    | "github"
+    | "substack"
+    | "website"
+    | "scholar"
+    | "researchgate"
+    | "orcid"
+    | "youtube"
+    | "x"
+    | "email";
+  url: string;
+};
+
 interface TeamMember {
   role: string;
   emoji: string;
+  image?: string;
   name: string;
   roleDesc: string;
   bio: string;
   quote: string;
+  links?: TeamLink[];
+  borderColor?: string;
 }
 
 interface TeamDepartment {
@@ -2154,6 +2184,52 @@ interface TeamDepartment {
   description: string;
   members: TeamMember[];
 }
+
+
+const linkInfo = {
+  linkedin: {
+    label: "LinkedIn",
+    icon: Linkedin,
+  },
+  github: {
+    label: "GitHub",
+    icon: Github,
+  },
+  website: {
+    label: "Website",
+    icon: Globe,
+  },
+  substack: {
+    label: "Substack",
+    icon: BookOpen,
+  },
+  scholar: {
+    label: "Google Scholar",
+    icon: GraduationCap,
+  },
+  researchgate: {
+    label: "ResearchGate",
+    icon: Microscope,
+  },
+  orcid: {
+    label: "ORCID",
+    icon: BadgeCheck,
+  },
+  youtube: {
+    label: "YouTube",
+    icon: Play,
+  },
+  x: {
+    label: "X",
+    icon: Twitter,
+  },
+  email: {
+    label: "Email",
+    icon: Mail,
+  },
+};
+
+
 
 const teams: TeamDepartment[] = [
   {
@@ -2168,7 +2244,8 @@ const teams: TeamDepartment[] = [
         name: "Ankur Chakraborty",
         roleDesc: "Review articles, proofread submissions, organize publications, and help maintain the quality of CoM's written content.",
         bio: "I am an average guy with dreams bigger than space. Physics enthusiast and Quantum Mechanics nerd 🤓.",
-        quote: "\"Life is unfair, so try to be fair. - Ankur Chakraborty\""
+        quote: "\"Life is unfair, so try to be fair. - Ankur Chakraborty\"",
+        borderColor: "border-violet-400/40 hover:border-violet-400",
       },
       {
         role: "Media Coordinator",
@@ -2176,7 +2253,8 @@ const teams: TeamDepartment[] = [
         name: "Need Volunteers",
         roleDesc: "Design posters, banners, graphics, videos, and other visual content while helping maintain CoM's visual identity.",
         bio: "Marcus blends geometric minimalism with cosmic motifs to craft CoM's unique visual identity. He sees graphic design not as mere decoration, but as visual philosophy. Marcus handles all social media assets, posters, and web illustrations.",
-        quote: "Form is empty, empty is form; let the design be the vessel."
+        quote: "Form is empty, empty is form; let the design be the vessel.",
+        borderColor: "border-rose-400/40 hover:border-rose-400",
       },
       {
         role: "Communications Coordinator",
@@ -2184,15 +2262,17 @@ const teams: TeamDepartment[] = [
         name: "Need Volunteers",
         roleDesc: "Prepare announcements, newsletters, public updates, and manage CoM's communication across platforms.",
         bio: "An expert in digital storytelling and community bridging. Serena keeps the channels open and the signal clear. She drafts our newsletters, coordinates public announcements, and ensures our community spaces remain welcoming and aligned.",
-        quote: "True connection is forged where authentic ideas meet receptive ears."
+        quote: "True connection is forged where authentic ideas meet receptive ears.",
+        borderColor: "border-amber-400/40 hover:border-amber-400",
       },
       {
         role: "Documentation Coordinator",
         emoji: "📚",
-        name: "Need Volunteers",
+        name: "Saumya NL",
         roleDesc: "Maintain important documents, guidelines, archives, and records to keep CoM organized as it grows.",
-        bio: "A passionate archivist who thrives on structure and logic. Julian organizes CoM’s expanding database of guidelines, archives, and past records. He ensures our history is preserved and easily accessible for future generations of thinkers.",
-        quote: "Without an archive, we are travelers in a dark forest without a map."
+        bio: "My interest in the science behind technological innovation led me to study engineering at BITS Dubai where I developed a strong interest in physics and optimization techniques. As part of the organizing team for Enginuity, the campus tech festival, I enjoyed bringing technical ideas to life. I'm particularly fascinated by how fundamental physics drives emerging technologies and real-world innovation.",
+        quote: "\"The imagination of nature is far, far greater than the imagination of man.” —  Richard Feynman\"",
+        borderColor: "border-cyan-400/40 hover:border-cyan-400",
       },
       {
         role: "Website Coordinator",
@@ -2200,7 +2280,8 @@ const teams: TeamDepartment[] = [
         name: "Joel Mendonca",
         roleDesc: "Maintain and improve the CoM website, publish content, and suggest new features and enhancements.",
         bio: "A 13 year old programmer who specializes in video game programming. I have 2 years of C++ experience. I enjoy building games, designing websites, and working on big, long-term projects. I'm passionate about turning creative ideas into interactive experiences and continuously improving my programming skills.",
-        quote: "\"Yesterday is history, tommorrow is a mystery. Today is a gift, that's why we call it present.\""
+        quote: "\"Yesterday is history, tommorrow is a mystery. Today is a gift, that's why we call it present.\"",
+        borderColor: "border-emerald-400/40 hover:border-emerald-400",
       },
       {
         role: "Outreach Coordinator",
@@ -2208,7 +2289,8 @@ const teams: TeamDepartment[] = [
         name: "M.Bavyadharshini",
         roleDesc: "Help grow CoM by welcoming new members, exploring collaborations, gathering feedback, and suggesting ways to expand the community.",
         bio: "Physics undergraduate passionate about space science, science communication, and education. Bavyadharshini enjoys learning, connecting with people, and inspiring curiosity about the universe.",
-        quote: "\"Somewhere, something incredible is waiting to be known.\" — Carl Sagan"
+        quote: "\"Somewhere, something incredible is waiting to be known.\" — Carl Sagan",
+        borderColor: "border-fuchsia-400/40 hover:border-fuchsia-400",
       },
     ]
   },
@@ -2224,15 +2306,39 @@ const teams: TeamDepartment[] = [
         name: "Need Volunteers",
         roleDesc: "Help shape CoM's long-term direction by discussing goals, evaluating ideas, and planning future initiatives.",
         bio: "--- looks at the horizon. He guides CoM's long-term strategic compass, evaluating new concepts, structuring growth milestones, and planning future initiatives to keep the collective focused yet adaptable to new philosophical frontiers.",
-        quote: "Strategy is the art of choosing which questions are worth asking next."
+        quote: "Strategy is the art of choosing which questions are worth asking next.",
+        borderColor: "border-orange-400/40 hover:border-orange-400",
       },
       {
         role: "Research Lead",
         emoji: "🔬",
         name: "Shatakshita Shekhar",
         roleDesc: "Research tools, platforms, opportunities, and ideas to support informed decisions and future projects.",
-        bio: "Aerospace Engineering student exploring space science through research, writing, and scientific curiosity.Also the founder of The Redshift Asterism, a space science publication.",
-        quote: "\"Research is what I'm doing when I don't know what I'm doing.\" — Wernher von Braun"
+        bio: "Aerospace Engineering student exploring space science through research, writing, and scientific curiosity. Also the founder of The Redshift Asterism, a space science publication.",
+        quote: "\"Research is what I'm doing when I don't know what I'm doing.\" — Wernher von Braun",
+        links: [
+          {
+            type: "linkedin",
+            url: "https://www.linkedin.com/in/shatakshitashekhar/",
+          },
+          {
+            type: "github",
+            url: "https://github.com/shatakshita",
+          },
+          {
+            type: "website",
+            url: "https://shatakshita.github.io/",
+          },
+          { 
+            type: "email", 
+            url: "mailto:shekhar.shatakshita@gmail.com" 
+          },
+          {
+            type: "substack",
+            url: "https://shyrixv.substack.com/",
+          }
+        ],
+        borderColor: "border-sky-400/40 hover:border-sky-400",
       },
       {
         role: "Initiatives Lead",
@@ -2240,7 +2346,8 @@ const teams: TeamDepartment[] = [
         name: "Shalmali",
         roleDesc: "Design and coordinate new projects, competitions, discussion series, and other community initiatives.",
         bio: "A quiet observer with a mind full of questions no one thinks to ask. She designs and coordinates new initiatives, competitions, and discussion series that challenge the community to think beyond the obvious and explore the edges of knowledge.",
-        quote: "\"Knowledge knows no age.\" — Socrates"
+        quote: "\"Knowledge knows no age.\" — Socrates",
+        borderColor: "border-purple-400/40 hover:border-purple-400",
       },
       {
         role: "Events Lead",
@@ -2248,20 +2355,64 @@ const teams: TeamDepartment[] = [
         name: "Shahaan",
         roleDesc: "Plan and organize debates, talks, workshops, competitions, and other CoM events.",
         bio: "A high school sophomore who tries to be 1% better everyday. He is a passionate debater and a curious learner, who loves to explore new ideas and share them with others. He plans and organizes debates, talks, workshops, competitions, and other CoM events.",
-        quote: "\"An investment in knowledge always pays the best return.\" — Benjamin Franklin"
+        quote: "\"An investment in knowledge always pays the best return.\" — Benjamin Franklin",
+        borderColor: "border-lime-400/40 hover:border-lime-400",
       },
     ]
   }
 ];
 
+const founder: TeamMember = {
+  role: "Founder & Executive Director",
+
+  emoji: "🧠",
+
+  image: "/team/sarvesh.png",
+
+  name: "Sarvesh Kore",
+
+  roleDesc:
+    "The Collegium of Minds began with a simple observation: the internet makes information effortless, yet meaningful conversation increasingly rare. We wanted to build a place where difficult questions are explored rather than avoided, where disagreement sharpens ideas instead of ending discussions, and where curiosity is treated not as a hobby, but as a discipline.",
+
+  bio:
+    "I’m a student driven by curiosity and a desire to understand how the world works. I’m passionate about physics, mathematics, astronomy, and aerospace, especially topics like quantum mechanics, spacetime, black holes, and cosmology. I enjoy learning beyond textbooks by exploring ideas, building projects, and creating digital experiences through frontend development. I’m also interested in building communities where people can share ideas, discuss meaningful questions, and learn together. I believe progress begins with curiosity and asking better questions.",
+
+  quote:
+    "\"I, a universe of atoms, an atom in the universe.\" - Richard Feynman",
+
+  links: [
+    {
+      type: "website",
+      url: "https://sarvesh-kore.vercel.app",
+    },
+    {
+      type: "github",
+      url: "https://github.com/ALPHA7105",
+    },
+    {
+      type: "linkedin",
+      url: "https://www.linkedin.com/in/sarvesh-kore-3284363a7/",
+    },
+    {
+      type: "substack",
+      url: "https://substack.com/@sarveshkore",
+    },
+    {
+      type: "email",
+      url: "mailto:ssworld7105@gmail.com",
+    },
+  ],
+};
+
 export function TeamSection() {
   const [activeTab, setActiveTab] = useState<"operations" | "development">("operations");
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  const [selectedFounder, setSelectedFounder] = useState(false);
 
   const activeTeam = teams.find((t) => t.id === activeTab);
 
   return (
-    <section id="team" className="relative z-10 py-20 sm:py-28 px-5 sm:px-8 max-w-7xl mx-auto border-t border-bronze-border/10">
+    <section id="team" className={`relative py-20 sm:py-28 px-5 sm:px-8 max-w-7xl mx-auto border-t border-bronze-border/10 ${selectedMember ? "z-[100]" : "z-10"}`}>
       <ScrollReveal className="text-center mb-12">
         <div className="inline-flex items-center gap-2 border border-bronze-border bg-bronze-dim px-4 py-1.5 rounded-full mb-8">
           <Users className="w-3.5 h-3.5 text-bronze animate-pulse" />
@@ -2277,9 +2428,144 @@ export function TeamSection() {
         </p>
       </ScrollReveal>
 
+      {/* Founder Section */}
+      <ScrollReveal className="max-w-3xl mx-auto mb-24" delay={100}>
+        <div className="text-center mb-6">
+          <span className="inline-flex items-center gap-2 rounded-full border border-bronze/30 bg-bronze/10 px-4 py-1.5 text-[10px] font-heading font-semibold tracking-[4px] uppercase text-bronze">
+            Founded by
+          </span>
+        </div>
+
+        <div
+          onClick={() => setSelectedFounder(true)}
+          className="
+            group
+            relative
+            overflow-hidden
+            rounded-3xl
+            border
+            border-bronze/35
+            bg-gradient-to-br
+            from-[#2d2418]
+            via-[#151515]
+            to-[#0d0d0d]
+            p-8
+            sm:p-10
+            transition-all
+            duration-500
+            hover:border-bronze
+            hover:shadow-[0_0_50px_rgba(186,138,64,0.18)]
+            cursor-pointer
+          "
+        >
+
+          {/* Decorative Glow */}
+          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-bronze/10 blur-[120px] pointer-events-none" />
+
+          {/* Decorative Line */}
+          <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-transparent via-bronze/60 to-transparent opacity-70" />
+
+          <div className="relative z-10">
+
+            <div className="flex items-start justify-between flex-wrap gap-6">
+
+              <div className="flex gap-5">
+
+                <TeamAvatar 
+                  image={founder.image} 
+                  emoji={founder.emoji} 
+                  name={founder.name}
+                  size={72}
+                />
+
+                <div>
+
+                  <p className="text-[10px] uppercase tracking-[5px] text-bronze font-heading font-semibold">
+                    Vision & Direction
+                  </p>
+
+                  <h3 className="font-heading text-3xl font-bold text-silver mt-1">
+                    Sarvesh Kore
+                  </h3>
+
+                  <p className="text-silver-dim text-sm mt-1">
+                    Founder & Executive Director
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div
+                className="
+                rounded-full
+                border
+                border-bronze/20
+                px-4
+                py-2
+                text-[11px]
+                uppercase
+                tracking-[3px]
+                text-bronze
+                font-heading
+                group-hover:bg-bronze/10
+                transition-all
+              "
+              >
+                Read the Manifesto →
+              </div>
+
+            </div>
+
+            <div className="my-8 h-px bg-gradient-to-r from-transparent via-bronze/20 to-transparent" />
+
+            <blockquote className="text-xl sm:text-2xl font-heading italic text-silver leading-relaxed max-w-2xl">
+              "Civilizations are remembered for the questions they dared to pursue. We hope to ask a few worthy ones."
+            </blockquote>
+
+            <p className="mt-6 text-silver-muted leading-relaxed max-w-2xl">
+              I didn't start Collegium of Minds because the world lacked information. 
+              It lacked places where curiosity could survive. A place where someone 
+              fascinated by black holes could debate a philosopher, where a programmer 
+              could collaborate with an artist, where difficult questions were welcomed 
+              instead of dismissed. 
+              <span className="text-silver">
+                {" "}CoM exists to become that place.
+              </span>{" "}
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+
+              <span className="rounded-full border border-bronze/15 px-3 py-1 text-xs text-silver-muted">
+                Curiosity
+              </span>
+
+              <span className="rounded-full border border-bronze/15 px-3 py-1 text-xs text-silver-muted">
+                Research
+              </span>
+
+              <span className="rounded-full border border-bronze/15 px-3 py-1 text-xs text-silver-muted">
+                Exploration
+              </span>
+
+              <span className="rounded-full border border-bronze/15 px-3 py-1 text-xs text-silver-muted">
+                Innovation
+              </span>
+
+              <span className="rounded-full border border-bronze/15 px-3 py-1 text-xs text-silver-muted">
+                Question Everything
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+      </ScrollReveal>
+
       {/* Tab Switcher */}
       <ScrollReveal className="flex justify-center gap-3 mb-10" delay={100}>
-        <div className="flex bg-obsidian-surface/60 border border-bronze-border/15 p-1.5 rounded-xl gap-1">
+        <div className={`flex bg-obsidian-surface/60 border border-bronze-border/15 p-1.5 rounded-xl gap-1`}>
           {teams.map((t) => (
             <button
               key={t.id}
@@ -2311,12 +2597,15 @@ export function TeamSection() {
           <ScrollReveal key={member.role} delay={idx * 50}>
             <div
               onClick={() => setSelectedMember(member)}
-              className="group bg-obsidian-surface/40 border border-bronze-border/15 rounded-2xl p-6 sm:p-7 hover:bg-bronze-dim/10 hover:border-bronze/35 transition-all duration-300 cursor-pointer flex flex-col justify-between h-full relative overflow-hidden"
+              className={`group bg-obsidian-surface/40 border ${member.borderColor || 'border-bronze-border/15'} rounded-2xl p-6 sm:p-7 hover:bg-bronze-dim/10 transition-all duration-300 cursor-pointer flex flex-col justify-between h-full relative overflow-hidden`}
             >
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl">{member.emoji}</span>
-                </div>
+                <TeamAvatar 
+                  image={member.image} 
+                  emoji={member.emoji} 
+                  name={member.name}
+                  size={72}
+                />
                 <div>
                   <h4 className="text-bronze text-xs font-heading font-semibold tracking-wider uppercase mb-1">
                     {member.role}
@@ -2339,16 +2628,208 @@ export function TeamSection() {
         ))}
       </div>
 
+      {/* Founder Modal */}
+      <AnimatePresence>
+        {selectedFounder && (
+          <div
+            className="
+              fixed
+              inset-0
+              z-[9999]
+              bg-black/90
+              backdrop-blur-xl
+              overflow-y-auto
+              flex
+              items-start
+              justify-center
+              pt-24
+              pb-10
+              px-4
+            "
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.97, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.97, y: 20 }}
+              transition={{ duration: 0.35 }}
+              className="
+                relative
+                w-full
+                max-w-xl
+                max-h-[78vh]
+                overflow-y-auto
+                rounded-3xl
+                border
+                border-bronze/30
+                bg-gradient-to-b
+                from-[#171310]
+                via-[#101010]
+                to-[#0b0b0b]
+                p-6
+                sm:p-8
+                shadow-[0_25px_80px_rgba(0,0,0,.6)]
+              "
+            >
+              {/* Glow */}
+              <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-bronze/5 blur-[110px] pointer-events-none" />
+
+              {/* Close */}
+              <button
+                onClick={() => setSelectedFounder(false)}
+                className="absolute top-4 right-4 text-silver-dim hover:text-silver text-xs font-mono uppercase bg-bronze/5 px-2.5 py-1 rounded border border-bronze-border/10 cursor-pointer z-10"
+              >
+                Close
+              </button>
+
+              {/* Header */}
+              <div className="relative z-10 flex items-center gap-5">
+
+                <TeamAvatar 
+                  image={founder.image} 
+                  emoji={founder.emoji} 
+                  name={founder.name}
+                  size={80}
+                  className="rounded-full"   // makes it circular in modal
+                />
+
+                <div>
+
+                  <p className="text-[10px] uppercase tracking-[4px] text-bronze font-semibold">
+                    Founder & Executive Director
+                  </p>
+
+                  <h2 className="font-heading text-2xl font-semibold tracking-tight text-silver mt-1">
+                    {founder.name}
+                  </h2>
+
+                </div>
+
+              </div>
+
+              <div className="my-7 h-px bg-gradient-to-r from-transparent via-bronze/20 to-transparent" />
+
+              {/* Reflection */}
+
+              <section className="space-y-2">
+
+                <p className="text-[10px] uppercase tracking-[4px] text-bronze">
+                  A Thought
+                </p>
+
+                <p className="italic text-base leading-7 text-silver font-light">
+                  {founder.quote}
+                </p>
+
+              </section>
+
+              <div className="my-7 h-px bg-gradient-to-r from-transparent via-bronze/20 to-transparent" />
+
+              {/* About */}
+
+              <section className="space-y-3">
+
+                <h4 className="text-[10px] uppercase tracking-[4px] text-bronze">
+                  About
+                </h4>
+
+                <p className="text-sm leading-7 text-silver-muted font-light">
+                  {founder.bio}
+                </p>
+
+              </section>
+
+              <div className="my-7 h-px bg-gradient-to-r from-transparent via-bronze/20 to-transparent" />
+
+              {/* Vision */}
+
+              <section className="space-y-3">
+
+                <h4 className="text-[10px] uppercase tracking-[4px] text-bronze">
+                  Why I Built CoM
+                </h4>
+
+                <p className="text-sm leading-7 text-silver-muted font-light">
+                  {founder.roleDesc}
+                </p>
+
+              </section>
+
+              {founder.links && founder.links.length > 0 && (
+                <>
+                  <div className="my-7 h-px bg-gradient-to-r from-transparent via-bronze/20 to-transparent" />
+
+                  <section>
+
+                    <h4 className="text-[10px] uppercase tracking-[4px] text-bronze mb-4">
+                      Connect
+                    </h4>
+
+                    <div className="flex flex-wrap gap-3">
+
+                      {founder.links.map((link) => {
+
+                        const info = linkInfo[link.type];
+                        const Icon = info.icon;
+
+                        return (
+                          <a
+                            key={link.url}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="
+                              inline-flex
+                              items-center
+                              gap-2
+                              rounded-full
+                              border
+                              border-bronze/20
+                              px-4
+                              py-2
+                              text-xs
+                              text-silver
+                              hover:border-bronze/40
+                              hover:bg-bronze/5
+                              transition-all
+                            "
+                          >
+                            <Icon size={14} />
+                            <span>{info.label}</span>
+                          </a>
+                        );
+
+                      })}
+
+                    </div>
+
+                  </section>
+                </>
+              )}
+
+              <div className="my-8 h-px bg-gradient-to-r from-transparent via-bronze/20 to-transparent" />
+
+              <div className="text-center">
+
+                <p className="text-[10px] tracking-[5px] uppercase text-silver-dim">
+                  The Collegium of Minds
+                </p>
+
+              </div>
+
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Member Profile Modal */}
       <AnimatePresence>
         {selectedMember && (
-          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              transition={{ type: "spring", duration: 0.4 }}
-              className="bg-obsidian border border-bronze-border/20 max-w-md w-full rounded-2xl overflow-hidden relative shadow-2xl p-6 sm:p-8"
+              className="bg-obsidian border border-bronze-border/20 max-w-md w-full rounded-2xl relative shadow-2xl p-6 sm:p-8 max-h-[85vh] overflow-y-auto"
             >
               <button
                 onClick={() => setSelectedMember(null)}
@@ -2358,9 +2839,13 @@ export function TeamSection() {
               </button>
 
               <div className="flex items-center gap-4 mb-6 relative z-0">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-bronze-dim via-obsidian-surface to-bronze/20 border border-bronze/25 flex items-center justify-center text-3xl shadow-inner select-none flex-shrink-0">
-                  {selectedMember.emoji}
-                </div>
+                <TeamAvatar 
+                  image={selectedMember.image} 
+                  emoji={selectedMember.emoji} 
+                  name={selectedMember.name}
+                  size={80}
+                  className="rounded-full"   // makes it circular in modal
+                />
                 <div>
                   <span className="text-[10px] font-heading font-semibold tracking-wider text-bronze uppercase block mb-0.5">
                     {selectedMember.role}
@@ -2371,8 +2856,8 @@ export function TeamSection() {
                 </div>
               </div>
 
-              <div className="mb-6 space-y-4">
-                <div className="border-l-2 border-bronze pl-4 italic text-silver-muted text-sm my-4 font-light leading-relaxed">
+              <div className="mb-6 space-y-5">
+                <div className="border-l-2 border-bronze pl-4 italic text-silver-muted text-sm font-light leading-relaxed">
                   {selectedMember.quote}
                 </div>
 
@@ -2385,7 +2870,7 @@ export function TeamSection() {
                   </p>
                 </div>
 
-                <div className="space-y-1.5 pt-2">
+                <div className="space-y-1.5">
                   <h4 className="text-[10px] font-heading font-semibold tracking-wider text-silver-dim uppercase">
                     About
                   </h4>
@@ -2393,20 +2878,49 @@ export function TeamSection() {
                     {selectedMember.bio}
                   </p>
                 </div>
-              </div>
+                
 
-              <div className="pt-4 border-t border-bronze-border/10 flex items-center justify-between">
-                <span className="text-[10px] font-heading font-semibold tracking-wider text-silver-dim uppercase">
-                  {activeTeam?.name}
-                </span>
-                <span className="font-heading text-xs font-semibold text-bronze tracking-wider uppercase">
-                  The Collegium of Minds
-                </span>
-              </div>
+                {(selectedMember.links?.length ?? 0) > 0 && (
+                  <div className="space-y-2 pt-2">
+                    <h4 className="text-[10px] font-heading font-semibold tracking-wider text-silver-dim uppercase">
+                      Connect
+                    </h4>
+
+                    <div className="flex flex-wrap gap-2">
+                      {selectedMember.links!.map((link) => {
+                        const info = linkInfo[link.type];
+                        const Icon = info.icon;
+
+                        return (
+                          <a
+                            key={link.url}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 rounded-full border border-bronze-border/20 bg-obsidian-surface/40 px-3 py-1.5 text-xs text-bronze hover:border-bronze/40 hover:bg-bronze/10 transition-all duration-200"
+                          >
+                            <Icon size={14} />
+                            <span>{info.label}</span>
+                          </a>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+                <div className="pt-4 border-t border-bronze-border/10 flex items-center justify-between"> 
+                <span className="text-[10px] font-heading font-semibold tracking-wider text-silver-dim uppercase"> 
+                  {activeTeam?.name} 
+                  </span> 
+                  <span className="font-heading text-xs font-semibold text-bronze tracking-wider uppercase"> 
+                    The Collegium of Minds 
+                  </span>
+                </div>
+              </div> 
             </motion.div>
           </div>
         )}
       </AnimatePresence>
+
     </section>
   );
 }

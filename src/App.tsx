@@ -432,6 +432,7 @@ interface Article {
   id: string | number;
   substackUrl?: string;
   coverImage?: string;
+  quote?: string;
 }
 
 function shortId(slug: string): string {
@@ -626,15 +627,9 @@ function ArticleDetailPage() {
   };
 
   // Pre-mapped high-rigor quote snippets based on slug
-  const sampleQuotes: Record<string, string> = {
-    "secrets-of-game-design-part-1": "Game designing can never be taught by anyone. It comes from years of experience.",
-    "i-think-therefore-i-end": "Am I thinking because I am destined to die?",
-    "how-two-geniuses-invented-calculus": "Leibniz lost the battle. But he absolutely won the war.",
-    "when-math-isnt-mathing": "The beautiful thing about mathematics is that it keeps surprising us. Just when we think we understand the rules, we discover that there are deeper rules beneath — and that infinity, far from being a simple concept meaning “big beyond measure,” is a landscape full of unexpected structure, hidden patterns, and connections to the physical world that we’re only beginning to understand.",
-    "is-our-universe-a-hologram": "If the universe is a hologram, then we are all living in a projection of something much larger and more complex than we can comprehend.",
-  };
+  
 
-  const quoteText = sampleQuotes[article.slug] || "In a universe of transfinite variables, rigorous curiosity is our only reliable constant.";
+  const quoteText = article.quote || "In a universe of transfinite variables, rigorous curiosity is our only reliable constant.";
 
   return (
     <div className="min-h-screen bg-obsidian text-silver pt-24 sm:pt-28 pb-0 overflow-x-hidden">
