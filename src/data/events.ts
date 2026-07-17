@@ -16,13 +16,13 @@ export interface Event {
 export const eventsData: Event[] = [
   {
     id: "astronomy",
-    title: "(Topic to be decided)",
+    title: "Entropy and the Cosmos",
     type: "Seminar",
     date: "July 12, 2026",
     time: "4:00 pm IST / 2:30 pm GST",
     location: "Virtual - https://meet.google.com/vst-kqez-shp",
     emoji: "🌠",
-    summary: "(Summary to be decided)",
+    summary: "Explore the fascinating relationship between entropy and the cosmos in this engaging astronomy class. Dive into entropy microstates and a Q&A session with fellow astronomy enthusiasts",
     description: "Blast off to a cosmic adventure! 🚀 Join our astronomy class today! 🌌",
     speaker: "Aryan Kumar",
     capacity: "None",

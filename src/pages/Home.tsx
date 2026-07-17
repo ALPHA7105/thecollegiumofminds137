@@ -322,8 +322,6 @@ const navLinks = [
   { label: "About", to: "/#about" },
   { label: "Questions", to: "/#questions" },
   { label: "Library", to: "/#library" },
-  { label: "Events", to: "/#events" },
-  { label: "Team", to: "/#team" },
   { label: "Join CoM", to: "/#join", cta: true },
 ];
 
@@ -1569,6 +1567,7 @@ function NewsletterSection() {
   );
 }
 
+/*
 // ============================================================================
 // Events Section
 // ============================================================================
@@ -1619,10 +1618,8 @@ export function EventsSection() {
         </p>
       </ScrollReveal>
 
-      {/* Main Grid: Left List, Right Detail */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto items-stretch">
         
-        {/* Left Column: List of Events */}
         <div className="lg:col-span-5 flex flex-col gap-3 h-[580px] overflow-y-auto pr-2 custom-scrollbar">
           <span className="text-[10px] font-heading font-semibold tracking-wider text-bronze/60 uppercase px-2 mb-1">
             Most Recent Events
@@ -1641,7 +1638,7 @@ export function EventsSection() {
                     : "bg-obsidian-surface/20 border-bronze-border/10 hover:bg-obsidian-surface/45 hover:border-bronze-border/25"
                 }`}
               >
-                {/* Selected Indicator Light */}
+
                 {isSelected && (
                   <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-bronze" />
                 )}
@@ -1682,156 +1679,167 @@ export function EventsSection() {
           })}
         </div>
 
-        {/* Right Column: Active Event Detail Pane */}
-        <div className="lg:col-span-7 flex">
-          <div className="bg-obsidian-surface/30 border border-bronze-border/15 rounded-2xl p-6 sm:p-8 flex flex-col justify-between w-full relative overflow-hidden backdrop-blur-sm">
-            {/* Top decorative gradient line */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-bronze/30 to-transparent" />
+                  <div className="lg:col-span-7 flex">
+                    {selectedEvent ? (
+                      <div className="bg-obsidian-surface/30 border border-bronze-border/15 rounded-2xl p-6 sm:p-8 flex flex-col justify-between w-full relative overflow-hidden backdrop-blur-sm h-full min-h-[500px]">
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedEvent.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25 }}
-                className="space-y-6 flex-1 flex flex-col justify-between"
-              >
-                <div>
-                  {/* Event Type & Status */}
-                  <div className="flex items-center justify-between gap-4 mb-4">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-bronze-dim border border-bronze-border text-[10px] font-heading font-bold uppercase tracking-widest text-bronze">
-                      <span className="select-none">{selectedEvent.emoji}</span>
-                      <span>{selectedEvent.type}</span>
-                    </span>
-
-                    <span
-                      className={`text-[10px] font-heading font-bold tracking-wider uppercase px-2.5 py-1 rounded border ${
-                        selectedEvent.status === "upcoming"
-                          ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                          : "bg-silver-dim/10 text-silver-muted border-silver-dim/10"
-                      }`}
-                    >
-                      {selectedEvent.status}
-                    </span>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-silver tracking-tight leading-tight">
-                    {selectedEvent.title}
-                  </h3>
-
-                  {/* Speaker */}
-                  {selectedEvent.speaker && (
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mt-3 text-xs text-bronze/85 font-heading tracking-wide">
-                      <User size={13} className="text-bronze/60" />
-                      <span>Presenter:</span>
-                      <div className="flex flex-wrap gap-1.5 items-center">
-                        {resolvedSpeakers.map((sp, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => setSelectedSpeaker(sp)}
-                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-bronze-dim border border-bronze-border/30 text-[10px] font-semibold text-bronze hover:text-bronze-light hover:border-bronze/55 transition-all cursor-pointer shadow-sm active:scale-95"
+                        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-bronze/30 to-transparent" />
+        
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            key={selectedEvent.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.25 }}
+                            className="space-y-6 flex-1 flex flex-col justify-between"
                           >
-                            <span>{sp.emoji}</span>
-                            <span>{sp.name}</span>
-                            <span className="text-[8px] opacity-60 font-mono">↗</span>
-                          </button>
-                        ))}
+                            <div>
+                             
+                              <div className="flex items-center justify-between gap-4 mb-4">
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-bronze-dim border border-bronze-border text-[10px] font-heading font-bold uppercase tracking-widest text-bronze">
+                                  <span className="select-none">{selectedEvent.emoji}</span>
+                                  <span>{selectedEvent.type}</span>
+                                </span>
+        
+                                <span
+                                  className={`text-[10px] font-heading font-bold tracking-wider uppercase px-2.5 py-1 rounded border ${
+                                    selectedEvent.status === "upcoming"
+                                      ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                                      : "bg-silver-dim/10 text-silver-muted border-silver-dim/10"
+                                  }`}
+                                >
+                                  {selectedEvent.status}
+                                </span>
+                              </div>
+        
+                             
+                              <h3 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-silver tracking-tight leading-tight">
+                                {selectedEvent.title}
+                              </h3>
+        
+                            
+                              {selectedEvent.speaker && (
+                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mt-4 text-xs text-bronze/85 font-heading tracking-wide">
+                                  <User size={13} className="text-bronze/60" />
+                                  <span>Presenter:</span>
+                                  <div className="flex flex-wrap gap-1.5 items-center">
+                                    {resolvedSpeakers.map((sp, idx) => (
+                                      <button
+                                        key={idx}
+                                        onClick={() => setSelectedSpeaker(sp)}
+                                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-bronze-dim border border-bronze-border/30 text-[10px] font-semibold text-bronze hover:text-bronze-light hover:border-bronze/55 transition-all cursor-pointer shadow-sm active:scale-95"
+                                      >
+                                        <span>{sp.emoji}</span>
+                                        <span>{sp.name}</span>
+                                        <span className="text-[8px] opacity-60 font-mono">↗</span>
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+        
+                         
+                              <div className="h-px bg-bronze-border/10 my-6" />
+        
+                              <div className="space-y-5">
+                                <p className="text-xs sm:text-sm text-silver/95 font-light leading-relaxed">
+                                  {selectedEvent.description}
+                                </p>
+                                
+                                <div className="bg-obsidian/40 border border-bronze-border/10 p-4 rounded-xl">
+                                  <h5 className="text-[10px] font-heading font-semibold tracking-wider text-bronze uppercase mb-2">
+                                    Event Summary
+                                  </h5>
+                                  <p className="text-xs text-silver-muted font-light italic leading-relaxed pl-3 border-l border-bronze/35">
+                                    "{selectedEvent.summary}"
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+        
+                       
+                            <div className="pt-6 mt-6 border-t border-bronze-border/10 space-y-6">
+                              <div className="grid grid-cols-2 gap-6 bg-obsidian/30 p-4 rounded-xl border border-bronze-border/5">
+                                <div className="space-y-1">
+                                  <span className="text-[10px] font-heading font-semibold tracking-wider text-silver-muted uppercase block">
+                                    Schedule Details
+                                  </span>
+                                  <div className="flex items-center gap-2 text-xs text-silver font-light">
+                                    <Calendar size={13} className="text-bronze/70" />
+                                    <span>{selectedEvent.date}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-[11px] text-silver-muted font-light pl-5">
+                                    <Clock size={11} className="text-silver-muted/50" />
+                                    <span>{selectedEvent.time}</span>
+                                  </div>
+                                </div>
+        
+                                <div className="space-y-1">
+                                  <span className="text-[10px] font-heading font-semibold tracking-wider text-silver-muted uppercase block">
+                                    Coordinated Venue
+                                  </span>
+                                  <div className="flex items-center gap-2 text-xs text-silver font-light">
+                                    <MapPin size={13} className="text-bronze/70" />
+                                    {selectedEvent.location.includes("http") ? (
+                                      <a
+                                        href={selectedEvent.location.split(" - ")[1]}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="truncate text-bronze hover:underline"
+                                      >
+                                        {selectedEvent.location}
+                                      </a>
+                                    ) : (
+                                      <span className="truncate">{selectedEvent.location}</span>
+                                    )}
+                                  </div>
+                                  {selectedEvent.capacity && (
+                                    <div className="flex items-center gap-2 text-[11px] text-silver-muted font-light pl-5">
+                                      <Users size={11} className="text-silver-muted/50" />
+                                      <span>Maximum Limit: {selectedEvent.capacity}</span>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+        
+                        
+                              <button
+                                onClick={() => {
+                                    if (selectedEvent.status === "upcoming") {
+                                    navigate("/#join");
+                                    } else {
+                                    handleActionClick(selectedEvent.title, selectedEvent.status);
+                                    }
+                                }}
+                                className={`w-full py-4 px-4 font-heading text-xs font-semibold tracking-widest uppercase rounded transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+                                    selectedEvent.status === "upcoming"
+                                    ? "bg-bronze hover:bg-bronze-light text-obsidian shadow-lg shadow-bronze/10 hover:-translate-y-0.5"
+                                    : "bg-obsidian-surface border border-bronze-border/20 hover:bg-bronze-dim/10 hover:border-bronze/30 text-silver-dim hover:text-silver"
+                                }`}
+                                >
+                                <span>
+                                    {selectedEvent.status === "upcoming"
+                                    ? "Register Seat"
+                                    : "Open Recording/Transcript"}
+                                </span>
+                                <ArrowUpRight size={14} />
+                              </button>
+                            </div>
+                          </motion.div>
+                        </AnimatePresence>
                       </div>
-                    </div>
-                  )}
-
-                  {/* Divider */}
-                  <div className="h-px bg-bronze-border/10 my-5" />
-
-                  {/* Description */}
-                  <div className="space-y-4">
-                    <p className="text-xs sm:text-sm text-silver/95 font-light leading-relaxed">
-                      {selectedEvent.description}
-                    </p>
-                    <p className="text-xs text-silver-muted font-light italic leading-relaxed pl-4 border-l border-bronze-border/30">
-                      {selectedEvent.summary}
-                    </p>
+                    ) : (
+                      <div className="w-full flex items-center justify-center border border-dashed border-bronze-border/10 rounded-2xl p-10 bg-obsidian-surface/10 text-center text-silver-muted">
+                        <span>Select an event to view its full details.</span>
+                      </div>
+                    )}
                   </div>
-                </div>
-
-                {/* Meta details & Action */}
-                <div className="pt-6 mt-6 border-t border-bronze-border/10 space-y-5">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <span className="text-[10px] font-heading font-semibold tracking-wider text-silver-muted uppercase block">
-                        Schedule
-                      </span>
-                      <div className="flex items-center gap-1.5 text-xs text-silver font-light">
-                        <Calendar size={12} className="text-bronze/70" />
-                        <span>{selectedEvent.date}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-[11px] text-silver-muted font-light pl-4.5">
-                        <Clock size={11} className="text-silver-muted/50" />
-                        <span>{selectedEvent.time}</span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1">
-                      <span className="text-[10px] font-heading font-semibold tracking-wider text-silver-muted uppercase block">
-                        Venue & Capacity
-                      </span>
-                      <div className="flex items-center gap-1.5 text-xs text-silver font-light">
-                        <MapPin size={12} className="text-bronze/70" />
-                        {selectedEvent.location.includes("http") ? (
-                              <a
-                                href={selectedEvent.location.split(" - ")[1]}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="truncate text-bronze hover:underline"
-                              >
-                                {selectedEvent.location}
-                              </a>
-                            ) : (
-                              <span className="truncate">{selectedEvent.location}</span>
-                            )}
-                      </div>
-                      {selectedEvent.capacity && (
-                        <div className="flex items-center gap-1.5 text-[11px] text-silver-muted font-light pl-4.5">
-                          <Users size={11} className="text-silver-muted/50" />
-                          <span>Limit: {selectedEvent.capacity}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* CTA button */}
-                  <button
-                    onClick={() => {
-                      if (selectedEvent.status === "upcoming") {
-                        navigate("/#join");
-                      } else {
-                        handleActionClick(selectedEvent.title, selectedEvent.status);
-                      }
-                    }}
-                    className={`w-full py-4 px-4 font-heading text-xs font-semibold tracking-widest uppercase rounded transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
-                      selectedEvent.status === "upcoming"
-                        ? "bg-bronze hover:bg-bronze-light text-obsidian shadow-lg shadow-bronze/10 hover:-translate-y-0.5"
-                        : "bg-obsidian-surface border border-bronze-border/20 hover:bg-bronze-dim/10 hover:border-bronze/30 text-silver-dim hover:text-silver"
-                    }`}
-                  >
-                    <span>
-                      {selectedEvent.status === "upcoming"
-                        ? "Register Seat"
-                        : "Open Recording/Transcript"}
-                    </span>
-                    <ArrowUpRight size={14} />
-                  </button>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
+        
 
       </div>
 
-      {/* Under-section Link to Separate Page */}
+   
       <ScrollReveal className="flex justify-center mt-14" delay={200}>
         <div className="flex justify-center mt-12">
           <Link
@@ -1844,7 +1852,6 @@ export function EventsSection() {
         </div>
       </ScrollReveal>
 
-      {/* Speaker Detail Modal */}
       <AnimatePresence>
         {selectedSpeaker && (
           <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
@@ -1909,6 +1916,7 @@ export function EventsSection() {
   );
 }
 
+*/
 // ============================================================================
 // JoinSection
 // ============================================================================
@@ -2146,7 +2154,7 @@ function JoinSection() {
     </section>
   );
 }
-
+/*
 // ============================================================================
 // Team Section
 // ============================================================================
@@ -2428,7 +2436,7 @@ export function TeamSection() {
         </p>
       </ScrollReveal>
 
-      {/* Founder Section */}
+
       <ScrollReveal className="max-w-3xl mx-auto mb-24" delay={100}>
         <div className="text-center mb-6">
           <span className="inline-flex items-center gap-2 rounded-full border border-bronze/30 bg-bronze/10 px-4 py-1.5 text-[10px] font-heading font-semibold tracking-[4px] uppercase text-bronze">
@@ -2459,10 +2467,9 @@ export function TeamSection() {
           "
         >
 
-          {/* Decorative Glow */}
           <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-bronze/10 blur-[120px] pointer-events-none" />
 
-          {/* Decorative Line */}
+
           <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-transparent via-bronze/60 to-transparent opacity-70" />
 
           <div className="relative z-10">
@@ -2563,7 +2570,6 @@ export function TeamSection() {
         </div>
       </ScrollReveal>
 
-      {/* Tab Switcher */}
       <ScrollReveal className="flex justify-center gap-3 mb-10" delay={100}>
         <div className={`flex bg-obsidian-surface/60 border border-bronze-border/15 p-1.5 rounded-xl gap-1`}>
           {teams.map((t) => (
@@ -2591,7 +2597,6 @@ export function TeamSection() {
         </p>
       </ScrollReveal>
 
-      {/* Grid of Team Members */}
       <div className={`grid grid-cols-1 sm:grid-cols-2 ${activeTab === 'operations' ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-6 max-w-6xl mx-auto`}>
         {activeTeam?.members.map((member, idx) => (
           <ScrollReveal key={member.role} delay={idx * 50}>
@@ -2628,7 +2633,6 @@ export function TeamSection() {
         ))}
       </div>
 
-      {/* Founder Modal */}
       <AnimatePresence>
         {selectedFounder && (
           <div
@@ -2670,10 +2674,10 @@ export function TeamSection() {
                 shadow-[0_25px_80px_rgba(0,0,0,.6)]
               "
             >
-              {/* Glow */}
+           
               <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-bronze/5 blur-[110px] pointer-events-none" />
 
-              {/* Close */}
+             
               <button
                 onClick={() => setSelectedFounder(false)}
                 className="absolute top-4 right-4 text-silver-dim hover:text-silver text-xs font-mono uppercase bg-bronze/5 px-2.5 py-1 rounded border border-bronze-border/10 cursor-pointer z-10"
@@ -2681,7 +2685,7 @@ export function TeamSection() {
                 Close
               </button>
 
-              {/* Header */}
+           
               <div className="relative z-10 flex items-center gap-5">
 
                 <TeamAvatar 
@@ -2708,7 +2712,7 @@ export function TeamSection() {
 
               <div className="my-7 h-px bg-gradient-to-r from-transparent via-bronze/20 to-transparent" />
 
-              {/* Reflection */}
+             
 
               <section className="space-y-2">
 
@@ -2724,7 +2728,7 @@ export function TeamSection() {
 
               <div className="my-7 h-px bg-gradient-to-r from-transparent via-bronze/20 to-transparent" />
 
-              {/* About */}
+          
 
               <section className="space-y-3">
 
@@ -2740,7 +2744,7 @@ export function TeamSection() {
 
               <div className="my-7 h-px bg-gradient-to-r from-transparent via-bronze/20 to-transparent" />
 
-              {/* Vision */}
+         
 
               <section className="space-y-3">
 
@@ -2821,7 +2825,6 @@ export function TeamSection() {
         )}
       </AnimatePresence>
 
-      {/* Member Profile Modal */}
       <AnimatePresence>
         {selectedMember && (
           <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
@@ -2924,6 +2927,8 @@ export function TeamSection() {
     </section>
   );
 }
+
+*/
 
 // ============================================================================
 // Footer
@@ -3068,10 +3073,6 @@ export default function Home() {
       <LibrarySection />
       <SectionDivider />
       <NewsletterSection />
-      <SectionDivider />
-      <EventsSection />
-      <SectionDivider />
-      <TeamSection />
       <SectionDivider />
       <JoinSection />      
       <Footer />
