@@ -21,7 +21,6 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const providerId = Math.random();
 
-    console.log("Provider ID:", providerId);
   const [theme, setTheme] = useState<Theme>(() => {
     const saved = localStorage.getItem("com_theme");
     return (saved === "light" || saved === "dark") ? saved : "dark";
@@ -59,12 +58,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setTransitionType(null);
     }, 1300);
   };
-
-  console.log("ThemeProvider render:", {
-    theme,
-    isTransitioning,
-    transitionType,
-    });
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, isTransitioning, transitionType }}>

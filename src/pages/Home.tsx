@@ -361,9 +361,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const handleThemeToggle = () => {
-    console.log("Before:", { theme, isTransitioning });
     toggleTheme();
-    console.log("After calling toggleTheme");
   };
   const { theme, toggleTheme, isTransitioning } = useTheme();
 
@@ -411,7 +409,7 @@ export function Navbar() {
               alt="Collegium of Minds"
               className="w-8 h-8 sm:w-9 sm:h-9 rounded-full ring-1 ring-cyan-500/40 group-hover:ring-cyan-400 transition-all" />
           <div className="flex flex-col">
-            <span className="font-heading text-sm sm:text-base font-semibold text-white tracking-wide">
+            <span className="font-heading text-sm sm:text-base font-semibold text-white tracking-wide whitespace-nowrap">
               Collegium of Minds
             </span>
           </div>
@@ -445,7 +443,7 @@ export function Navbar() {
           </ul>
 
           {/* Connect Portal */}
-          <div className="relative group">
+          <div className="relative group hidden md:block">
             <button
               className="
                 flex items-center gap-2
@@ -624,6 +622,7 @@ export function Navbar() {
         <div className="md:hidden absolute top-full left-0 right-0 bg-[#060B18]/95 backdrop-blur-xl border-b border-bronze-border">
           <ul className="flex flex-col p-6 gap-4">
             {navLinks.map((l) => (
+              
               <li key={l.label}>
                 <Link
                   to={l.to}
@@ -640,7 +639,56 @@ export function Navbar() {
                   {l.label}
                 </Link>
               </li>
+              
             ))}
+            <li className="pt-4 border-t border-bronze-border/20">
+              <p className="px-4 mb-2 text-[10px] uppercase tracking-[3px] text-cyan-400 font-heading">
+                Connect
+              </p>
+
+              {[
+                {
+                  name: "Website",
+                  icon: Globe,
+                  link: "/",
+                },
+                {
+                  name: "Substack",
+                  icon: Newspaper,
+                  link: "https://thecollegiumofminds.substack.com",
+                },
+                {
+                  name: "Discord",
+                  icon: MessageCircle,
+                  link: "https://discord.gg/UrfMsFmXYH",
+                },
+                {
+                  name: "LinkedIn",
+                  icon: Linkedin,
+                  link: "https://www.linkedin.com/company/the-collegium-of-minds/",
+                },
+                {
+                  name: "GitHub",
+                  icon: Github,
+                  link: "https://github.com/CoM-137",
+                },
+              ].map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    target={item.link.startsWith("http") ? "_blank" : undefined}
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 py-3 px-4 rounded-lg hover:bg-cyan-400/10 transition-colors"
+                  >
+                    <Icon size={18} />
+                    <span>{item.name}</span>
+                  </a>
+                );
+              })}
+            </li>
           </ul>
         </div>
       )}
@@ -3403,7 +3451,6 @@ const exploreLinks = [
 ];
 
 const connectLinks = [
-  { label: "Instagram", href: "https://instagram.com", note: "coming soon" },
   { label: "LinkedIn", href: "https://www.linkedin.com/company/the-collegium-of-minds/" },
   { label: "Discord", href: "https://discord.gg/bEMYvJ7eU3" },
   { label: "GitHub", href: "https://github.com/CoM-137" },
@@ -3429,8 +3476,8 @@ export function Footer() {
           </div>
     
           <div className="max-w-6xl mx-auto px-5 sm:px-8 pt-14 pb-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-16 mb-14">
-              <div>
+            <div className="flex flex-wrap justify-between gap-10 mb-14">
+              <div className="w-full lg:w-[40%]">
                 <div className="flex items-center gap-3 mb-4">
                   <img src="https://media.base44.com/images/public/6a3979ed4c8f30bd3eb32ea0/c98e0fd61_The_Collegium_of_Minds_Logo.jpeg"
                   alt="Collegium of Minds"
@@ -3448,7 +3495,7 @@ export function Footer() {
                 </p>
               </div>
     
-              <div>
+              <div className="flex-1 min-w-[180px] text-center sm:text-left">
                 <h4 className="font-heading text-[10px] font-semibold tracking-[3px] uppercase text-bronze mb-5">
                   Explore
                 </h4>
@@ -3469,7 +3516,7 @@ export function Footer() {
                 </ul>
               </div>
     
-              <div>
+              <div className="flex-1 min-w-[180px] text-center sm:text-left">
                 <h4 className="font-heading text-[10px] font-semibold tracking-[3px] uppercase text-bronze mb-5">
                   Connect
                 </h4>
