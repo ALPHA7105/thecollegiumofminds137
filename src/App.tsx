@@ -69,6 +69,10 @@ import Home, {
 import { articles as initialArticles, categoryColors } from './data/articles';
 import QuestionsPage from './pages/Questions';
 import Events from './pages/Events';
+import { CinematicThemeOverlay } from './components/CinematicThemeOverlay';
+import { ThemeProvider } from './lib/ThemeContext';
+import { FloatingBooksBackground } from './components/FloatingBooksBackground';
+import RecognitionsPage from './pages/RecognitionsPage';
 
 const queryClient = new QueryClient();
 
@@ -210,15 +214,16 @@ function LibraryPage() {
 
   const categories = [
     'All',
-    'The Physical World',
-    'Matter & Molecules',
-    'Life & Nature',
+    'Physics',
+    'Chemistry',
+    'Biology',
     'Mathematics',
     'Philosophy',
     'Innovation & Technology',
-    'Space & Cosmology',
+    'Cosmology',
     'Humanity & Society',
-    'Arts & Expression'
+    'Arts & Literature',
+    'Games & Sports'
   ];
 
   const filteredArticles = useMemo(() => {
@@ -234,21 +239,22 @@ function LibraryPage() {
   return (
     <div className="min-h-screen bg-obsidian text-silver overflow-x-hidden pt-24 sm:pt-28 pb-0">
       <AmbientBackground />
+      <FloatingBooksBackground />
       <Navbar />
 
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 relative z-10">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 relative">
         <ScrollReveal className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 border border-bronze-border bg-bronze-dim px-4 py-1.5 rounded-full mb-6">
-            <span className="font-heading text-[10px] font-semibold tracking-[3px] uppercase text-bronze">
-              The Archives
-            </span>
-          </div>
-          <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-silver mb-4 tracking-tight">
-            Library of Minds
-          </h1>
-          <p className="text-silver-muted text-base sm:text-lg font-light leading-relaxed max-w-xl mx-auto">
-            A repository of essays, thoughts, and research papers published by founding members of the Collegium.
-          </p>
+            <div className="inline-flex items-center gap-2 border border-bronze-border bg-bronze-dim px-4 py-1.5 rounded-full mb-6">
+              <span className="font-heading text-[10px] font-semibold tracking-[3px] uppercase text-bronze">
+                The Archives
+              </span>
+            </div>
+            <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-silver mb-4 tracking-tight">
+              Library of Minds
+            </h1>
+            <p className="text-silver-muted text-base sm:text-lg font-light leading-relaxed max-w-xl mx-auto">
+              A repository of essays, thoughts, and research papers published by founding members of the Collegium.
+            </p>
         </ScrollReveal>
 
         {/* Elegant Section Tab Controller */}
@@ -299,7 +305,7 @@ function LibraryPage() {
                 className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-bronze/10 border border-bronze text-bronze px-6 py-3 font-heading text-xs font-semibold tracking-widest uppercase rounded hover:bg-bronze/20 transition-all flex-shrink-0"
               >
                 <PenTool className="w-3.5 h-3.5" />
-                Submit an Essay
+                Submit an Article
               </a>
             </ScrollReveal>
 
@@ -327,17 +333,60 @@ function LibraryPage() {
                   const colors = categoryColors[a.category] || categoryColors["The Physical World"];
                   return (
                     <ScrollReveal key={a.slug} delay={i * 60}>
-                      <Link
-                        to={`/library/${a.slug}`}
-                        className={`group flex flex-col justify-between h-full bg-obsidian-surface/60 border ${colors.border} rounded-2xl p-6 sm:p-7 hover:bg-bronze-dim/10 transition-all duration-300 hover:-translate-y-1`}
-                      >
+                      {a.isPreview ? (
+                        <a
+                          href={a.substackUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`group flex flex-col justify-between h-full bg-obsidian-surface/60 border ${colors.border} rounded-2xl p-6 sm:p-7 hover:bg-bronze-dim/10 transition-all duration-300 hover:-translate-y-1`}
+                        >
+                          <div>
+                          {a.coverImage && (
+                            <div className="h-44 w-full relative overflow-hidden mb-5 rounded-xl border border-bronze-border/10">
+                              <img 
+                                src={a.coverImage} 
+                                alt={a.title} 
+                                className="w-full h-full object-cover opacity-100 group-hover:scale-105 transition-transform duration-500"
+                                referrerPolicy="no-referrer"
+                              />
+                            </div>
+                          )}
+                          <span className={`inline-block text-[10px] font-heading font-semibold tracking-widest uppercase px-3 py-1 rounded-full border ${colors.text} ${colors.bg} ${colors.border} mb-4`}>
+                            {a.category}
+                          </span>
+                          <h3 className="font-heading text-lg font-bold text-silver mb-3 group-hover:text-bronze transition-colors leading-tight">
+                            {a.title}
+                          </h3>
+                          <p className="text-silver-dim text-xs font-light leading-relaxed mb-6">
+                            {a.excerpt}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-4 border-t border-bronze-border/10 mt-auto">
+                          <span className="text-silver-dim text-[11px] font-light">{a.author}</span>
+                          <div className="flex items-center gap-1 text-bronze group-hover:text-bronze-light transition-colors">
+                            <span className="text-[9px] font-heading font-medium tracking-wide uppercase">
+                              Substack
+                            </span>
+                            <ExternalLink size={10} strokeWidth={2.25} />
+                          </div>
+                          <span className={`${colors.text} text-[11px] font-heading tracking-wider`}>
+                            {a.readTime}
+                          </span>
+                        </div>
+                        </a>
+                      ) : (
+                        <Link
+                          to={`/library/${a.slug}`}
+                          className={`group flex flex-col justify-between h-full bg-obsidian-surface/60 border ${colors.border} rounded-2xl p-6 sm:p-7 hover:bg-bronze-dim/10 transition-all duration-300 hover:-translate-y-1`}
+                        >
                         <div>
                           {a.coverImage && (
                             <div className="h-44 w-full relative overflow-hidden mb-5 rounded-xl border border-bronze-border/10">
                               <img 
                                 src={a.coverImage} 
                                 alt={a.title} 
-                                className="w-full h-full object-cover opacity-75 group-hover:scale-105 transition-transform duration-500"
+                                className="w-full h-full object-cover opacity-100 group-hover:scale-105 transition-transform duration-500"
                                 referrerPolicy="no-referrer"
                               />
                             </div>
@@ -360,6 +409,7 @@ function LibraryPage() {
                           </span>
                         </div>
                       </Link>
+                      )}
                     </ScrollReveal>
                   );
                 })
@@ -686,9 +736,17 @@ function ArticleDetailPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg
-                            bg-sky-500/10 border border-sky-400/30
-                            text-sky-300 hover:text-sky-200 hover:border-sky-300
-                            transition-all text-xs"
+                              bg-sky-500/10
+                              light:bg-sky-950/50
+                              border border-sky-400/30
+                              light:border-sky-400/50
+                              text-sky-300
+                              light:text-sky-700
+                              hover:text-sky-200
+                              light:hover:text-sky-900
+                              hover:border-sky-300
+                              light:hover:border-sky-500
+                              transition-all text-xs"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">Read on Substack</span>
@@ -723,7 +781,7 @@ function ArticleDetailPage() {
             <img 
               src={article.coverImage} 
               alt={article.title} 
-              className="w-full h-full object-cover opacity-85"
+              className="w-full h-full object-cover opacity-100"
               referrerPolicy="no-referrer"
             />
           </ScrollReveal>
@@ -744,12 +802,31 @@ function ArticleDetailPage() {
         }}
       />
         <div className="markdown-body text-silver text-base sm:text-lg mb-14 leading-relaxed">
-          <ReactMarkdown
+          {(article as any).isPreview ? (
+            <div className="py-12 text-center">
+              <p className="text-silver-muted text-lg mb-6 max-w-xl mx-auto">
+                This article is available exclusively on Substack.
+                Read the full article using the button below.
+              </p>
+
+              <a
+                href={article.substackUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-bronze hover:bg-bronze-light text-obsidian px-6 py-3 rounded-xl font-heading text-xs font-bold tracking-widest uppercase transition-all hover:-translate-y-0.5"
+              >
+                Read on Substack
+                <ExternalLink size={14} />
+              </a>
+            </div>
+          ) : (
+            <ReactMarkdown
             remarkPlugins={[remarkMath]}
             rehypePlugins={[rehypeKatex]}
           >
             {article.content}
           </ReactMarkdown>
+          )}  
         </div>
         {/* Author Signature Block */}
         <div className="mt-10 pt-6 border-t border-sky-400/10 flex items-center justify-end">
@@ -1271,27 +1348,49 @@ function PageNotFound() {
           <HelpCircle className="w-8 h-8 text-bronze" />
         </div>
         <h1 className="font-heading text-4xl font-bold mb-2 text-silver">404</h1>
-        <h2 className="font-heading text-xl font-medium mb-3 text-silver">Hypothesis Disproven</h2>
+        <h2 className="font-heading text-xl font-medium mb-3 text-silver">Page Not Found</h2>
         <p className="text-silver-muted text-sm font-light leading-relaxed mb-8 max-w-sm mx-auto">
-          The coordinate grid in space-time you requested is void. The link you followed may be stale or misspelled.
+          The page you are looking for does not exist or may have been moved.
         </p>
 
         {isFetched && isAdmin && (
-          <div className="text-left bg-bronze-dim/10 border border-bronze-border/20 rounded-2xl p-5 mb-8">
-            <h4 className="font-heading text-xs font-bold uppercase tracking-widest text-bronze mb-2">Administrative Node Details</h4>
-            <p className="text-xs text-silver-muted leading-relaxed font-light">
-              Current Authenticated Principal: <strong className="text-silver">{authData.user?.name || authData.user?.email}</strong><br />
-              Role Authority: <strong className="text-bronze uppercase text-[10px] tracking-wider">Administrator</strong><br />
-              System Status: Standalone Mock Sandbox operational.
-            </p>
-          </div>
+          
+            <div className="text-center mb-8">
+              <p className="text-xs text-silver-muted mb-3">
+                Looking for something specific?
+              </p>
+
+              <div className="flex justify-center gap-4 text-xs">
+                <Link
+                  to="/library"
+                  className="text-bronze hover:text-bronze-light transition-colors"
+                >
+                  Explore Library
+                </Link>
+
+                <Link
+                  to="/#join"
+                  className="text-bronze hover:text-bronze-light transition-colors"
+                >
+                  Join CoM
+                </Link>
+
+                <a
+                  href="mailto:thecollegiumofminds@gmail.com"
+                  className="text-bronze hover:text-bronze-light transition-colors"
+                >
+                  Contact Us
+                </a>
+              </div>
+            </div>
+          
         )}
 
         <Link
           to="/"
           className="inline-flex items-center gap-2 bg-bronze hover:bg-bronze-light text-obsidian px-8 py-3.5 font-heading text-xs font-semibold tracking-widest uppercase rounded shadow-lg shadow-bronze/10 transition-all hover:-translate-y-0.5"
         >
-          <ArrowLeft className="w-4 h-4" /> Return to Assembly
+          <ArrowLeft className="w-4 h-4" /> Return to Home
         </Link>
       </div>
     </div>
@@ -1327,7 +1426,9 @@ function AuthenticatedRoute({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
       <AuthProvider>
+        <CinematicThemeOverlay />
         <Router>
           <ScrollToTop />
           <Routes>
@@ -1360,10 +1461,10 @@ export default function App() {
             />
             {/* Guarded/Private Library Routes */}
             <Route
-              path="/events"
+              path="/supporters"
               element={
                 <AuthenticatedRoute>
-                  <Events />
+                  <RecognitionsPage />
                 </AuthenticatedRoute>
               }
             />
@@ -1383,6 +1484,7 @@ export default function App() {
           <Toaster />
         </Router>
       </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

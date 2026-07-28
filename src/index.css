@@ -60,6 +60,53 @@
 html {
   scroll-behavior: smooth;
   background-color: #070912;
+  transition: background-color 0.8s ease;
+}
+
+html.light {
+  background-color: #f8fafc;
+  color: #0f172a;
+  --color-background: #f8fafc;
+  --color-foreground: #0f172a;
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0f172a;
+  --color-primary: #0284c7;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f1f5f9;
+  --color-secondary-foreground: #0f172a;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #475569;
+  --color-accent: #e2e8f0;
+  --color-accent-foreground: #0f172a;
+  --color-border: #cbd5e1;
+  --color-input: #cbd5e1;
+  --color-ring: #0284c7;
+
+  --color-obsidian: #f8fafc;
+  --color-obsidian-surface: #ffffff;
+  --color-obsidian-light: #f1f5f9;
+  --color-silver: #0f172a;
+  --color-silver-muted: #334155;
+  --color-silver-dim: #64748b;
+  --color-bronze: #0284c7;
+  --color-bronze-light: #0369a1;
+  --color-bronze-dim: rgba(2, 132, 199, 0.08);
+  --color-bronze-border: rgba(2, 132, 199, 0.25);
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+@keyframes spinSlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 12s linear infinite;
 }
 
 body {
@@ -172,3 +219,14 @@ body::before {
   border: 1px solid rgba(33, 213, 237, 0.12);
 }
 
+.hero-img-light {
+    display: none;
+}
+
+.light .hero-img-light {
+    display: block;
+}
+
+.light .hero-img-dark {
+    display: none;
+}

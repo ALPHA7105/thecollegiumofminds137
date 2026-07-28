@@ -8,65 +8,125 @@ import { AmbientBackground, Navbar, Footer, ScrollReveal } from "./Home";
 
 export const weeklyQuestions = [
   {
-    id: "q_progress",
-    question: "Which has contributed more to humanity's progress?",
-    options: [
-      "Curiosity",
-      "Necessity",
-      "Competition",
-      "Cooperation"
-    ]
-  },
-  {
-    id: "q_discovery",
-    question: "Are the greatest discoveries made by asking better questions or finding better answers?",
-    options: [
-      "Better questions",
-      "Better answers",
-      "Both are equally important",
-      "Neither — timing matters most"
-    ]
-  },
-  {
-    id: "q_truth",
-    question: "If everyone believed something that wasn't true, would it still be wrong?",
-    options: [
-      "Yes",
-      "No",
-      "It depends on the situation",
-      "I'm not sure"
-    ]
-  },
-  {
-    id: "q_future",
-    question: "What will shape humanity's future the most?",
-    options: [
-      "Artificial Intelligence",
-      "Scientific discoveries",
-      "Education",
-      "Human cooperation"
-    ]
-  },
-  {
-    id: "q_unknown",
-    question: "What's more exciting?",
-    options: [
-      "Discovering something new",
-      "Solving an old mystery",
-      "Creating something original",
-      "Teaching others what you know"
-    ]
-  },
-  {
-    id: "q_limit",
-    question: "Which is humanity's greatest limitation?",
-    options: [
-      "Knowledge",
-      "Time",
-      "Imagination",
-      "Cooperation"
-    ]
-  }
+  id: "truth",
+  question: "Can two completely opposing ideas both contain truth?",
+  options: [
+    "Yes, depending on perspective",
+    "Only one can be fully true",
+    "Truth depends on context",
+    "I'm not sure"
+  ]
+},
+{
+  id: "time",
+  question: "If you could pause time, would you still age?",
+  options: [
+    "Yes",
+    "No",
+    "Only mentally",
+    "It depends on how time is paused"
+  ]
+},
+{
+  id: "beauty",
+  question: "Is beauty discovered, or created by the mind?",
+  options: [
+    "Discovered",
+    "Created",
+    "A combination of both",
+    "Neither"
+  ]
+},
+{
+  id: "progress",
+  question: "Does technological progress always improve society?",
+  options: [
+    "Yes",
+    "No",
+    "Only with ethical guidance",
+    "Too early to tell"
+  ]
+},
+{
+  id: "language",
+  question: "Can language limit the way we think?",
+  options: [
+    "Yes, significantly",
+    "Only a little",
+    "Not at all",
+    "I'm undecided"
+  ]
+},
+{
+  id: "identity",
+  question: "What defines who you are the most?",
+  options: [
+    "Your choices",
+    "Your experiences",
+    "Your biology",
+    "Your relationships"
+  ]
+},
+{
+  id: "curiosity",
+  question: "Is curiosity something we're born with or something we develop?",
+  options: [
+    "Born with",
+    "Developed",
+    "Both",
+    "Neither"
+  ]
+},
+{
+  id: "consciousness",
+  question: "Could a machine ever truly become conscious?",
+  options: [
+    "Yes",
+    "No",
+    "Only in the distant future",
+    "Impossible to know"
+  ]
+},
+{
+  id: "knowledge",
+  question: "Which is more valuable?",
+  options: [
+    "Knowledge",
+    "Wisdom",
+    "Creativity",
+    "Empathy"
+  ]
+},
+{
+  id: "certainty",
+  question: "Is absolute certainty ever possible?",
+  options: [
+    "Yes",
+    "No",
+    "Only in mathematics",
+    "Only in personal experience"
+  ]
+},
+{
+  id: "simulation",
+  question: "Would living in a simulation change the meaning of life?",
+  options: [
+    "Yes",
+    "No",
+    "Only if we knew",
+    "I'm unsure"
+  ]
+},
+{
+  id: "future",
+  question: "What will shape humanity's future the most?",
+  options: [
+    "Artificial Intelligence",
+    "Space exploration",
+    "Climate action",
+    "Education"
+  ]
+}
 ];
 
 export default function QuestionsPage() {
@@ -167,7 +227,7 @@ export default function QuestionsPage() {
             </span>
           </div>
           <h1 className="font-heading text-4xl sm:text-5xl font-bold text-silver mb-4 tracking-tight">
-            Question Of The Week
+            Question of the Week
           </h1>
           <p className="text-silver-muted text-base sm:text-lg font-light leading-relaxed max-w-xl mx-auto">
             Every week, the Collegium gathers to explore a new fundamental question. Cast your vote, explore live statistics, and engage in the collective discourse.
@@ -262,6 +322,65 @@ export default function QuestionsPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </ScrollReveal>
+
+        {/* DISCORD DISCUSSION COMMUNITY JOIN CARD */}
+        <ScrollReveal delay={150} className="mb-24 w-full">
+          <div className="border border-indigo-400/30 rounded-2xl p-8 sm:p-10 bg-gradient-to-br from-indigo-950/40 via-obsidian-surface/60 to-obsidian light:from-violet-200 light:via-indigo-100 light:to-purple-50 shadow-xl shadow-indigo-950/20 light:shadow-indigo-300/30 text-center relative overflow-hidden group">
+            <div className="absolute 
+              top-0 
+              right-0 
+              w-[300px] 
+              h-[300px]
+              bg-indigo-500/10
+              light:bg-white/50
+              blur-[100px]
+              rounded-full
+              pointer-events-none" />
+            
+            <div className="inline-flex 
+    items-center 
+    gap-2.5
+
+    border 
+    border-indigo-500/40
+    light:border-indigo-600/30
+
+    bg-indigo-950/50
+    light:bg-white/80
+
+    backdrop-blur-md
+
+    px-4 
+    py-1.5 
+    rounded-full 
+    mb-6">
+              <Sparkles className="w-4 h-4 text-indigo-300 light:text-indigo-600" />
+
+              <span className="font-heading text-[11px] font-semibold tracking-[3px] uppercase text-indigo-100 light:text-indigo-800">
+                Discussion Community
+              </span>
+            </div>
+
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-silver light:text-slate-900 mb-3">
+              Join the CoM Discord
+            </h2>
+            <p className="text-silver-muted light:text-slate-600 text-sm sm:text-base font-light max-w-xl mx-auto mb-8 leading-relaxed">
+              Engage in real-time debates, share research papers, suggest future Question of the Week topics, and connect with thinkers across mathematics, physics, philosophy, and arts.
+            </p>
+
+            <a
+              href="https://discord.gg/UrfMsFmXYH"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 bg-[#5865F2] hover:bg-[#4752C4] text-white px-8 py-3.5 font-heading text-xs font-semibold tracking-widest uppercase rounded-xl shadow-lg shadow-indigo-500/20 transition-all hover:-translate-y-1 group"
+            >
+              <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+              </svg>
+              Join Discussion Community
+            </a>
           </div>
         </ScrollReveal>
       </div>

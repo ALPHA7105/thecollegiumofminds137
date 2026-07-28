@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Menu, X, ChevronDown, ArrowRight, ArrowUpRight, MapPin, Calendar, User, Check, ArrowLeft, Sparkles, ExternalLink, 
   Play, Pause, ChevronLeft, ChevronRight, Send, MessageSquare, Award, Clock, HelpCircle, BookOpen, RotateCcw, Users, 
-  Linkedin, Github, Globe, BriefcaseBusiness, GraduationCap, Microscope, BadgeCheck, Twitter, Mail,
+  Linkedin, Github, Globe, BriefcaseBusiness, GraduationCap, Microscope, BadgeCheck, Twitter, Mail, Sun, Moon, Eye, 
+  EyeOff, Star, StarHalf, StarOff, Circle, CircleDot, CircleDashed, Orbit, Newspaper, MessageCircle,
 } from "lucide-react";
 import { authClient } from "@/api/authClient";
 import { useToast } from "@/components/ui";
@@ -15,6 +16,12 @@ import { weeklyQuestions } from "./Questions";
 import { eventsData, Event } from "../data/events";
 import { resolveSpeakers, Speaker } from "../data/speakers";
 import TeamAvatar from '../components/TeamAvatar';
+import { useTheme } from "../lib/ThemeContext";
+import { HeroTitle } from "../components/HeroTitle";
+import { ConstellationHeading } from "../components/ConstellationHeading";
+import { TypewriterQuestionCard } from "../components/TypewriterQuestionCard";
+import { CinematicThemeOverlay } from "../components/CinematicThemeOverlay";
+import { recognitionsData } from "../data/recognitions";
 
 // ============================================================================
 // ScrollReveal
@@ -55,6 +62,8 @@ export function ScrollReveal({ children, className = "", delay = 0 }: { children
 // ============================================================================
 export function AmbientBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { theme } = useTheme();
+  const isLight = theme === "light";
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -106,8 +115,7 @@ export function AmbientBackground() {
     const initMathSymbols = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const symbolPool = ['∑', '∫', 'π', '∞', 'φ', 'Δ', 'Ω', 'λ', 'ψ', 'θ', 'E=mc²', 'i²=-1', 'Ĥ|Ψ⟩ = E|Ψ⟩', 'F=ma', 'V=IR', 'E-hv', 'a² + b² = c²','∇', '𝜒', 'Ψ', 'Φ', 'ħ', '𝛿', '𝜕', 'Ω ', 'ω'];
-      // Limit count on mobile vs desktop
+      const symbolPool = ['∑', '∫', 'π', '∞', 'φ', 'Δ', 'Ω', 'λ', 'ψ', 'θ', 'e=mc²', 'i²=-1', 'Ĥ|Ψ⟩ = E|Ψ⟩', '∇', '𝜒', 'Ψ', 'Φ', 'ħ', '𝛿', '𝜕'];
       const count = Math.max(Math.min(Math.floor((w * h) / 50000), 15), 5);
       mathSymbols = Array.from({ length: count }, () => ({
         x: Math.random() * w,
@@ -115,8 +123,8 @@ export function AmbientBackground() {
         vx: (Math.random() - 0.5) * 0.12,
         vy: (Math.random() - 0.5) * 0.12,
         text: symbolPool[Math.floor(Math.random() * symbolPool.length)],
-        size: Math.random() * 10 + 11, // 11px to 21px
-        alpha: Math.random() * 0.10 + 0.04, // extremely subtle (4% to 14% base opacity)
+        size: Math.random() * 10 + 11,
+        alpha: Math.random() * 0.10 + 0.04,
         angle: Math.random() * Math.PI * 2,
         rotSpeed: (Math.random() - 0.5) * 0.003
       }));
@@ -153,22 +161,18 @@ export function AmbientBackground() {
       const repulsionRadius = 110;
       const mouseInfluenceRadius = 200;
 
-      // Draw math symbols first (background-most layer)
       for (let i = 0; i < mathSymbols.length; i++) {
         const sym = mathSymbols[i];
 
-        // Drift slowly
         sym.x += sym.vx;
         sym.y += sym.vy;
         sym.angle += sym.rotSpeed;
 
-        // Bounce/Wrap borders
         if (sym.x < -50) sym.x = w + 50;
         if (sym.x > w + 50) sym.x = -50;
         if (sym.y < -50) sym.y = h + 50;
         if (sym.y > h + 50) sym.y = -50;
 
-        // Mouse repulsion on symbols
         const dx = sym.x - mouse.x;
         const dy = sym.y - mouse.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -180,7 +184,7 @@ export function AmbientBackground() {
           const angle = Math.atan2(dy, dx);
           sym.x += Math.cos(angle) * force * 1.2;
           sym.y += Math.sin(angle) * force * 1.2;
-          currentAlpha = Math.min(sym.alpha + force * 0.15, 0.35);
+          currentAlpha = Math.min(sym.alpha + force * 0.18, 0.45);
           currentSize = sym.size + force * 3;
         }
 
@@ -188,14 +192,13 @@ export function AmbientBackground() {
         ctx.translate(sym.x, sym.y);
         ctx.rotate(sym.angle);
         ctx.font = `300 ${currentSize}px "JetBrains Mono", ui-monospace, Georgia, serif`;
-        ctx.fillStyle = `rgba(34, 211, 238, ${currentAlpha})`;
+        ctx.fillStyle = isLight ? `rgba(2, 132, 199, ${currentAlpha})` : `rgba(34, 211, 238, ${currentAlpha})`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(sym.text, 0, 0);
         ctx.restore();
       }
 
-      // Draw and connect stars
       for (let i = 0; i < stars.length; i++) {
         const star = stars[i];
         const dx = star.x - mouse.x;
@@ -232,11 +235,11 @@ export function AmbientBackground() {
             );
             const mouseInf = Math.max(0, 1 - mouseDist / mouseInfluenceRadius);
 
-            const baseOpacity = (1 - dist / connectionDistance) * 0.07;
-            const opacity = Math.min(baseOpacity + mouseInf * 0.40, 0.55);
+            const baseOpacity = (1 - dist / connectionDistance) * 0.09;
+            const opacity = Math.min(baseOpacity + mouseInf * 0.40, 0.6);
 
-            ctx.strokeStyle = "rgba(34, 211, 238, " + opacity + ")";
-            ctx.lineWidth = 0.4 + mouseInf * 0.4;
+            ctx.strokeStyle = isLight ? `rgba(2, 132, 199, ${opacity})` : `rgba(34, 211, 238, ${opacity})`;
+            ctx.lineWidth = 0.5 + mouseInf * 0.5;
             ctx.beginPath();
             ctx.moveTo(stars[i].x, stars[i].y);
             ctx.lineTo(stars[j].x, stars[j].y);
@@ -252,17 +255,17 @@ export function AmbientBackground() {
           (star.y - mouse.y) * (star.y - mouse.y)
         );
         const mouseInf = Math.max(0, 1 - mouseDist / mouseInfluenceRadius);
-        const brightness = 0.20 + mouseInf * 0.80;
+        const brightness = 0.35 + mouseInf * 0.65;
         const size = star.size + mouseInf * 1.3;
 
         if (mouseInf > 0.05) {
-          ctx.fillStyle = "rgba(34, 211, 238, " + (mouseInf * 0.12) + ")";
+          ctx.fillStyle = isLight ? `rgba(2, 132, 199, ${mouseInf * 0.2})` : `rgba(34, 211, 238, ${mouseInf * 0.2})`;
           ctx.beginPath();
           ctx.arc(star.x, star.y, size * 3.5, 0, Math.PI * 2);
           ctx.fill();
         }
 
-        ctx.fillStyle = "rgba(255, 255, 255, " + brightness + ")";
+        ctx.fillStyle = isLight ? `rgba(15, 23, 42, ${brightness})` : `rgba(255, 255, 255, ${brightness})`;
         ctx.beginPath();
         ctx.arc(star.x, star.y, size, 0, Math.PI * 2);
         ctx.fill();
@@ -283,19 +286,46 @@ export function AmbientBackground() {
       window.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseleave", onMouseLeave);
     };
-  }, []);
+  }, [isLight]);
 
   return (
     <>
-      <div className="fixed inset-0 z-0 pointer-events-none bg-gradient-to-b from-[#060B18] via-[#080D1C] to-[#040810]" />
-      <div className="fixed top-[8%] left-[12%] w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] rounded-full bg-cyan-500/5 blur-[130px] animate-float pointer-events-none z-0" />
-      <div className="fixed bottom-[12%] right-[8%] w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] rounded-full bg-violet-500/5 blur-[110px] animate-float pointer-events-none z-0" style={{ animationDelay: "-3s" }} />
-      <div className="fixed top-[45%] left-[45%] w-[300px] h-[300px] rounded-full bg-indigo-500/4 blur-[100px] animate-float pointer-events-none z-0" style={{ animationDelay: "-1.5s" }} />
+      <div
+        className={`fixed inset-0 z-0 pointer-events-none transition-colors duration-700 ${
+          isLight
+            ? "bg-gradient-to-b from-[#f2f6fa]/90 via-[#edf3fa]/85 to-[#f6f9fc]/90"
+            : "bg-gradient-to-b from-[#060B18] via-[#080D1C] to-[#040810]"
+        }`}
+      />
+      {isLight && (
+        <div
+          className="fixed inset-0 z-[0] pointer-events-none bg-cover bg-center bg-no-repeat opacity-20 mix-blend-multiply transition-opacity duration-700"
+          style={{
+            backgroundImage: `url('https://media.base44.com/images/public/6a3a77e56b8f0a8608401d16/0d34f9389_generated_image.png')`,
+          }}
+        />
+      )}
+      <div
+        className={`fixed top-[8%] left-[12%] w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] rounded-full blur-[130px] animate-float pointer-events-none z-0 ${
+          isLight ? "bg-sky-400/25" : "bg-cyan-500/5"
+        }`}
+      />
+      <div
+        className={`fixed bottom-[12%] right-[8%] w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] rounded-full blur-[110px] animate-float pointer-events-none z-0 ${
+          isLight ? "bg-blue-400/25" : "bg-violet-500/5"
+        }`}
+        style={{ animationDelay: "-3s" }}
+      />
       <canvas ref={canvasRef} className="fixed inset-0 z-[1] pointer-events-none" />
-      <div className="fixed inset-0 z-[2] pointer-events-none opacity-[0.02]" style={{
-        backgroundImage: "linear-gradient(rgba(34,211,238,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.5) 1px, transparent 1px)",
-        backgroundSize: "80px 80px",
-      }} />
+      <div
+        className="fixed inset-0 z-[2] pointer-events-none opacity-[0.03]"
+        style={{
+          backgroundImage: isLight
+            ? "linear-gradient(rgba(2,132,199,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(2,132,199,0.3) 1px, transparent 1px)"
+            : "linear-gradient(rgba(34,211,238,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.5) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+        }}
+      />
     </>
   );
 }
@@ -330,6 +360,12 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const handleThemeToggle = () => {
+    console.log("Before:", { theme, isTransitioning });
+    toggleTheme();
+    console.log("After calling toggleTheme");
+  };
+  const { theme, toggleTheme, isTransitioning } = useTheme();
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, to: string) => {
     if (to.startsWith("/#")) {
@@ -365,55 +401,223 @@ export function Navbar() {
         visible ? "translate-y-0" : "-translate-y-full"
       } ${
         scrolled || open
-          ? "bg-obsidian/90 backdrop-blur-xl border-bronze-border"
-          : "bg-obsidian/0 border-bronze-border/0"
+          ? "bg-[#0B0F19]/95 backdrop-blur-xl border-cyan-500/25 shadow-xl"
+          : "bg-[#0B0F19]/85 backdrop-blur-md border-cyan-500/15"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 group" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
           <img src="https://media.base44.com/images/public/6a3979ed4c8f30bd3eb32ea0/c98e0fd61_The_Collegium_of_Minds_Logo.jpeg"
               alt="Collegium of Minds"
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full ring-1 ring-bronze-border group-hover:ring-bronze transition-all" />
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full ring-1 ring-cyan-500/40 group-hover:ring-cyan-400 transition-all" />
           <div className="flex flex-col">
-            <span className="font-heading text-sm sm:text-base font-semibold text-silver tracking-wide">
+            <span className="font-heading text-sm sm:text-base font-semibold text-white tracking-wide">
               Collegium of Minds
             </span>
           </div>
         </Link>
 
-        <ul className="hidden md:flex items-center gap-8">
-          {navLinks.map((l) =>
-            l.cta ? (
-              <li key={l.label}>
-                <Link
-                  to={l.to}
-                  onClick={(e) => handleLinkClick(e, l.to)}
-                  className="font-heading text-xs font-semibold tracking-widest uppercase px-5 py-2.5 border border-bronze-border text-bronze rounded hover:bg-bronze-dim transition-all"
-                >
-                  {l.label}
-                </Link>
-              </li>
-            ) : (
-              <li key={l.label}>
-                <Link
-                  to={l.to}
-                  onClick={(e) => handleLinkClick(e, l.to)}
-                  className="text-silver-muted text-sm font-light tracking-wide hover:text-bronze transition-colors relative after:absolute after:left-0 after:-bottom-1 after:w-full after:h-px after:bg-bronze after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform"
-                >
-                  {l.label}
-                </Link>
-              </li>
-            )
-          )}
-        </ul>
+        <div className="flex items-center gap-4">
+          <ul className="hidden md:flex items-center gap-8">
+            {navLinks.map((l) =>
+              l.cta ? (
+                <li key={l.label}>
+                  <Link
+                    to={l.to}
+                    onClick={(e) => handleLinkClick(e, l.to)}
+                    className="font-heading text-xs font-semibold tracking-widest uppercase px-5 py-2.5 border border-cyan-400/50 text-cyan-300 rounded hover:bg-cyan-500 hover:text-slate-950 transition-all shadow-sm"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ) : (
+                <li key={l.label}>
+                  <Link
+                    to={l.to}
+                    onClick={(e) => handleLinkClick(e, l.to)}
+                    className="text-slate-200 text-sm font-light tracking-wide hover:text-cyan-400 transition-colors relative after:absolute after:left-0 after:-bottom-1 after:w-full after:h-px after:bg-cyan-400 after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              )
+            )}
+          </ul>
 
-        <button
-          className="md:hidden p-2 text-silver-muted hover:text-bronze transition-colors"
-          onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
+          {/* Connect Portal */}
+          <div className="relative group">
+            <button
+              className="
+                flex items-center gap-2
+                h-10
+                w-10
+                group-hover:w-36
+                overflow-hidden
+                rounded-full
+                border border-cyan-400/40
+                bg-cyan-950/40
+                text-cyan-300
+                hover:border-cyan-300
+                hover:bg-cyan-900/60
+                transition-all duration-300
+                shadow-[0_0_15px_rgba(34,211,238,0.2)]
+              "
+            >
+              <Orbit
+                className="
+                  min-w-5
+                  w-5
+                  h-5
+                  ml-2.5
+                  group-hover:rotate-180
+                  transition-transform
+                  duration-500
+                "
+              />
+
+              <span
+                className="
+                  opacity-0
+                  group-hover:opacity-100
+                  whitespace-nowrap
+                  text-xs
+                  font-heading
+                  font-semibold
+                  tracking-widest
+                  uppercase
+                  transition-opacity
+                  duration-300
+                "
+              >
+                Connect
+              </span>
+            </button>
+
+
+            {/* Dropdown */}
+            <div
+              className="
+                absolute
+                right-0
+                top-full
+                pt-3
+                w-56
+                rounded-2xl
+                border
+                border-cyan-400/20
+                bg-[#08111f]/95
+                backdrop-blur-xl
+                shadow-xl
+                opacity-0
+                translate-y-2
+                pointer-events-none
+                group-hover:opacity-100
+                group-hover:translate-y-0
+                group-hover:pointer-events-auto
+                transition-all
+                duration-300
+                p-3
+              "
+            >
+
+              {[
+                {
+                  name: "Website",
+                  icon: Globe,
+                  link: "/",
+                },
+                {
+                  name: "Substack",
+                  icon: Newspaper,
+                  link: "https://thecollegiumofminds.substack.com",
+                },
+                {
+                  name: "Discord",
+                  icon: MessageCircle,
+                  link: "https://discord.gg/UrfMsFmXYH",
+                },
+                {
+                  name: "LinkedIn",
+                  icon: Linkedin,
+                  link: "https://www.linkedin.com/company/the-collegium-of-minds/",
+                },
+                {
+                  name: "GitHub",
+                  icon: Github,
+                  link: "https://github.com/CoM-137",
+                },
+              ].map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    target={item.link.startsWith("http") ? "_blank" : undefined}
+                    rel="noopener noreferrer"
+                    className="
+                      flex
+                      items-center
+                      justify-between
+                      px-3
+                      py-2.5
+                      rounded-xl
+                      text-slate-300
+                      hover:text-cyan-300
+                      hover:bg-cyan-400/10
+                      transition-all
+                      group/item
+                    "
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon size={16} />
+                      <span className="text-xs font-heading tracking-wide">
+                        {item.name}
+                      </span>
+                    </div>
+
+                    <ExternalLink
+                      size={12}
+                      className="
+                        opacity-0
+                        group-hover/item:opacity-100
+                        transition-opacity
+                      "
+                    />
+                  </a>
+                );
+              })}
+
+            </div>
+          </div>
+
+          {/* Theme Toggle Button */}
+          <button onClick={handleThemeToggle}></button>
+          
+          <button
+            onClick={handleThemeToggle}
+            disabled={isTransitioning}
+            title={theme === "dark" ? "Transform Universe to Light Mode" : "Compress Universe to Dark Mode"}
+            className="p-2.5 rounded-full border border-bronze-border/40 bg-bronze-dim/30 hover:bg-bronze-dim text-bronze hover:border-bronze hover:scale-105 active:scale-95 transition-all flex items-center justify-center group cursor-pointer"
+          >
+          
+            {theme === "dark" ? (
+              <Sun className="w-4 h-4 text-amber-400 group-hover:rotate-45 transition-transform duration-500" />
+            ) : (
+              <Moon className="w-4 h-4 text-sky-500 group-hover:-rotate-12 transition-transform duration-500" />
+            )}
+            <span className="sr-only">Toggle Theme</span>
+          </button>
+          
+
+          <button
+            className="md:hidden p-2 text-silver-muted hover:text-bronze transition-colors"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -448,15 +652,23 @@ export function Navbar() {
 // HeroSection
 // ============================================================================
 function HeroSection() {
+  const { theme } = useTheme();
   return (
     <section className="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-5 sm:px-8 pt-20 sm:pt-24 pb-8 overflow-hidden">
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0">
         <img
           src="https://media.base44.com/images/public/6a3979ed4c8f30bd3eb32ea0/5f23d660a_generated_image.png"
-          alt="Cosmic black hole"
-          className="w-full h-full object-cover opacity-65"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            theme === "dark" ? "opacity-40" : "opacity-0"
+          }`}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-obsidian/80 via-obsidian/20 to-obsidian" />
+
+        <img
+          src="https://media.base44.com/images/public/6a3a77e56b8f0a8608401d16/0d34f9389_generated_image.png"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            theme === "light" ? "opacity-100" : "opacity-0"
+          }`}
+        />
       </div>
 
       <div className="absolute top-1/4 left-[10%] w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] rounded-full bg-bronze/5 blur-[120px] animate-float pointer-events-none" />
@@ -475,19 +687,13 @@ function HeroSection() {
           </span>
         </motion.div>
 
-        <motion.h1
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="font-heading font-bold leading-none mb-6"
         >
-          <span className="block text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-silver tracking-tight">
-            The Collegium
-          </span>
-          <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-2 sm:mt-4 font-light italic text-bronze tracking-wide">
-            of Minds
-          </span>
-        </motion.h1>
+          <HeroTitle />
+        </motion.div>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -507,30 +713,54 @@ function HeroSection() {
         >
           <Link
             to="/library"
-            className="group inline-flex items-center justify-center gap-2 bg-bronze/10 border border-bronze text-bronze px-8 py-3.5 font-heading text-xs font-semibold tracking-widest uppercase rounded hover:bg-bronze/20 hover:shadow-lg hover:shadow-bronze/10 transition-all hover:-translate-y-0.5"
+            className="group inline-flex items-center justify-center gap-2
+                      bg-bronze/10 border border-bronze
+                      text-bronze light:text-bronze-900 font:extrabold
+                      px-8 py-3.5
+                      font-heading text-xs font-semibold tracking-widest uppercase
+                      rounded
+                      hover:bg-bronze/20
+                      hover:shadow-lg hover:shadow-bronze/10
+                      transition-all hover:-translate-y-0.5"
           >
             Explore Ideas
             <span className="group-hover:translate-x-1 transition-transform">→</span>
           </Link>
           <a
             href="#join"
-            className="inline-flex items-center justify-center gap-2 border border-silver-dim text-silver-muted px-8 py-3.5 font-heading text-xs font-semibold tracking-widest uppercase rounded hover:border-bronze-border hover:text-silver transition-all"
+            className="inline-flex items-center justify-center gap-2
+                      bg-cyan-950/30 hover:bg-cyan-900/60
+                      border border-cyan-400/80
+                      text-cyan-300 light:text-cyan-900
+                      hover:text-white light:hover:text-cyan-950
+                      px-8 py-3.5
+                      font-heading text-xs font-semibold tracking-widest uppercase
+                      rounded
+                      shadow-[0_0_15px_rgba(34,211,238,0.25)]
+                      hover:shadow-[0_0_25px_rgba(34,211,238,0.45)]
+                      hover:border-cyan-300
+                      transition-all duration-300
+                      cursor-pointer backdrop-blur-sm"
           >
             Join the Collective
           </a>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
+          initial={{ opacity: 0, y: 15, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{
+            duration: 0.8,
+            delay: 1.4,
+            ease: "easeOut",
+          }}
           className="flex flex-col items-center gap-2 mt-6"
         >
-          <span className="text-silver-dim text-[10px] tracking-[3px] uppercase font-light">
+          <span className="text-silver text-[10px] tracking-[3px] uppercase font-light">
             Scroll to explore
           </span>
           <div className="w-px h-8 bg-gradient-to-b from-bronze to-transparent animate-pulse-bronze" />
-          <ChevronDown size={14} className="text-bronze/40 animate-bounce" />
+          <ChevronDown size={14} className="text-bronze/100 animate-bounce" />
         </motion.div>
       </div>
     </section>
@@ -543,20 +773,26 @@ function HeroSection() {
 const stats = [
   { value: "10+", label: "Months Active" },
   { value: "60+", label: "Members" },
-  { value: "9", label: "Societies" },
-  { value: "∞", label: "Ideas on the Table" },
+  { value: "10", label: "Societies" },
+  { value: "∞", label: "Ideas on the Table", isInfinity: true },
 ];
 
-function StatCell({ value, label, inView }: { value: string; label: string; inView: boolean }) {
+function StatCell({ value, label, inView, isInfinity = false }: { value: string; label: string; inView: boolean; isInfinity?: boolean }) {
   return (
     <div className="text-center py-4 sm:py-6 px-4 border-b sm:border-b-0 sm:border-r border-bronze-border/30 last:border-0">
-      <span
-        className={`font-heading text-3xl sm:text-4xl font-bold text-bronze block mb-2 transition-all duration-700 ${
-          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
-      >
-        {value}
-      </span>
+      <div className="h-14 sm:h-16 flex items-center justify-center mb-2">
+        <span
+          className={`
+            block
+            font-heading font-bold text-bronze leading-none
+            ${isInfinity ? "text-5xl sm:text-6xl" : "text-3xl sm:text-4xl"}
+            transition-all duration-700
+            ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}
+          `}
+        >
+            {value}
+        </span>
+      </div>
       <span className="text-silver-dim text-[10px] sm:text-xs tracking-[2px] uppercase font-light">
         {label}
       </span>
@@ -729,6 +965,16 @@ const societies = [
     ],
     members: 22
   },
+  {
+    icon: "🎮",
+    name: "Games & Sports",
+    questions: [
+      "Can games be considered a form of art?",
+      "What makes a game truly memorable?",
+      "Do video games change the way we think?"
+    ],
+    members: 22
+  },
 ];
 
 function AboutSection() {
@@ -745,9 +991,14 @@ function AboutSection() {
               </span>
             </div>
 
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-silver tracking-tight mb-8 leading-tight">
-              Curiosity over<br />conformity.
-            </h2>
+            <ConstellationHeading
+              line1="Curiosity over"
+              line2="conformity."
+              line1ClassName="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight"
+              line2ClassName="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight italic"
+              align="left"
+              className="mb-8"
+            />
 
             <div className="space-y-6 text-silver-muted text-sm sm:text-base font-light leading-relaxed max-w-xl">
               <p>
@@ -816,7 +1067,7 @@ function AboutSection() {
           <img
             src="https://media.base44.com/images/public/6a3a77e56b8f0a8608401d16/ee4c7f57a_generated_image.png"
             alt="Scientific study environment with cosmic light"
-            className="w-full h-48 sm:h-64 object-cover opacity-60 hover:opacity-80 transition-opacity duration-700"
+            className="w-full h-48 sm:h-64 object-cover opacity-90 hover:opacity-100 transition-opacity duration-700"
           />
         </div>
       </ScrollReveal>
@@ -876,97 +1127,61 @@ function AboutSection() {
 // ============================================================================
 // QuestionsSection
 // ============================================================================
-const questions = [
+const ALL_QUESTIONS = [
   "Is consciousness computable, or does it require something beyond matter?",
   "What actually happens inside a black hole, and can we ever know?",
   "Can civilization survive the arrival of artificial superintelligence?",
   "Is mathematics discovered, or invented by the human mind?",
   "What is intelligence — and does our definition of it even make sense?",
   "Could spacetime itself emerge from information? What would that mean?",
+  "Does time actually flow, or is the arrow of time an illusion of entropy?",
+  "Are physical constants truly fundamental, or are they artifacts of a multiverse?",
+  "Can ethics be grounded in objective scientific or mathematical truths?",
+  "What is the ultimate fate of information lost beyond an event horizon?",
+  "Is free will compatible with a deterministic or quantum physical universe?",
+  "Could our universe be a self-simulating mathematical structure?",
+  "What defines the threshold between non-living chemistry and biological life?",
+  "Will humans ever formulate a complete Theory of Everything?",
+  "Is beauty an evolutionary shortcut or a deep feature of cosmic order?",
 ];
 
-
-/*
 function QuestionsSection() {
   const { toast } = useToast();
   const [pollIndex, setPollIndex] = useState(0);
   const [votedOption, setVotedOption] = useState<number | null>(null);
   const [votes, setVotes] = useState<number[]>([]);
+  const [activeQuestions, setActiveQuestions] = useState<string[]>(ALL_QUESTIONS.slice(0, 6));
 
   const activePoll = weeklyQuestions[pollIndex];
 
-  // Load poll for current week + user's vote + real vote counts
   useEffect(() => {
     const weekIndex = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000)) % weeklyQuestions.length;
     setPollIndex(weekIndex);
 
-    const pollId = weeklyQuestions[weekIndex].id;
-    const numOptions = weeklyQuestions[weekIndex].options.length;
+    if (weeklyQuestions[weekIndex]) {
+      const pollId = weeklyQuestions[weekIndex].id;
+      const numOptions = weeklyQuestions[weekIndex].options.length;
 
-    // Check if user already voted this week
-    const savedVote = localStorage.getItem(`com_poll_voted_${pollId}`);
-    setVotedOption(savedVote ? parseInt(savedVote, 10) : null);
+      const savedVote = localStorage.getItem(`com_poll_voted_${pollId}`);
+      setVotedOption(savedVote ? parseInt(savedVote, 10) : null);
 
-    // Fetch real votes from Firebase
-    getPollVotes(pollId, numOptions).then((fetchedVotes) => {
-      setVotes(fetchedVotes);
-    });
-  }, [pollIndex]);
-
-  const handleVote = async (optionIdx: number) => {
-    if (votedOption !== null) return;
-
-    const pollId = activePoll.id;
-
-    try {
-      await submitVote(pollId, optionIdx);
-
-      // Update local state
-      const newVotes = [...votes];
-      newVotes[optionIdx] = (newVotes[optionIdx] || 0) + 1;
-      setVotes(newVotes);
-      setVotedOption(optionIdx);
-
-      // Save to localStorage so user can't vote again this week
-      localStorage.setItem(`com_poll_voted_${pollId}`, optionIdx.toString());
-
-      toast({
-        title: "Vote Recorded",
-        description: "Your perspective has been added to the collective record.",
-      });
-    } catch (err) {
-      toast({
-        title: "Vote Failed",
-        description: "Please try again later.",
-        variant: "destructive"
-      });
+      getPollVotes(pollId, numOptions).then(setVotes);
     }
+  }, []);
+
+  const handleCardClick = (cardIdx: number) => {
+    // Select a question from ALL_QUESTIONS that isn't currently displayed on any card
+    const unused = ALL_QUESTIONS.filter((q) => !activeQuestions.includes(q));
+    if (unused.length === 0) return;
+
+    const nextQ = unused[Math.floor(Math.random() * unused.length)];
+    const updated = [...activeQuestions];
+    updated[cardIdx] = nextQ;
+    setActiveQuestions(updated);
   };
-*/
-
-function QuestionsSection() {
-  const { toast } = useToast();
-  const [pollIndex, setPollIndex] = useState(0);
-  const [votedOption, setVotedOption] = useState<number | null>(null);
-  const [votes, setVotes] = useState<number[]>([]);
-
-  const activePoll = weeklyQuestions[pollIndex];
-
-  useEffect(() => {
-    const weekIndex = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000)) % weeklyQuestions.length;
-    setPollIndex(weekIndex);
-
-    const pollId = weeklyQuestions[weekIndex].id;
-    const numOptions = weeklyQuestions[weekIndex].options.length;
-
-    const savedVote = localStorage.getItem(`com_poll_voted_${pollId}`);
-    setVotedOption(savedVote ? parseInt(savedVote, 10) : null);
-
-    getPollVotes(pollId, numOptions).then(setVotes);
-  }, [pollIndex]);
 
   const handleVote = async (optionIdx: number) => {
-    if (votedOption !== null) return;
+    if (votedOption !== null || !activePoll) return;
 
     const pollId = activePoll.id;
     try {
@@ -979,14 +1194,14 @@ function QuestionsSection() {
 
       localStorage.setItem(`com_poll_voted_${pollId}`, optionIdx.toString());
 
-      toast({ title: "Vote Recorded", description: "Thank you!" });
+      toast({ title: "Vote Recorded", description: "Your perspective has been added to the collective record." });
     } catch (err) {
       toast({ title: "Failed", description: "Try again.", variant: "destructive" });
     }
   };
 
   const handleRetractVote = async () => {
-    if (votedOption === null) return;
+    if (votedOption === null || !activePoll) return;
 
     const pollId = activePoll.id;
     const currentOption = votedOption;
@@ -994,7 +1209,6 @@ function QuestionsSection() {
     try {
       await retractVote(pollId, currentOption);
 
-      // Update local state
       const newVotes = [...votes];
       if (newVotes[currentOption] > 0) {
         newVotes[currentOption] -= 1;
@@ -1002,12 +1216,11 @@ function QuestionsSection() {
       setVotes(newVotes);
       setVotedOption(null);
 
-      // Remove from localStorage
       localStorage.removeItem(`com_poll_voted_${pollId}`);
 
       toast({
         title: "Vote Retracted",
-        description: "Your vote has been removed. You can now select another option.",
+        description: "Your vote has been removed. You can now select another option."
       });
     } catch (err) {
       toast({
@@ -1030,41 +1243,40 @@ function QuestionsSection() {
             Questions We Ask
           </span>
         </div>
-        <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-silver tracking-tight leading-tight">
-          This is what drives us.
-        </h2>
+        <ConstellationHeading
+          line1="This is what drives us."
+          line1ClassName="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight"
+          className="mb-4"
+        />
         <p className="text-silver-muted text-sm sm:text-base font-light max-w-xl mx-auto mt-4 leading-relaxed">
-          The ultimate frontiers of science and philosophy cannot be conquered; they are playgrounds to be explored.
+          The ultimate frontiers of science and philosophy cannot be conquered; they are playgrounds to be explored. Click any inquiry to flip to another question.
         </p>
       </ScrollReveal>
 
       <ScrollReveal className="mb-14 flex justify-center">
-        <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-bronze-border/30 shadow-lg shadow-bronze/5">
+        <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden border-2 border-cyan-400/40 shadow-xl shadow-cyan-500/10">
           <img
             src="https://media.base44.com/images/public/6a3a77e56b8f0a8608401d16/cf60e2ea0_generated_image.png"
             alt="Silhouette gazing at blue planet in cosmic sky"
-            className="w-full h-full object-cover opacity-60"
+            className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
           />
         </div>
       </ScrollReveal>
 
-      {/* Grid of Standard Philosophical Questions */}
+      {/* Grid of Standard Philosophical Questions with Typewriter Effect */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-20">
-        {questions.map((q, i) => (
+        {activeQuestions.map((q, i) => (
           <ScrollReveal key={i} delay={i * 65}>
-            <div className="group relative bg-obsidian-surface/50 border border-bronze-border/10 rounded-2xl p-7 sm:p-8 hover:bg-bronze-dim/10 hover:border-bronze/25 transition-all duration-300 hover:-translate-y-1 cursor-default h-full">
-              <span className="absolute top-4 left-6 font-heading text-4xl text-bronze/10 leading-none select-none">
-                "
-              </span>
-              <p className="text-silver-muted text-sm font-light italic leading-relaxed pt-4 group-hover:text-silver transition-colors">
-                {q}
-              </p>
-            </div>
+            <TypewriterQuestionCard
+              question={q}
+              delay={i * 100}
+              onClick={() => handleCardClick(i)}
+            />
           </ScrollReveal>
         ))}
       </div>
 
-      {/* QUESTION OF THE WEEK LINK (REPLACED POLL) */}
+      {/* QUESTION OF THE WEEK INTERACTIVE DIRECT POLL */}
       <ScrollReveal delay={100} className="mb-8 w-full">
         <div className="border border-bronze-border/30 rounded-2xl p-8 sm:p-10 bg-gradient-to-br from-bronze-dim/30 via-obsidian-surface/40 to-transparent">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10 border-b border-bronze-border/10 pb-8 mb-8">
@@ -1077,16 +1289,88 @@ function QuestionsSection() {
             </p>
           </div>
 
-          <div className="text-center py-4">
-            <p className="text-silver-muted text-sm font-light mb-6">
-              Our members are actively debating and voting on this question. Share your perspective and see live statistics on our interactive polling page.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Voting Options */}
+            <div className="flex flex-col gap-3">
+              <h3 className="text-xs font-heading font-semibold tracking-wider text-silver-muted uppercase mb-2">
+                {votedOption !== null ? "Thank you for voting" : "Cast your vote"}
+              </h3>
+
+              {activePoll?.options.map((opt, idx) => {
+                const isSelected = votedOption === idx;
+                const letter = optionLetters[idx] || String.fromCharCode(65 + idx);
+                return (
+                  <button
+                    key={idx}
+                    disabled={votedOption !== null}
+                    onClick={() => handleVote(idx)}
+                    className={`text-left text-sm font-light py-3.5 px-5 rounded-xl border transition-all flex items-center justify-between ${
+                      votedOption !== null 
+                        ? isSelected 
+                          ? "bg-bronze/15 border-bronze text-bronze font-medium" 
+                          : "bg-obsidian-light/10 border-bronze-border/5 text-silver-dim/70"
+                        : "bg-obsidian-surface/60 border-bronze-border/10 text-silver hover:border-bronze/40 hover:bg-bronze-dim/10 hover:translate-x-1 cursor-pointer"
+                    }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="font-mono text-bronze font-bold text-xs mt-0.5">{letter}.</span>
+                      <span>{opt}</span>
+                    </div>
+                    {isSelected && <Check className="w-4 h-4 text-bronze" />}
+                  </button>
+                );
+              })}
+
+              {votedOption !== null && (
+                <button
+                  onClick={handleRetractVote}
+                  className="mt-3 text-xs font-heading font-medium tracking-wider text-bronze hover:text-bronze-light transition-colors underline underline-offset-4 flex items-center gap-1.5 self-start cursor-pointer group"
+                >
+                  <RotateCcw className="w-3 h-3 group-hover:-rotate-45 transition-transform duration-300" />
+                  Remove Vote
+                </button>
+              )}
+            </div>
+
+            {/* Live Results Bar Chart */}
+            <div className="flex flex-col justify-center bg-obsidian-light/10 rounded-2xl p-6 border border-bronze-border/10">
+              <h3 className="text-xs font-heading font-semibold tracking-wider text-silver-muted uppercase mb-4 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-bronze animate-pulse" />
+                Live Results ({totalVotes} votes)
+              </h3>
+              <div className="flex flex-col gap-4">
+                {activePoll?.options.map((opt, idx) => {
+                  const voteCount = votes[idx] || 0;
+                  const pct = totalVotes > 0 ? Math.round((voteCount / totalVotes) * 100) : 0;
+                  const letter = optionLetters[idx] || String.fromCharCode(65 + idx);
+
+                  return (
+                    <div key={idx} className="flex flex-col gap-1.5">
+                      <div className="flex justify-between text-xs font-light text-silver-muted">
+                        <span>{letter}. {opt}</span>
+                        <span className="font-mono">{pct}% ({voteCount})</span>
+                      </div>
+                      <div className="w-full bg-obsidian/60 h-2.5 rounded-full overflow-hidden border border-bronze-border/5">
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          animate={{ width: `${pct}%` }}
+                          transition={{ duration: 1, ease: "easeOut" }}
+                          className="h-full bg-gradient-to-r from-bronze to-cyan-400 rounded-full"
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-bronze-border/10 flex justify-end">
             <Link
               to="/questions"
-              className="group inline-flex items-center justify-center gap-2 bg-bronze text-obsidian px-8 py-3.5 font-heading text-xs font-semibold tracking-widest uppercase rounded hover:bg-bronze-light hover:shadow-lg hover:shadow-bronze/20 transition-all hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 text-xs font-heading text-bronze hover:text-bronze-light tracking-wider uppercase transition-colors"
             >
-              Cast Your Vote
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              View Discord Community <ArrowRight size={14} />
             </Link>
           </div>
         </div>
@@ -1278,9 +1562,11 @@ function LibrarySection() {
                 The Library & Media
               </span>
             </div>
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-silver tracking-tight leading-tight">
-              What we're thinking.
-            </h2>
+            <ConstellationHeading
+              line1="What we're thinking."
+              line1ClassName="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight"
+              align="left"
+            />
           </div>
           <p className="text-silver-muted text-sm font-light max-w-xs leading-relaxed sm:text-right">
             Ideas and articles from our members — join us to share yours as well.
@@ -1293,7 +1579,7 @@ function LibrarySection() {
           <img
             src="https://media.base44.com/images/public/6a3a77e56b8f0a8608401d16/1fb8d0abe_generated_image.png"
             alt="Floating books and scrolls in blue cosmic space"
-            className="w-full h-full object-cover opacity-40 hover:opacity-60 transition-opacity duration-700"
+            className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-700"
           />
         </div>
       </ScrollReveal>
@@ -1337,7 +1623,7 @@ function LibrarySection() {
                       <img 
                         src={activeArticle.coverImage} 
                         alt={activeArticle.title}
-                        className="w-full h-full object-cover opacity-70"
+                        className="w-full h-full object-cover opacity-100"
                         referrerPolicy="no-referrer"
                       />
                       {/* elegant bottom fade mask */}
@@ -1371,7 +1657,7 @@ function LibrarySection() {
                     to={`/library/${activeArticle.slug}`}
                     className="inline-flex items-center gap-1.5 text-xs font-heading font-semibold tracking-widest uppercase text-bronze hover:text-bronze-light transition-colors"
                   >
-                    Read Full Essay <ArrowRight size={12} />
+                    Read Full Article <ArrowRight size={12} />
                   </Link>
                 </div>
               </motion.div>
@@ -1496,6 +1782,8 @@ function NewsletterSection() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
+  const { theme } = useTheme();
+  const isLight = theme === "light";
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -1519,16 +1807,40 @@ function NewsletterSection() {
 
   return (
     <section className="relative z-10 py-16 px-5 sm:px-8 max-w-4xl mx-auto">
-      <div className="glass-panel border-bronze-border/20 rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden glowing-card">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-0.5 w-40 bg-gradient-to-r from-transparent via-bronze to-transparent" />
-        <div className="absolute -bottom-6 -right-6 w-32 h-32 rounded-full bg-bronze/5 blur-3xl pointer-events-none" />
+      <div
+        className={`rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden transition-all duration-300 ${
+          isLight
+            ? "bg-white/95 border border-sky-200/80 shadow-xl shadow-sky-500/10"
+            : "glass-panel border-bronze-border/20 glowing-card"
+        }`}
+      >
+        <div
+          className={`absolute top-0 left-1/2 -translate-x-1/2 h-0.5 w-40 ${
+            isLight
+              ? "bg-gradient-to-r from-transparent via-sky-500 to-transparent"
+              : "bg-gradient-to-r from-transparent via-bronze to-transparent"
+          }`}
+        />
+        <div
+          className={`absolute -bottom-6 -right-6 w-32 h-32 rounded-full blur-3xl pointer-events-none ${
+            isLight ? "bg-sky-400/20" : "bg-bronze/5"
+          }`}
+        />
 
         <div className="max-w-2xl mx-auto space-y-4">
-          <h2 className="font-heading text-2xl sm:text-3xl font-bold text-silver tracking-tight">
-            Subscribe to the CoM Substack Notebook
+          <h2
+            className={`font-heading text-2xl sm:text-3xl font-bold tracking-tight ${
+              isLight ? "text-slate-900" : "text-silver"
+            }`}
+          >
+            Subscribe to the CoM Substack
           </h2>
-          <p className="text-silver-muted text-xs sm:text-sm font-light leading-relaxed max-w-lg mx-auto">
-            Join the CoM Notebook to access published articles, written works, and selected community content in one place. It’s a simple archive of what CoM creates—collected, organized, and easy to revisit. Stay connected to the ideas worth keeping. Delivered directly to your inbox via our Substack newsletter.
+          <p
+            className={`text-xs sm:text-sm font-light leading-relaxed max-w-lg mx-auto ${
+              isLight ? "text-slate-600" : "text-silver-muted"
+            }`}
+          >
+            Join the CoM Substack to access published articles, written works, and selected community content in one place. It’s a simple archive of what CoM creates—collected, organized, and easy to revisit. Stay connected to the ideas worth keeping. Delivered directly to your inbox via our Substack newsletter.
           </p>
 
           {!submitted ? (
@@ -1539,11 +1851,19 @@ function NewsletterSection() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-obsidian/75 border border-bronze-border/15 rounded-xl px-4 py-3 text-silver text-xs focus:border-bronze/40 focus:outline-none w-full"
+                className={`rounded-xl px-4 py-3 text-xs focus:outline-none w-full transition-colors ${
+                  isLight
+                    ? "bg-slate-50 border border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-sky-500"
+                    : "bg-obsidian/75 border border-bronze-border/15 text-silver focus:border-bronze/40"
+                }`}
               />
               <button
                 type="submit"
-                className="bg-bronze text-obsidian px-5 py-3 font-heading text-[10px] font-semibold tracking-widest uppercase rounded hover:bg-bronze-light transition-colors whitespace-nowrap"
+                className={`px-5 py-3 font-heading text-[10px] font-semibold tracking-widest uppercase rounded whitespace-nowrap transition-all shadow-md ${
+                  isLight
+                    ? "bg-sky-600 text-white hover:bg-sky-700 hover:shadow-sky-500/20"
+                    : "bg-bronze text-obsidian hover:bg-bronze-light"
+                }`}
               >
                 Enroll on Substack
               </button>
@@ -1552,13 +1872,29 @@ function NewsletterSection() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-bronze-dim border border-bronze-border/30 rounded-2xl p-4 mt-6 max-w-md mx-auto"
+              className={`border rounded-2xl p-4 mt-6 max-w-md mx-auto ${
+                isLight
+                  ? "bg-sky-50 border-sky-200"
+                  : "bg-bronze-dim border-bronze-border/30"
+              }`}
             >
-              <p className="text-xs font-semibold text-bronze tracking-wide uppercase mb-1">✓ Connection Established</p>
-              <p className="text-xs text-silver-muted font-light">Redirecting you to the CoM Substack...</p>
+              <p
+                className={`text-xs font-semibold tracking-wide uppercase mb-1 ${
+                  isLight ? "text-sky-700" : "text-bronze"
+                }`}
+              >
+                ✓ Connection Established
+              </p>
+              <p className={`text-xs font-light ${isLight ? "text-slate-600" : "text-silver-muted"}`}>
+                Redirecting you to the CoM Substack...
+              </p>
             </motion.div>
           )}
-          <p className="text-[9px] text-silver-dim/60 font-mono mt-4">
+          <p
+            className={`text-[9px] font-mono mt-4 ${
+              isLight ? "text-slate-500" : "text-silver-dim/60"
+            }`}
+          >
             Zero noise. Zero spam. Pure conceptual signal. Powered by Substack.
           </p>
         </div>
@@ -1968,10 +2304,11 @@ function JoinSection() {
                 Membership
               </span>
             </div>
-
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-silver tracking-tight leading-tight">
-              Begin your intellectual voyage.
-            </h2>
+            <ConstellationHeading
+              line1="Begin your intellectual voyage."
+              line1ClassName="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight"
+              align="left"
+            />
 
             <p className="text-silver-muted text-sm sm:text-base font-light leading-relaxed max-w-xl">
               The Collegium of Minds is a decentralized sanctuary for deep thought, creative scholarship, and rigorous debate. We invite thinkers, builders, and scholars to co-create the future of collaborative inquiry.
@@ -1982,7 +2319,7 @@ function JoinSection() {
               <img
                 src="https://media.base44.com/images/public/6a3979ed4c8f30bd3eb32ea0/f332e5f29_generated_f0498456.png"
                 alt="Ancient open book with golden edges"
-                className="w-full h-40 sm:h-48 object-cover opacity-50"
+                className="w-full h-40 sm:h-48 object-cover opacity-90 hover:opacity-100 transition-opacity duration-300"
               />
           </div>
           </ScrollReveal>
@@ -2110,7 +2447,7 @@ function JoinSection() {
                     />
                     <div className={`w-5 h-5 rounded border transition-all flex items-center justify-center ${
                       agreed 
-                        ? "bg-bronze border-bronze text-obsidian" 
+                        ? "bg-bronze border-bronze text-obsidian stroke-[10] group-hover:bg-bronze-light group-hover:border-bronze/40" 
                         : "border-bronze-border/30 group-hover:border-bronze/40"
                     }`}>
                       {agreed && <Check size={12} className="stroke-[3]" />}
@@ -2154,6 +2491,120 @@ function JoinSection() {
     </section>
   );
 }
+
+
+// ============================================================================
+// Recognition Section
+// ============================================================================
+export function RecognitionSection() {
+  const { theme } = useTheme();
+  const isLight = theme === "light";
+
+  const featuredRecognitions = useMemo(() => {
+    return recognitionsData.filter((r) => r.isFeatured).slice(0, 3);
+  }, []);
+
+  return (
+    <section id="recognition" className="relative z-10 py-20 sm:py-28 px-5 sm:px-8 max-w-7xl mx-auto">
+      <ScrollReveal className="text-center mb-16">
+        <div className="inline-flex items-center gap-2 border border-bronze-border bg-bronze-dim px-4 py-1.5 rounded-full mb-6">
+          <Star className="w-3.5 h-3.5 text-bronze fill-bronze/20" />
+          <span className="font-heading text-[10px] font-semibold tracking-[3px] uppercase text-bronze">
+            Honor Roll
+          </span>
+        </div>
+        <ConstellationHeading
+          line1="Recognizing key"
+          line2="contributions."
+          line1ClassName="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight"
+          line2ClassName="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight italic"
+          align="center"
+          className="mb-4"
+        />
+        <p className={`text-sm sm:text-base font-light max-w-xl mx-auto leading-relaxed ${isLight ? "text-slate-600" : "text-silver-muted"}`}>
+          Honoring the visionary leaders, scholars, and community builders whose efforts strengthen the Collegium of Minds.
+        </p>
+      </ScrollReveal>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
+        {featuredRecognitions.map((person, idx) => (
+          <ScrollReveal key={person.id || person.name + idx} delay={idx * 60}>
+            <div className={`group rounded-2xl border p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 h-full flex flex-col justify-between ${
+              isLight
+                ? "bg-white/80 border-slate-200 shadow-sm hover:border-amber-600/40 hover:shadow-md"
+                : "border-bronze-border/20 bg-obsidian-surface/50 backdrop-blur-xl hover:border-bronze/40 hover:bg-bronze-dim/10"
+            }`}>
+              <div>
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 bg-bronze/10 border border-bronze/30 rounded-full px-3 py-1 mb-4">
+                  <Star className="w-3 h-3 text-bronze" />
+                  <span className="text-[10px] uppercase tracking-[2px] font-heading text-bronze font-semibold">
+                    {person.badge}
+                  </span>
+                </div>
+
+                <h3 className={`font-heading text-xl sm:text-2xl font-bold ${isLight ? "text-slate-900" : "text-silver"}`}>
+                  {person.name}
+                </h3>
+
+                <p className="text-bronze text-xs sm:text-sm uppercase tracking-[2px] mt-1 font-heading font-semibold">
+                  {person.role}
+                </p>
+
+                <p className={`mt-4 leading-relaxed text-xs sm:text-sm font-light line-clamp-3 ${isLight ? "text-slate-600" : "text-silver-muted"}`}>
+                  {person.reason}
+                </p>
+              </div>
+
+              <div className="flex gap-4 mt-6 pt-4 border-t border-bronze-border/10">
+                {person.links.website && (
+                  <a
+                    href={person.links.website}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`transition-colors p-1.5 rounded-lg border border-transparent hover:border-bronze-border/20 ${
+                      isLight ? "text-slate-500 hover:text-amber-700" : "text-silver-muted hover:text-bronze"
+                    }`}
+                    title="Website"
+                  >
+                    <Globe size={18} />
+                  </a>
+                )}
+
+                {person.links.linkedin && (
+                  <a
+                    href={person.links.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`transition-colors p-1.5 rounded-lg border border-transparent hover:border-bronze-border/20 ${
+                      isLight ? "text-slate-500 hover:text-amber-700" : "text-silver-muted hover:text-bronze"
+                    }`}
+                    title="LinkedIn"
+                  >
+                    <Linkedin size={18} />
+                  </a>
+                )}
+              </div>
+            </div>
+          </ScrollReveal>
+        ))}
+      </div>
+
+      {/* Button leading to full Supporters page */}
+      <ScrollReveal className="mt-12 text-center">
+        <Link
+          to="/supporters"
+          className="inline-flex items-center gap-2 border border-bronze/40 bg-bronze/10 hover:bg-bronze/20 text-bronze px-7 py-3.5 font-heading text-xs font-semibold tracking-widest uppercase rounded-xl transition-all shadow-md hover:-translate-y-0.5"
+        >
+          <span>View All Supporters & Contributors</span>
+          <ArrowRight className="w-4 h-4" />
+        </Link>
+      </ScrollReveal>
+    </section>
+  );
+}
+
+
 /*
 // ============================================================================
 // Team Section
@@ -2948,8 +3399,6 @@ const exploreLinks = [
   { label: "About", href: "#about" },
   { label: "Questions", href: "#questions" },
   { label: "Library", to: "#library" },
-  { label: "Events", to: "#events" },
-  { label: "Team", to: "#team" },
   { label: "Join CoM", href: "#join" },
 ];
 
@@ -2957,6 +3406,7 @@ const connectLinks = [
   { label: "Instagram", href: "https://instagram.com", note: "coming soon" },
   { label: "LinkedIn", href: "https://www.linkedin.com/company/the-collegium-of-minds/" },
   { label: "Discord", href: "https://discord.gg/bEMYvJ7eU3" },
+  { label: "GitHub", href: "https://github.com/CoM-137" },
   { label: "Email the Club", href: "mailto:collegiumofminds@gmail.com" },
 ];
 
@@ -2968,88 +3418,89 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="relative z-10 border-t border-bronze-border/20 bg-obsidian/80">
-      <div className="border-b border-bronze-border/10 py-6 px-5 sm:px-8">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
-          <span className="font-heading text-[9px] font-semibold tracking-[3px] uppercase text-bronze/60 whitespace-nowrap">
-            Ponder this
-          </span>
-          <p className="text-silver-muted text-sm font-light italic">"{randomQ}"</p>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 pt-14 pb-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-16 mb-14">
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <img src="https://media.base44.com/images/public/6a3979ed4c8f30bd3eb32ea0/c98e0fd61_The_Collegium_of_Minds_Logo.jpeg"
-              alt="Collegium of Minds"
-              className="w-8 h-8 rounded-full ring-1 ring-bronze-border" />
-              <span className="font-heading text-base font-bold text-silver">
-                Collegium of Minds
+    <footer className="relative z-10 border-t border-cyan-500/20 bg-[#070912] text-silver">
+          <div className="border-b border-cyan-500/10 py-6 px-5 sm:px-8 bg-[#0B0F19]/50">
+            <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
+              <span className="font-heading text-[9px] font-semibold tracking-[3px] uppercase text-cyan-400/80 whitespace-nowrap">
+                Ponder this
+              </span>
+              <p className="text-slate-300 text-sm font-light italic">"{randomQ}"</p>
+            </div>
+          </div>
+    
+          <div className="max-w-6xl mx-auto px-5 sm:px-8 pt-14 pb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-16 mb-14">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <img src="https://media.base44.com/images/public/6a3979ed4c8f30bd3eb32ea0/c98e0fd61_The_Collegium_of_Minds_Logo.jpeg"
+                  alt="Collegium of Minds"
+                  className="w-8 h-8 rounded-full ring-1 ring-bronze-border" />
+                  <span className="font-heading text-white font-bold text-silver">
+                    Collegium of Minds
+                  </span>
+                </div>
+                <p className="text-silver-dim text-xs tracking-wider uppercase font-light mb-4">
+                  Think. Explore. Discover.
+                </p>
+                <p className="text-silver-dim text-sm font-light leading-relaxed max-w-xs">
+                  A community for curious thinkers and lifelong learners. Where ideas
+                  are shared and questions are celebrated.
+                </p>
+              </div>
+    
+              <div>
+                <h4 className="font-heading text-[10px] font-semibold tracking-[3px] uppercase text-bronze mb-5">
+                  Explore
+                </h4>
+                <ul className="space-y-3">
+                  {exploreLinks.map((l) => (
+                    <li key={l.label}>
+                      {l.to ? (
+                        <Link to={l.to} className="text-silver-dim text-sm font-light hover:text-bronze transition-colors">
+                          {l.label}
+                        </Link>
+                      ) : (
+                        <a href={l.href} className="text-silver-dim text-sm font-light hover:text-bronze transition-colors">
+                          {l.label}
+                        </a>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+    
+              <div>
+                <h4 className="font-heading text-[10px] font-semibold tracking-[3px] uppercase text-bronze mb-5">
+                  Connect
+                </h4>
+                <ul className="space-y-3">
+                  {connectLinks.map((l) => (
+                    <li key={l.label}>
+                      <a
+                        href={l.href}
+                        target={l.href.startsWith("http") ? "_blank" : undefined}
+                        rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        className="text-silver-dim text-sm font-light hover:text-bronze transition-colors"
+                      >
+                        {l.label}
+                        {l.note && <span className="text-silver-dim/40 text-xs ml-2">— {l.note}</span>}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="pt-6 border-t border-bronze-border/10 flex flex-col sm:flex-row justify-between items-center gap-3 text-center">
+              <span className="text-silver-dim text-xs font-light">
+                © 2025 Collegium of Minds. All rights reserved with the founder and owner of CoM — Sarvesh Kore
+              </span>
+              <span className="text-silver-dim text-xs font-light flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-bronze animate-pulse" />
+                Always questioning
               </span>
             </div>
-            <p className="text-silver-dim text-xs tracking-wider uppercase font-light mb-4">
-              Think. Explore. Discover.
-            </p>
-            <p className="text-silver-dim text-sm font-light leading-relaxed max-w-xs">
-              A community for curious thinkers and lifelong learners. Where ideas
-              are shared and questions are celebrated.
-            </p>
           </div>
-
-          <div>
-            <h4 className="font-heading text-[10px] font-semibold tracking-[3px] uppercase text-bronze mb-5">
-              Explore
-            </h4>
-            <ul className="space-y-3">
-              {exploreLinks.map((l) =>
-              <li key={l.label}>
-                  {l.to ?
-                <Link to={l.to} className="text-silver-dim text-sm font-light hover:text-bronze transition-colors">
-                      {l.label}
-                    </Link> :
-                <a href={l.href} className="text-silver-dim text-sm font-light hover:text-bronze transition-colors">
-                      {l.label}
-                    </a>
-                }
-                </li>
-              )}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-heading text-[10px] font-semibold tracking-[3px] uppercase text-bronze mb-5">
-              Connect
-            </h4>
-            <ul className="space-y-3">
-              {connectLinks.map((l) =>
-              <li key={l.label}>
-                  <a
-                  href={l.href}
-                  target={l.href.startsWith("http") ? "_blank" : undefined}
-                  rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="text-silver-dim text-sm font-light hover:text-bronze transition-colors">
-                    {l.label}
-                    {l.note && <span className="text-silver-dim/40 text-xs ml-2">— {l.note}</span>}
-                  </a>
-                </li>
-              )}
-            </ul>
-          </div>
-        </div>
-
-        <div className="pt-6 border-t border-bronze-border/10 flex flex-col sm:flex-row justify-between items-center gap-3 text-center">
-          <span className="text-silver-dim text-xs font-light">
-            © 2025 Collegium of Minds. All rights reserved.
-          </span>
-          <span className="text-silver-dim text-xs font-light flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-bronze animate-pulse" />
-            Always questioning
-          </span>
-        </div>
-      </div>
-    </footer>
+        </footer>
   );
 }
 
@@ -3060,6 +3511,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-obsidian text-silver overflow-x-hidden">
       <AmbientBackground />
+      <CinematicThemeOverlay />
       <Navbar />
       <HeroSection />
       <StatsStrip />
