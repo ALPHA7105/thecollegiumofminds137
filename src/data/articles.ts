@@ -82,7 +82,21 @@ export const categoryColors: Record<
 };
 
 export const articles = [
-  {
+    {
+    id: 17,
+    slug: 'the-atoms-of-mathematics',
+    substackUrl: 'https://thecollegiumofminds.substack.com/p/the-atoms-of-mathematics',
+    title: 'The Atoms of Mathematics',
+    author: 'Mohamed Shahaan',
+    category: 'Mathematics',
+    coverImage: 'https://substackcdn.com/image/fetch/$s_!ZYKs!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8692f716-a3cd-4df3-aaf6-aa08f37445c2_1197x667.png',
+    date: 'Jul 30, 2026',
+    readTime: '4 min read',
+    featured: false,
+    excerpt: 'How ancient prime numbers silently protect your digital privacy, power modern encryption, and remain one of mathematics\' greatest unsolved mysteries.',
+    isPreview: true
+    },
+    {
     id: 16,
     slug: 'export-failed',
     substackUrl: 'https://thecollegiumofminds.substack.com/p/export-failed',
