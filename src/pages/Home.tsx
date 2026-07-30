@@ -3450,7 +3450,7 @@ const exploreLinks = [
   { label: "Join CoM", href: "#join" },
 ];
 
-const connectLinks = [
+const connectLinks: Array<{ label: string; href: string; note?: string }> = [
   { label: "LinkedIn", href: "https://www.linkedin.com/company/the-collegium-of-minds/" },
   { label: "Discord", href: "https://discord.gg/bEMYvJ7eU3" },
   { label: "GitHub", href: "https://github.com/CoM-137" },

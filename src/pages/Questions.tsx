@@ -8,93 +8,93 @@ import { AmbientBackground, Navbar, Footer, ScrollReveal } from "./Home";
 
 export const weeklyQuestions = [
   {
-  id: "truth",
-  question: "Can two completely opposing ideas both contain truth?",
+  id: "knowledge",
+  question: "A machine can instantly give you the answer to any question, but you will never understand how it reached the answer. Would its answers count as knowledge?",
   options: [
-    "Yes, depending on perspective",
-    "Only one can be fully true",
-    "Truth depends on context",
-    "I'm not sure"
-  ]
-},
-{
-  id: "time",
-  question: "If you could pause time, would you still age?",
-  options: [
-    "Yes",
-    "No",
-    "Only mentally",
-    "It depends on how time is paused"
-  ]
-},
-{
-  id: "beauty",
-  question: "Is beauty discovered, or created by the mind?",
-  options: [
-    "Discovered",
-    "Created",
-    "A combination of both",
-    "Neither"
-  ]
-},
-{
-  id: "progress",
-  question: "Does technological progress always improve society?",
-  options: [
-    "Yes",
-    "No",
-    "Only with ethical guidance",
-    "Too early to tell"
-  ]
-},
-{
-  id: "language",
-  question: "Can language limit the way we think?",
-  options: [
-    "Yes, significantly",
-    "Only a little",
-    "Not at all",
-    "I'm undecided"
+    "Yes, if the answers are always correct",
+    "No, understanding is necessary for knowledge",
+    "It depends on how we define knowledge",
+    "It would be a new form of knowledge"
   ]
 },
 {
   id: "identity",
-  question: "What defines who you are the most?",
+  question: "A person's brain is gradually replaced with artificial parts that perfectly preserve their memories and personality. At what point, if any, do they stop being the same person?",
   options: [
-    "Your choices",
-    "Your experiences",
-    "Your biology",
-    "Your relationships"
+    "They remain the same person throughout",
+    "They stop being the same person after enough changes",
+    "There is no meaningful point where identity changes",
+    "Identity depends on more than the brain"
   ]
 },
 {
-  id: "curiosity",
-  question: "Is curiosity something we're born with or something we develop?",
+  id: "simulation",
+  question: "You discover with absolute certainty that your universe is a simulation. Would that change the value or meaning of your life?",
   options: [
-    "Born with",
-    "Developed",
-    "Both",
-    "Neither"
+    "No, experiences remain meaningful regardless",
+    "Yes, because reality itself has changed",
+    "Meaning comes from consciousness, not origin",
+    "The distinction between real and simulated becomes irrelevant"
   ]
 },
 {
-  id: "consciousness",
-  question: "Could a machine ever truly become conscious?",
+  id: "time",
+  question: "A scientist creates a device that lets you send information to your past self, but every message changes the future slightly. Would you use it?",
   options: [
-    "Yes",
-    "No",
-    "Only in the distant future",
-    "Impossible to know"
+    "Yes, because preventing mistakes is worth the risk",
+    "No, because changing the past could create unknown consequences",
+    "Only for small personal decisions",
+    "Only if the effects could be predicted"
   ]
 },
 {
-  id: "knowledge",
-  question: "Which is more valuable?",
+  id: "truth",
+  question: "You discover a truth that would make humanity less happy, but understanding it could lead to future progress. Should it be revealed?",
   options: [
-    "Knowledge",
-    "Wisdom",
-    "Creativity",
-    "Empathy"
+    "Yes, truth should never be hidden",
+    "No, protecting humanity's wellbeing matters more",
+    "It depends on the consequences of revealing it",
+    "Truth and happiness should not be treated as opposites"
+  ]
+},
+{
+  id: "ai",
+  question: "An AI creates a scientific theory that perfectly predicts reality, but no human can understand its reasoning. Should we accept the theory?",
+  options: [
+    "Yes, prediction is what matters most",
+    "No, science requires human understanding",
+    "Accept it temporarily while trying to understand it",
+    "It would redefine what scientific knowledge means"
+  ]
+},
+{
+  id: "freedom",
+  question: "A device can predict every choice you will ever make with 100% accuracy. Does knowing this change whether you are free?",
+  options: [
+    "No, prediction does not remove choice",
+    "Yes, true freedom requires unpredictability",
+    "Freedom depends on how choices are made, not whether they are predicted",
+    "The concept of free will itself needs to change"
+  ]
+},
+{
+  id: "memory",
+  question: "A technology allows you to erase painful memories while keeping all the lessons you learned from them. Would you use it?",
+  options: [
+    "Yes, memories are not necessary once lessons remain",
+    "No, memories are part of who we become",
+    "Only for certain experiences",
+    "The emotional connection to memories matters more than the memories themselves"
+  ]
+},
+{
+  id: "civilization",
+  question: "Humanity discovers a planet identical to Earth with an identical civilization. Should we contact them?",
+  options: [
+    "Yes, knowledge of another humanity is too important to ignore",
+    "No, contact could harm both civilizations",
+    "Only after studying them secretly first",
+    "The decision depends on whether they are more or less advanced"
   ]
 },
 {
@@ -107,26 +107,6 @@ export const weeklyQuestions = [
     "Only in personal experience"
   ]
 },
-{
-  id: "simulation",
-  question: "Would living in a simulation change the meaning of life?",
-  options: [
-    "Yes",
-    "No",
-    "Only if we knew",
-    "I'm unsure"
-  ]
-},
-{
-  id: "future",
-  question: "What will shape humanity's future the most?",
-  options: [
-    "Artificial Intelligence",
-    "Space exploration",
-    "Climate action",
-    "Education"
-  ]
-}
 ];
 
 export default function QuestionsPage() {
