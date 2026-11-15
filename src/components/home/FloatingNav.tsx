@@ -28,7 +28,7 @@ export function FloatingNav() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, to: string) => {
+  const handleLinkClick = (e: React.MouseEvent, to: string) => {
     setOpen(false);
     if (to.startsWith("/#")) {
       if (location.pathname === "/") {

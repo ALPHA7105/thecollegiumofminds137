@@ -1,8 +1,19 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { Asteroid3D } from "./Asteroid3D";
+
+gsap.registerPlugin(useGSAP);
 
 export function DeepSpaceHero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const heroScopeRef = useRef<HTMLDivElement>(null);
+  const earthRef = useRef<HTMLDivElement>(null);
+  const astronautWrapperRef = useRef<HTMLDivElement>(null);
+  const asteroid1Ref = useRef<HTMLDivElement>(null);
+  const asteroid2Ref = useRef<HTMLDivElement>(null);
+
   const shouldReduceMotion = useReducedMotion();
 
   // Scroll tracking across the hero track
@@ -11,8 +22,8 @@ export function DeepSpaceHero() {
     offset: ["start start", "end end"],
   });
 
-  // Hero text stays locked in position (opacity 1.0, y: 0) while astronaut falls
-  // Gently fades only at the very end (0.80 -> 1.0) as the page transitions to the next section
+  // Hero text stays locked in position (opacity 1.0, y: 0) while astronaut falls into deep space
+  // Gently fades only at the very end (0.75 -> 1.0) as the page transitions to the next section
   const textOpacity = useTransform(
     scrollYProgress,
     [0.0, 0.75, 1.0],
@@ -36,9 +47,34 @@ export function DeepSpaceHero() {
     [0, 14]
   );
 
+  // Background 4K Deep Space subtle parallax drift
+  const bgY = useTransform(
+    scrollYProgress,
+    [0.0, 1.0],
+    [0, 35]
+  );
+
+  // Earth Globe Scroll Synchronization
+  // Earth sinks and recedes into the distance as user scrolls downward into deep space
+  const earthScrollY = useTransform(
+    scrollYProgress,
+    [0.0, 0.35, 0.75, 1.0],
+    [0, 90, 240, 380]
+  );
+  const earthScrollScale = useTransform(
+    scrollYProgress,
+    [0.0, 0.35, 0.75, 1.0],
+    [1.0, 0.94, 0.84, 0.74]
+  );
+  const earthScrollOpacity = useTransform(
+    scrollYProgress,
+    [0.0, 0.55, 0.85, 1.0],
+    [1.0, 0.95, 0.45, 0.12]
+  );
+
   // Cinematic Astronaut Plunge into the Abyss
   // Unhurried descent: visibly falls downward and into deep space beside the stationary text
-  // Zero blur — completely sharp throughout
+  // Completely sharp throughout (zero blur)
   const astronautScale = useTransform(
     scrollYProgress,
     [0.0, 0.25, 0.55, 0.85],
@@ -65,22 +101,173 @@ export function DeepSpaceHero() {
     [1.0, 1.0, 0.7, 0.0]
   );
 
+  // Asteroid scroll depths
+  const asteroid1ScrollY = useTransform(scrollYProgress, [0.0, 0.85], [0, 260]);
+  const asteroid2ScrollY = useTransform(scrollYProgress, [0.0, 0.85], [0, 400]);
+
+  // GSAP 3D Interactive Mouse Parallax & Celestial Orbit (scoped with useGSAP)
+  useGSAP(
+    () => {
+      if (shouldReduceMotion) return;
+
+      // High-performance quickTo setters for 60fps responsiveness
+      const earthRotX = gsap.quickTo(earthRef.current, "rotateX", { duration: 1.2, ease: "power2.out" });
+      const earthRotY = gsap.quickTo(earthRef.current, "rotateY", { duration: 1.2, ease: "power2.out" });
+      const earthShiftX = gsap.quickTo(earthRef.current, "x", { duration: 1.2, ease: "power2.out" });
+      const earthShiftY = gsap.quickTo(earthRef.current, "y", { duration: 1.2, ease: "power2.out" });
+
+      const astroRotX = gsap.quickTo(astronautWrapperRef.current, "rotateX", { duration: 0.9, ease: "power2.out" });
+      const astroRotY = gsap.quickTo(astronautWrapperRef.current, "rotateY", { duration: 0.9, ease: "power2.out" });
+      const astroShiftX = gsap.quickTo(astronautWrapperRef.current, "x", { duration: 0.9, ease: "power2.out" });
+      const astroShiftY = gsap.quickTo(astronautWrapperRef.current, "y", { duration: 0.9, ease: "power2.out" });
+
+      const ast1ShiftX = gsap.quickTo(asteroid1Ref.current, "x", { duration: 1.3, ease: "power2.out" });
+      const ast1ShiftY = gsap.quickTo(asteroid1Ref.current, "y", { duration: 1.3, ease: "power2.out" });
+
+      const ast2ShiftX = gsap.quickTo(asteroid2Ref.current, "x", { duration: 1.5, ease: "power2.out" });
+      const ast2ShiftY = gsap.quickTo(asteroid2Ref.current, "y", { duration: 1.5, ease: "power2.out" });
+
+      const handleMouseMove = (e: MouseEvent) => {
+        const { innerWidth, innerHeight } = window;
+        const normX = (e.clientX / innerWidth - 0.5) * 2; // -1 to 1
+        const normY = (e.clientY / innerHeight - 0.5) * 2; // -1 to 1
+
+        // Earth 3D mass parallax (immense celestial sphere feel)
+        earthRotX(-normY * 5);
+        earthRotY(normX * 7);
+        earthShiftX(normX * 16);
+        earthShiftY(normY * 12);
+
+        // Astronaut 3D parallax (closer foreground layer)
+        astroRotX(-normY * 9);
+        astroRotY(normX * 11);
+        astroShiftX(normX * 24);
+        astroShiftY(normY * 18);
+
+        // Asteroids differential depth
+        ast1ShiftX(normX * -30);
+        ast1ShiftY(normY * -22);
+
+        ast2ShiftX(normX * -16);
+        ast2ShiftY(normY * -14);
+      };
+
+      window.addEventListener("mousemove", handleMouseMove, { passive: true });
+
+      // Continuous subtle celestial axial wobble on Earth
+      gsap.to(earthRef.current, {
+        rotateZ: 3.5,
+        duration: 16,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+      };
+    },
+    { scope: heroScopeRef, dependencies: [shouldReduceMotion] }
+  );
+
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-[175vh] bg-[#030303]"
+      className="relative w-full h-[180vh] bg-[#020202]"
       aria-label="Hero — Beyond What We Know"
     >
       {/* Sticky Fullscreen Pinned Environment */}
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden bg-[#030303]">
-        
-        {/* Main Hero Composition Wrapper */}
-        <div className="relative my-auto w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-8 pt-20 lg:pt-0">
+      <div
+        ref={heroScopeRef}
+        style={{ perspective: "1200px" }}
+        className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden bg-[#020202]"
+      >
+        {/* 1. 4K Cinematic Deep-Space Background Layer (Near-pure black, ultra-minimal) */}
+        <motion.div
+          style={shouldReduceMotion ? {} : { y: bgY }}
+          className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden"
+          aria-hidden="true"
+        >
+          <img
+            src="/assets/deep-space-bg.png"
+            alt=""
+            className="w-full h-full object-cover object-center opacity-85 scale-105"
+            loading="eager"
+            draggable={false}
+          />
+          {/* Subtle deep-space atmospheric vignette */}
+          <div className="absolute inset-0 bg-radial-gradient from-transparent via-[#020202]/30 to-[#020202]/85 pointer-events-none" />
+        </motion.div>
+
+        {/* 2. Earth Globe 3D Celestial Layer (Lower-Left Corner Anchor) */}
+        <motion.div
+          style={
+            shouldReduceMotion
+              ? {}
+              : {
+                  y: earthScrollY,
+                  scale: earthScrollScale,
+                  opacity: earthScrollOpacity,
+                }
+          }
+          className="absolute -bottom-[22%] -left-[14%] sm:-bottom-[26%] sm:-left-[12%] md:-bottom-[28%] md:-left-[10%] lg:-bottom-[24%] lg:-left-[7%] xl:-bottom-[20%] xl:-left-[5%] z-10 pointer-events-none select-none"
+        >
+          <div
+            ref={earthRef}
+            style={{ transformStyle: "preserve-3d" }}
+            className="relative w-[480px] h-[480px] sm:w-[580px] sm:h-[580px] md:w-[700px] md:h-[700px] lg:w-[840px] lg:h-[840px] xl:w-[960px] xl:h-[960px] flex items-center justify-center"
+          >
+            {/* Atmospheric Cyan/Blue Rim Glow around illuminated curve */}
+            <div
+              className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_68%_32%,rgba(56,189,248,0.22),transparent_65%)] blur-[50px] pointer-events-none"
+              aria-hidden="true"
+            />
+
+            {/* Earth Globe Image (photorealistic Eastern Hemisphere) */}
+            <img
+              src="/assets/earth-globe.png"
+              alt="Planet Earth from orbit"
+              className="w-full h-full object-contain pointer-events-none select-none filter drop-shadow-[0_24px_60px_rgba(0,0,0,0.95)]"
+              loading="eager"
+              draggable={false}
+            />
+
+            {/* Spherical Crescent Depth Mask & Limb Ring */}
+            <div
+              className="absolute inset-0 rounded-full border border-sky-400/25 shadow-[inset_-30px_-30px_70px_rgba(0,0,0,0.9),0_0_90px_rgba(56,189,248,0.2)] pointer-events-none"
+              aria-hidden="true"
+            />
+          </div>
+        </motion.div>
+
+        {/* 3. Layered 3D Floating Asteroids / Space Debris */}
+        {/* Asteroid 1: Upper Right Depth Plane */}
+        <motion.div
+          style={shouldReduceMotion ? {} : { y: asteroid1ScrollY }}
+          className="absolute top-[16%] right-[14%] sm:right-[18%] lg:right-[22%] z-15 pointer-events-none select-none"
+        >
+          <div ref={asteroid1Ref}>
+            <Asteroid3D size={64} rotationDuration={32} />
+          </div>
+        </motion.div>
+
+        {/* Asteroid 2: Lower Right Foreground Plane */}
+        <motion.div
+          style={shouldReduceMotion ? {} : { y: asteroid2ScrollY }}
+          className="absolute bottom-[22%] right-[6%] sm:right-[10%] lg:right-[14%] z-25 pointer-events-none select-none"
+        >
+          <div ref={asteroid2Ref}>
+            <Asteroid3D size={44} rotationDuration={24} reverse />
+          </div>
+        </motion.div>
+
+        {/* 4. Main Hero Composition Wrapper (Clean, Majestic Typography) */}
+        <div className="relative my-auto w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-8 pt-20 lg:pt-0 z-20">
           
-          {/* Confident Typographic Left Column (z-10, Locked in position) */}
+          {/* Confident Typographic Left Column (Stationary during plunge) */}
           <motion.div
             style={shouldReduceMotion ? {} : { opacity: textOpacity, y: textY }}
-            className="flex-1 z-10 text-left max-w-3xl xl:max-w-4xl select-none"
+            className="flex-1 text-left max-w-3xl xl:max-w-4xl select-none"
           >
             {/* Brand Eyebrow: "Collegium of Mind" in Georgia Bold + Regular */}
             <motion.div
@@ -136,36 +323,41 @@ export function DeepSpaceHero() {
             }
             className="z-30 pointer-events-none flex justify-center items-center lg:absolute lg:right-4 xl:right-12 lg:top-1/2 lg:-translate-y-1/2"
           >
-            {/* Subtle natural idle float */}
-            <motion.div
-              animate={
-                shouldReduceMotion
-                  ? {}
-                  : {
-                      y: [-8, 8, -8],
-                      rotate: [-0.6, 0.8, -0.6],
-                    }
-              }
-              transition={{
-                duration: 8.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="relative w-[280px] sm:w-[340px] md:w-[400px] lg:w-[460px] xl:w-[520px] aspect-[745/1000] flex items-center justify-center filter drop-shadow-[0_25px_60px_rgba(0,0,0,0.85)]"
+            <div
+              ref={astronautWrapperRef}
+              style={{ transformStyle: "preserve-3d" }}
             >
-              <img
-                src="/assets/astronaut-tight.png"
-                alt="Astronaut floating in deep space reaching forward"
-                className="w-full h-full object-contain select-none pointer-events-none"
-                loading="eager"
-                draggable={false}
-              />
-            </motion.div>
+              {/* Subtle natural idle float */}
+              <motion.div
+                animate={
+                  shouldReduceMotion
+                    ? {}
+                    : {
+                        y: [-8, 8, -8],
+                        rotate: [-0.6, 0.8, -0.6],
+                      }
+                }
+                transition={{
+                  duration: 8.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="relative w-[280px] sm:w-[340px] md:w-[400px] lg:w-[460px] xl:w-[520px] aspect-[745/1000] flex items-center justify-center filter drop-shadow-[0_25px_60px_rgba(0,0,0,0.85)]"
+              >
+                <img
+                  src="/assets/astronaut-tight.png"
+                  alt="Astronaut floating in deep space reaching forward"
+                  className="w-full h-full object-contain select-none pointer-events-none"
+                  loading="eager"
+                  draggable={false}
+                />
+              </motion.div>
+            </div>
           </motion.div>
 
         </div>
 
-        {/* Minimal Mouse Scroll Indicator */}
+        {/* 5. Minimalist Centered Scroll Indicator (Pure, Uncluttered) */}
         <motion.div
           style={
             shouldReduceMotion
@@ -174,7 +366,6 @@ export function DeepSpaceHero() {
           }
           className="w-full flex flex-col items-center justify-center pb-8 z-20 pointer-events-none select-none"
         >
-          {/* Outlined mouse icon */}
           <div className="w-5 h-8 rounded-full border border-white/20 flex justify-center pt-1.5">
             <motion.div
               animate={{
@@ -189,8 +380,6 @@ export function DeepSpaceHero() {
               className="w-1 h-2 rounded-full bg-[#F2EEE8]"
             />
           </div>
-
-          {/* Minimal scroll label */}
           <span className="font-mono text-[9px] uppercase tracking-[3px] text-[#A3A3A3] mt-2.5 font-light">
             Scroll to explore
           </span>

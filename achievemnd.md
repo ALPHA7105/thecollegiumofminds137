@@ -85,4 +85,45 @@
   - **Particle Eruption:** Playful floating `?`, `¿`, and `✦` spark particles burst upward from the card during the tumble.
   - **3D Barrel Flip Typography Transition:** The question text rolls out and in with 3D perspective (`rotateX: 60° → 0°`).
   - **Master "Roll the Multiverse 🎲" Button:** Header button that triggers a staggered, domino-style cascade of funny spins across all 6 inquiry cards simultaneously.
-
+## Milestone 11: 4K Cinematic Deep-Space Hero, 3D Rotating Earth Globe & Disrupt-Inspired Surprise Telemetry
+- **Milestone Date:** 2026-11-15
+- **Inspiration Reference:** `https://madetodisrupt.com/` & Nolan-inspired deep-space cinematography (`media_1794728004486_8dec6012.png`).
+- **Components Enhanced & Created:**
+  - `DeepSpaceHero.tsx`: Transformed the hero into a true multi-plane 3D deep-space cinematic environment without altering the core typographic identity.
+  - `Asteroid3D.tsx`: High-detail faceted chondrite asteroids with directional rim lighting and continuous 3D tumbling.
+  - `CosmicViewfinder.tsx`: Real-time celestial HUD reticle tracking mouse coordinates (RA/DEC) with target acquisition across celestial layers.
+  - `DeepSpaceTransmission.tsx`: Interactive surprise reveal console featuring live astronomical telemetry, real-time Voyager 1 distance counter, custom Web Audio API harmonic celestial drone (432Hz : 528Hz), and interactive spectral waveform oscilloscope.
+- **Key Visual & Interaction Features:**
+  - **4K Cinematic Deep-Space Void:** Integrated `deep-space-bg.png` (`#020202` near-pure black, ultra-sparse micro-stars, zero artificial gradients, profound negative space) that preserves background continuity into subsequent sections.
+  - **3D Rotating Earth Globe:** Positioned in the lower-left corner matching reference `media_1794728004486_8dec6012.png`, featuring atmospheric cyan/blue rim glow and crescent limb depth.
+  - **GSAP 3D Interactive Parallax:** Driven by `@gsap/react` `useGSAP` and `quickTo` for 60fps responsiveness; Earth, astronaut, and floating asteroids tilt in true 3D perspective to cursor movements.
+## Milestone 12: Central 3D Parallax Spotlight Gallery & Elevated Institutional Prose for "The Architecture of Inquiry"
+- **Milestone Date:** 2026-11-15
+- **Component Enhanced:** `DisciplinesSection.tsx`
+- **Architectural & Interaction Upgrades:**
+  - **Pinned Central Spotlight Theater:** Transformed the linear vertical society list into an expansive 3D orbital gallery with a pinned `h-screen` viewport inside a `450vh` scroll track.
+  - **Center Stage Focus:** The active discipline occupies the prominent central stage (`scale: 1.0`, `z: 0`, full opacity, high-contrast obsidian glass with ambient purple glow).
+  - **Orbiting Satellite Frames (Parallax Gallery):** Flanking disciplines hover in 3D orbit on either side (`scale: 0.78`, `rotateY: ±22°`, `z: -180px`, opacity `0.42`), receding into deep space.
+  - **Scroll & Click Orbit Transitions:** As the user scrolls down, the center item glides smoothly to the left satellite position while the next society swoops seamlessly into the central spotlight; clicking any floating card immediately brings it into focus.
+  - **GSAP 3D Gyroscopic Cursor Parallax:** Uses `@gsap/react` `useGSAP` to tilt the entire 3D stage (`rotateX`, `rotateY`) in response to cursor position, producing authentic multi-plane holographic depth.
+## Milestone 13: Strict Minimalist Decluttering Pass Across Hero and Architecture of Inquiry
+- **Milestone Date:** 2026-11-15
+- **Focus:** Eliminate visual noise, superfluous sci-fi telemetry HUDs, and metadata clutter to restore pure institutional luxury and semantic intent.
+- **Hero Section Decluttered (`DeepSpaceHero.tsx`):**
+  - Removed the `CosmicViewfinder` mouse HUD overlay with extraneous coordinates and telemetry tags.
+  - Removed the bottom-left `SECTOR 0` indicator chip and the bottom-right radio frequency button (`1420.405 MHz`).
+  - Restored pure, quiet negative space: only the photorealistic 4K void, the 3D illuminated Earth limb in the corner, floating asteroids, the iconic astronaut descent, and the timeless typography with a minimal "Scroll to explore" indicator.
+- **Architecture of Inquiry Decluttered (`DisciplinesSection.tsx`):**
+  - Removed the crowded 10-pill button row across the top header, replaced with a clean, discreet counter `[ 01 / 10 ]`.
+  - Removed fake GPS coordinates, sci-fi field codes (`MAT-01`, `PHY-02`), and redundant badge watermarks.
+  - Focused the central showcase card on its essential aesthetic elements: striking artwork, single-line descriptor, and the profound italicized lead question.
+## Milestone 14: 100/100 Animation Standard Overhaul — True 3D Spatial Orbital Floating Gallery
+- **Milestone Date:** 2026-11-15
+- **Component Upgraded:** `DisciplinesSection.tsx`
+- **Execution & Animation Breakthroughs:**
+  - **Eliminated Carousel Feel:** Replaced the rigid, horizontal linear slide mechanism with an authentic, organic **3D orbital spatial cloud**.
+  - **The Center Stage Spotlight:** The active society card commands the golden-ratio focal center in sharp, monumental luxury (`z: 35`, `scale: 1.0`, `blur(0px)`), with editorial text reveals and subtle image Ken Burns zoom.
+  - **Asymmetrical 3D Floating Satellites:** Non-active disciplines hover organically in multi-depth orbital coordinates around the perimeter (Top-Left, Top-Right, Bottom-Left, Bottom-Right, Deep Center) with independent sinusoidal floating micro-wobbles (`y: [-5px, +5px]`, `rot: [-1°, +1°]`).
+  - **Fluid Click-to-Orbit Mechanics:** Clicking any floating satellite card smoothly triggers a spring-damped trajectory that glides the card into the center spotlight while the previous active card recedes into its designated orbital coordinate.
+  - **Scroll-Driven Spatial Transitions:** Scrolling smoothly advances the orbital constellation, gracefully promoting the next satellite card into the central stage.
+  - **GSAP Gyroscopic Mouse Perspective:** Stage responds in real-time to cursor coordinates via `gsap.quickTo`, creating unmistakable holographic depth between the central showcase and peripheral floating art frames.
