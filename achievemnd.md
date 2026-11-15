@@ -125,5 +125,11 @@
   - **The Center Stage Spotlight:** The active society card commands the golden-ratio focal center in sharp, monumental luxury (`z: 35`, `scale: 1.0`, `blur(0px)`), with editorial text reveals and subtle image Ken Burns zoom.
   - **Asymmetrical 3D Floating Satellites:** Non-active disciplines hover organically in multi-depth orbital coordinates around the perimeter (Top-Left, Top-Right, Bottom-Left, Bottom-Right, Deep Center) with independent sinusoidal floating micro-wobbles (`y: [-5px, +5px]`, `rot: [-1°, +1°]`).
   - **Fluid Click-to-Orbit Mechanics:** Clicking any floating satellite card smoothly triggers a spring-damped trajectory that glides the card into the center spotlight while the previous active card recedes into its designated orbital coordinate.
-  - **Scroll-Driven Spatial Transitions:** Scrolling smoothly advances the orbital constellation, gracefully promoting the next satellite card into the central stage.
-  - **GSAP Gyroscopic Mouse Perspective:** Stage responds in real-time to cursor coordinates via `gsap.quickTo`, creating unmistakable holographic depth between the central showcase and peripheral floating art frames.
+## Milestone 15: Cross-Device Mobile Phone Optimization & Designer Attribution
+- **Milestone Date:** 2026-11-15
+- **Components Enhanced:** `DeepSpaceHero.tsx`, `DisciplinesSection.tsx`, `EditorialFooter.tsx`
+- **Mobile Optimizations (PC Experience 100% Preserved):**
+  - **Deep Space Hero on Phone:** Responsive Earth globe scaling (`w-[280px]` mobile up to `w-[960px]` desktop) avoiding text occlusion; scaled headline typography (`text-4xl xs:text-5xl sm:text-7xl+`) preventing awkward line breaks on narrow phone screens; proportional astronaut scaling (`w-[180px]` mobile) fitting cleanly inside viewport height.
+  - **Architecture of Inquiry on Phone:** Responsive showcase card height (`h-36 xs:h-44 sm:h-56`) and compact editorial padding (`p-4 xs:p-6 sm:p-8`); touch swipe navigation support (`onTouchStart`/`onTouchEnd`) for natural finger swiping between societies; accessible mobile touch navigation arrows (`w-8 h-8` touch targets) and scrollable dossier modal (`max-h-[88vh] overflow-y-auto`).
+- **Footer Designer Attribution:**
+  - Added *"Phase neo — designed by [Vaidik Shree](https://github.com/vaidiklab)"* with verified GitHub link right alongside founder Sarvesh Kore in the footer colophon.

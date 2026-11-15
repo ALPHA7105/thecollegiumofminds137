@@ -263,6 +263,17 @@ export function DisciplinesSection() {
     { scope: containerRef }
   );
 
+  // Touch swipe support for mobile
+  const touchStartX = useRef<number>(0);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const diff = e.changedTouches[0].clientX - touchStartX.current;
+    if (diff < -45) nextSociety();
+    else if (diff > 45) prevSociety();
+  };
+
   const activeItem = disciplinesData[currentIndex];
 
   return (
@@ -273,25 +284,29 @@ export function DisciplinesSection() {
       aria-label="The Architecture of Inquiry"
     >
       {/* Sticky Fullscreen Spatial Gallery Theater */}
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden bg-[#020202] px-6 sm:px-12 lg:px-20 py-8 select-none">
+      <div 
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden bg-[#020202] px-4 sm:px-12 lg:px-20 py-5 sm:py-8 select-none"
+      >
         
         {/* 1. Header Row (Minimalist Editorial Elegance) */}
-        <div className="relative z-30 w-full max-w-6xl mx-auto flex items-end justify-between gap-6 pb-4 border-b border-white/8">
+        <div className="relative z-30 w-full max-w-6xl mx-auto flex items-end justify-between gap-4 sm:gap-6 pb-3 sm:pb-4 border-b border-white/8">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A78BFA] shadow-[0_0_8px_rgba(167,139,250,0.8)]" />
-              <span className="font-mono text-[10px] tracking-[3px] uppercase text-[#A78BFA]">
+              <span className="font-mono text-[9px] sm:text-[10px] tracking-[2.5px] sm:tracking-[3px] uppercase text-[#A78BFA]">
                 02 / THE ARCHITECTURE OF INQUIRY
               </span>
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-[#F2EEE8] tracking-tight">
+            <h2 className="font-serif text-xl sm:text-3xl lg:text-4xl font-normal text-[#F2EEE8] tracking-tight">
               Ten Autonomous Guilds of Thought.
             </h2>
           </div>
 
           {/* Minimalist Society Index Counter */}
-          <div className="font-mono text-xs text-[#A3A3A3] flex items-center gap-2">
-            <span className="text-[#A78BFA] font-medium text-sm">
+          <div className="font-mono text-xs text-[#A3A3A3] flex items-center gap-1.5 sm:gap-2">
+            <span className="text-[#A78BFA] font-medium text-xs sm:text-sm">
               {String(currentIndex + 1).padStart(2, "0")}
             </span>
             <span className="text-white/20">/</span>
@@ -419,10 +434,10 @@ export function DisciplinesSection() {
                 transformStyle: "preserve-3d",
                 zIndex: 35,
               }}
-              className="relative w-[92vw] sm:w-[540px] lg:w-[600px] rounded-3xl overflow-hidden border border-white/20 bg-[#080808]/95 shadow-[0_30px_90px_rgba(0,0,0,0.95),0_0_60px_rgba(167,139,250,0.12)] backdrop-blur-xl"
+              className="relative w-full max-w-[92vw] sm:w-[540px] lg:w-[600px] rounded-2xl sm:rounded-3xl overflow-hidden border border-white/20 bg-[#080808]/95 shadow-[0_30px_90px_rgba(0,0,0,0.95),0_0_60px_rgba(167,139,250,0.12)] backdrop-blur-xl"
             >
               {/* Heroic Cinematic Photo Banner */}
-              <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-black">
+              <div className="relative h-36 xs:h-44 sm:h-56 w-full overflow-hidden bg-black">
                 <motion.img
                   src={activeItem.image}
                   alt={activeItem.name}
@@ -434,25 +449,25 @@ export function DisciplinesSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-black/35" />
 
                 {/* Society Index Pill */}
-                <div className="absolute top-4 left-4 flex items-center gap-2">
-                  <span className="font-mono text-[10.5px] tracking-[2.5px] uppercase text-[#F2EEE8] bg-black/70 px-3 py-1 rounded-full border border-white/12 backdrop-blur-md">
+                <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex items-center gap-2">
+                  <span className="font-mono text-[9.5px] sm:text-[10.5px] tracking-[2px] sm:tracking-[2.5px] uppercase text-[#F2EEE8] bg-black/70 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border border-white/12 backdrop-blur-md">
                     SOCIETY {activeItem.index}
                   </span>
-                  <span className="font-mono text-[10px] text-[#A3A3A3] bg-black/70 px-2.5 py-1 rounded-full border border-white/8 backdrop-blur-md">
+                  <span className="font-mono text-[9px] sm:text-[10px] text-[#A3A3A3] bg-black/70 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border border-white/8 backdrop-blur-md">
                     {activeItem.members} Fellows
                   </span>
                 </div>
               </div>
 
               {/* Showcase Body (Breathtaking Editorial Clarity) */}
-              <div className="p-6 sm:p-8">
+              <div className="p-4 xs:p-6 sm:p-8">
                 {/* Title & Descriptor */}
-                <div className="mb-4">
+                <div className="mb-3 sm:mb-4">
                   <motion.h3
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.45, delay: 0.1 }}
-                    className="font-serif text-2xl sm:text-3xl lg:text-[2rem] font-normal text-[#F2EEE8] tracking-tight"
+                    className="font-serif text-xl xs:text-2xl sm:text-3xl lg:text-[2rem] font-normal text-[#F2EEE8] tracking-tight"
                   >
                     {activeItem.name}
                   </motion.h3>
@@ -471,9 +486,9 @@ export function DisciplinesSection() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="p-4 sm:p-5 rounded-2xl bg-white/[0.025] border border-white/8 mb-6 shadow-inner"
+                  className="p-3 xs:p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-white/[0.025] border border-white/8 mb-4 sm:mb-6 shadow-inner"
                 >
-                  <p className="font-serif italic text-base sm:text-lg text-[#F2EEE8] leading-relaxed">
+                  <p className="font-serif italic text-xs xs:text-sm sm:text-lg text-[#F2EEE8] leading-snug sm:leading-relaxed">
                     "{activeItem.leadQuestion}"
                   </p>
                 </motion.div>
@@ -482,14 +497,17 @@ export function DisciplinesSection() {
                 <div className="pt-2 flex items-center justify-between border-t border-white/8">
                   <button
                     onClick={() => setActiveSociety(activeItem)}
-                    className="inline-flex items-center gap-2 text-xs font-mono font-medium text-[#F2EEE8] hover:text-[#A78BFA] transition-colors cursor-pointer group"
+                    className="inline-flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono font-medium text-[#F2EEE8] hover:text-[#A78BFA] transition-colors cursor-pointer group"
                   >
                     <span>Read Full Society Dossier</span>
                     <ArrowRight size={13} className="transform group-hover:translate-x-1.5 transition-transform text-[#A78BFA]" />
                   </button>
 
-                  <span className="font-mono text-[9px] text-[#716E6B] uppercase tracking-wider">
+                  <span className="font-mono text-[9px] text-[#716E6B] uppercase tracking-wider hidden sm:inline">
                     CLICK SATELLITES TO ORBIT
+                  </span>
+                  <span className="font-mono text-[9px] text-[#716E6B] uppercase tracking-wider sm:hidden">
+                    SWIPE / TAP ARROWS
                   </span>
                 </div>
               </div>
@@ -500,28 +518,30 @@ export function DisciplinesSection() {
           <button
             onClick={prevSociety}
             disabled={currentIndex === 0}
-            className={`hidden sm:flex absolute left-0 lg:left-4 z-40 w-11 h-11 rounded-full items-center justify-center border transition-all duration-300 ${
+            className={`flex absolute -left-1 sm:left-0 lg:left-4 z-40 w-8 h-8 sm:w-11 sm:h-11 rounded-full items-center justify-center border transition-all duration-300 ${
               currentIndex === 0
-                ? "opacity-15 cursor-not-allowed border-transparent bg-transparent"
-                : "border-white/12 bg-black/60 text-[#F2EEE8] hover:border-[#A78BFA] hover:bg-[#A78BFA]/20 cursor-pointer backdrop-blur-md shadow-lg"
+                ? "opacity-10 cursor-not-allowed border-transparent bg-transparent"
+                : "border-white/12 bg-black/75 text-[#F2EEE8] hover:border-[#A78BFA] hover:bg-[#A78BFA]/20 cursor-pointer backdrop-blur-md shadow-lg"
             }`}
             aria-label="Previous Society"
           >
-            <ChevronLeft size={19} />
+            <ChevronLeft size={16} className="sm:hidden" />
+            <ChevronLeft size={19} className="hidden sm:block" />
           </button>
 
           {/* Right Navigation Arrow */}
           <button
             onClick={nextSociety}
             disabled={currentIndex === disciplinesData.length - 1}
-            className={`hidden sm:flex absolute right-0 lg:right-4 z-40 w-11 h-11 rounded-full items-center justify-center border transition-all duration-300 ${
+            className={`flex absolute -right-1 sm:right-0 lg:right-4 z-40 w-8 h-8 sm:w-11 sm:h-11 rounded-full items-center justify-center border transition-all duration-300 ${
               currentIndex === disciplinesData.length - 1
-                ? "opacity-15 cursor-not-allowed border-transparent bg-transparent"
-                : "border-white/12 bg-black/60 text-[#F2EEE8] hover:border-[#A78BFA] hover:bg-[#A78BFA]/20 cursor-pointer backdrop-blur-md shadow-lg"
+                ? "opacity-10 cursor-not-allowed border-transparent bg-transparent"
+                : "border-white/12 bg-black/75 text-[#F2EEE8] hover:border-[#A78BFA] hover:bg-[#A78BFA]/20 cursor-pointer backdrop-blur-md shadow-lg"
             }`}
             aria-label="Next Society"
           >
-            <ChevronRight size={19} />
+            <ChevronRight size={16} className="sm:hidden" />
+            <ChevronRight size={19} className="hidden sm:block" />
           </button>
         </div>
 
@@ -566,10 +586,10 @@ export function DisciplinesSection() {
               exit={{ opacity: 0, scale: 0.96, y: 14 }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-[#090909] border border-white/12 rounded-3xl max-w-xl w-full overflow-hidden relative shadow-[0_32px_80px_rgba(0,0,0,0.95)]"
+              className="bg-[#090909] border border-white/12 rounded-2xl sm:rounded-3xl max-w-xl w-full max-h-[88vh] overflow-y-auto relative shadow-[0_32px_80px_rgba(0,0,0,0.95)]"
             >
               {/* Modal Banner */}
-              <div className="relative h-44 w-full overflow-hidden bg-black">
+              <div className="relative h-36 sm:h-44 w-full overflow-hidden bg-black flex-shrink-0">
                 <img
                   src={activeSociety.image}
                   alt={activeSociety.name}
@@ -579,13 +599,13 @@ export function DisciplinesSection() {
                 
                 <button
                   onClick={() => setActiveSociety(null)}
-                  className="absolute top-4 right-4 text-[#A5A19F] hover:text-[#F2EEE8] p-2 rounded-full bg-black/60 border border-white/12 hover:border-white/30 transition-colors cursor-pointer"
+                  className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 text-[#A5A19F] hover:text-[#F2EEE8] p-2 rounded-full bg-black/60 border border-white/12 hover:border-white/30 transition-colors cursor-pointer"
                   aria-label="Close modal"
                 >
                   <X size={15} />
                 </button>
 
-                <div className="absolute bottom-3 left-6">
+                <div className="absolute bottom-3 left-5 sm:left-6">
                   <span className="font-mono text-[10px] tracking-[2px] uppercase text-[#A78BFA] bg-black/70 px-2.5 py-1 rounded-full border border-white/10">
                     Society {activeSociety.index}
                   </span>
@@ -593,7 +613,7 @@ export function DisciplinesSection() {
               </div>
 
               {/* Modal Body */}
-              <div className="p-6 sm:p-8">
+              <div className="p-5 sm:p-8">
                 <div className="mb-5">
                   <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#F2EEE8]">
                     {activeSociety.name}

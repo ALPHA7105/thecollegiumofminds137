@@ -210,12 +210,12 @@ export function DeepSpaceHero() {
                   opacity: earthScrollOpacity,
                 }
           }
-          className="absolute -bottom-[22%] -left-[14%] sm:-bottom-[26%] sm:-left-[12%] md:-bottom-[28%] md:-left-[10%] lg:-bottom-[24%] lg:-left-[7%] xl:-bottom-[20%] xl:-left-[5%] z-10 pointer-events-none select-none"
+          className="absolute -bottom-[14%] -left-[18%] xs:-bottom-[18%] xs:-left-[14%] sm:-bottom-[26%] sm:-left-[12%] md:-bottom-[28%] md:-left-[10%] lg:-bottom-[24%] lg:-left-[7%] xl:-bottom-[20%] xl:-left-[5%] z-10 pointer-events-none select-none"
         >
           <div
             ref={earthRef}
             style={{ transformStyle: "preserve-3d" }}
-            className="relative w-[480px] h-[480px] sm:w-[580px] sm:h-[580px] md:w-[700px] md:h-[700px] lg:w-[840px] lg:h-[840px] xl:w-[960px] xl:h-[960px] flex items-center justify-center"
+            className="relative w-[280px] h-[280px] xs:w-[360px] xs:h-[360px] sm:w-[580px] sm:h-[580px] md:w-[700px] md:h-[700px] lg:w-[840px] lg:h-[840px] xl:w-[960px] xl:h-[960px] flex items-center justify-center"
           >
             {/* Atmospheric Cyan/Blue Rim Glow around illuminated curve */}
             <div
@@ -244,25 +244,25 @@ export function DeepSpaceHero() {
         {/* Asteroid 1: Upper Right Depth Plane */}
         <motion.div
           style={shouldReduceMotion ? {} : { y: asteroid1ScrollY }}
-          className="absolute top-[16%] right-[14%] sm:right-[18%] lg:right-[22%] z-15 pointer-events-none select-none"
+          className="absolute top-[14%] right-[6%] sm:top-[16%] sm:right-[18%] lg:right-[22%] z-15 pointer-events-none select-none"
         >
           <div ref={asteroid1Ref}>
-            <Asteroid3D size={64} rotationDuration={32} />
+            <Asteroid3D size={52} rotationDuration={32} className="sm:w-16 sm:h-16" />
           </div>
         </motion.div>
 
         {/* Asteroid 2: Lower Right Foreground Plane */}
         <motion.div
           style={shouldReduceMotion ? {} : { y: asteroid2ScrollY }}
-          className="absolute bottom-[22%] right-[6%] sm:right-[10%] lg:right-[14%] z-25 pointer-events-none select-none"
+          className="absolute bottom-[18%] right-[4%] sm:bottom-[22%] sm:right-[10%] lg:right-[14%] z-25 pointer-events-none select-none"
         >
           <div ref={asteroid2Ref}>
-            <Asteroid3D size={44} rotationDuration={24} reverse />
+            <Asteroid3D size={36} rotationDuration={24} reverse className="sm:w-11 sm:h-11" />
           </div>
         </motion.div>
 
         {/* 4. Main Hero Composition Wrapper (Clean, Majestic Typography) */}
-        <div className="relative my-auto w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-8 pt-20 lg:pt-0 z-20">
+        <div className="relative my-auto w-full max-w-7xl mx-auto px-5 sm:px-10 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-10 lg:gap-8 pt-14 sm:pt-20 lg:pt-0 z-20">
           
           {/* Confident Typographic Left Column (Stationary during plunge) */}
           <motion.div
@@ -274,7 +274,7 @@ export function DeepSpaceHero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-xl sm:text-2xl md:text-3xl lg:text-[2.25rem] text-[#E5E0D8] tracking-[-0.02em] mb-2 sm:mb-4"
+              className="text-lg sm:text-2xl md:text-3xl lg:text-[2.25rem] text-[#E5E0D8] tracking-[-0.02em] mb-1.5 sm:mb-4"
               style={{ fontFamily: "Georgia, 'Cormorant Garamond', serif" }}
             >
               <span className="font-bold text-[#F2EEE8]">Collegium</span>{" "}
@@ -286,7 +286,7 @@ export function DeepSpaceHero() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-5xl sm:text-7xl md:text-8xl lg:text-[6.25rem] xl:text-[7.25rem] tracking-tight text-[#F2EEE8] leading-[0.96]"
+              className="text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-[6.25rem] xl:text-[7.25rem] tracking-tight text-[#F2EEE8] leading-[0.98] sm:leading-[0.96]"
               style={{ fontFamily: "'Mileast', Georgia, serif" }}
             >
               <span className="block whitespace-nowrap">Beyond What</span>
@@ -298,7 +298,7 @@ export function DeepSpaceHero() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-6 sm:mt-8 text-2xl sm:text-3xl md:text-4xl text-[#E5E0D8]/90 tracking-wide font-normal italic"
+              className="mt-3 sm:mt-8 text-xl sm:text-3xl md:text-4xl text-[#E5E0D8]/90 tracking-wide font-normal italic"
               style={{
                 fontFamily: "'New York', 'Instrument Serif', Georgia, serif",
                 fontStyle: "italic",
@@ -342,7 +342,7 @@ export function DeepSpaceHero() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="relative w-[280px] sm:w-[340px] md:w-[400px] lg:w-[460px] xl:w-[520px] aspect-[745/1000] flex items-center justify-center filter drop-shadow-[0_25px_60px_rgba(0,0,0,0.85)]"
+                className="relative w-[180px] xs:w-[220px] sm:w-[340px] md:w-[400px] lg:w-[460px] xl:w-[520px] aspect-[745/1000] flex items-center justify-center filter drop-shadow-[0_25px_60px_rgba(0,0,0,0.85)]"
               >
                 <img
                   src="/assets/astronaut-tight.png"

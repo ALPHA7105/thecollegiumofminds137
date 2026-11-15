@@ -35,7 +35,7 @@ export function EditorialFooter() {
     { label: "GitHub Repository", href: "https://github.com/CoM-137", external: true, badge: "Open" },
     { label: "LinkedIn Portal", href: "https://www.linkedin.com/company/the-collegium-of-minds/", external: true },
     { label: "Email the Guild", href: "mailto:collegiumofminds@gmail.com", external: true, badge: "Direct" },
-    { label: "Council Dossiers", to: "/#team" },
+    { label: "Founder's Dossier", to: "/#team" },
     { label: "Code of Conduct", to: "/#join" },
   ];
 
@@ -137,6 +137,18 @@ export function EditorialFooter() {
                     />
                   </div>
                   <span className="underline decoration-black/30 group-hover:decoration-[#7C3AED]">Sarvesh Kore</span>
+                </a>
+              </div>
+              <div className="flex items-center gap-2 text-[12px] text-[#403E3B]">
+                <span>Phase neo — designed by</span>
+                <a
+                  href="https://github.com/vaidiklab"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[#0A0A0A] hover:text-[#7C3AED] font-semibold transition-colors group"
+                >
+                  <span className="underline decoration-black/30 group-hover:decoration-[#7C3AED]">Vaidik Shree</span>
+                  <ArrowUpRight size={11} className="opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </a>
               </div>
             </div>
