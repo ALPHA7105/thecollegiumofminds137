@@ -293,7 +293,7 @@ export default function QuestionsPage() {
                             initial={{ width: 0 }}
                             animate={{ width: `${pct}%` }}
                             transition={{ duration: 1, ease: "easeOut" }}
-                            className="h-full bg-gradient-to-r from-bronze to-cyan-400 rounded-full"
+                            className="h-full bg-gradient-to-r from-[#8061CF] to-[#A78BFA] rounded-full"
                           />
                         </div>
                       </div>

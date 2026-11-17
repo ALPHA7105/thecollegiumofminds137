@@ -2,7 +2,7 @@ import React from 'react';
 
 interface TeamAvatarProps {
   image?: string;
-  emoji: string;
+  emoji?: string;
   name: string;
   size?: number;
   className?: string;
@@ -10,7 +10,7 @@ interface TeamAvatarProps {
 
 function TeamAvatar({ 
   image, 
-  emoji, 
+  emoji = "✦", 
   name, 
   size = 80, 
   className = "" 

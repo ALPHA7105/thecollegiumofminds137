@@ -685,8 +685,8 @@ function ArticleDetailPage() {
     <div className="min-h-screen bg-obsidian text-silver pt-24 sm:pt-28 pb-0 overflow-x-hidden">
       {/* Viewport Fixed Reading Progress Indicator */}
       <div
-        className="fixed left-0 top-16 sm:top-20 h-[3px]
-                  bg-gradient-to-r from-bronze via-cyan-500 to-bronze
+        className="fixed left-0 top-0 h-[3px]
+                  bg-gradient-to-r from-[#8061CF] via-[#A78BFA] to-[#8061CF]
                   z-[9999]"
         style={{ width: `${scrollPercent}%` }}
       />
@@ -897,8 +897,7 @@ function ArticleDetailPage() {
 
             {/* The Citation Card Graphic */}
             <div className="border border-bronze-border/10 bg-obsidian-surface/60 rounded-xl p-6 sm:p-8 relative overflow-hidden mb-6 text-left shadow-inner">
-              {/* Subtle graphic lines */}
-              <div className="absolute top-0 right-0 h-1 w-16 bg-gradient-to-r from-bronze to-cyan-400" />
+              <div className="absolute top-0 right-0 h-1 w-16 bg-gradient-to-r from-[#8061CF] to-[#A78BFA]" />
               <span className="font-serif text-5xl text-bronze/10 absolute -top-2 left-2 pointer-events-none">“</span>
               
               <p className="font-serif italic text-lg sm:text-xl text-silver-muted leading-relaxed mb-6 pl-4 relative z-10">

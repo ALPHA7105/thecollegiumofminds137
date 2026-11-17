@@ -6,3 +6,17 @@ coverage/
 *.log
 .env*
 !.env.example
+# Private design references
+/inspiration/
+
+base44/.app.jsonc
+
+# Cook skill (untracked)
+.agents/skills/cook/
+.claude/skills/cook/
+**/skills/cook/
+
+# GSAP skills (untracked)
+.agents/skills/gsap-*/
+.claude/skills/gsap-*/
+**/skills/gsap-*/

@@ -60,8 +60,8 @@ const booksData = [
 
 const colors = [
   {
-    darkColor: "from-cyan-950/60 to-slate-950/80 border-cyan-800/40 text-cyan-300",
-    lightColor: "from-cyan-200/60 to-sky-100/50 border-cyan-400/40 text-cyan-700",
+    darkColor: "from-purple-950/60 to-neutral-950/80 border-purple-800/40 text-[#A78BFA]",
+    lightColor: "from-purple-200/60 to-stone-100/50 border-purple-400/40 text-purple-700",
   },
   {
     darkColor: "from-amber-950/60 to-stone-950/80 border-amber-800/40 text-amber-300",
